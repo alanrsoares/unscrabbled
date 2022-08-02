@@ -1,8 +1,17 @@
+import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 
-/** @type {import('vite').UserConfig} */
-const config = {
-	plugins: [sveltekit()]
-};
+import path from 'path';
 
-export default config;
+// https://vitejs.dev/config/
+export default defineConfig({
+	plugins: [sveltekit()],
+	optimizeDeps: {
+		exclude: ['@sveltestack/svelte-query']
+	},
+	resolve: {
+		alias: {
+			'~': path.resolve('./src/')
+		}
+	}
+});
