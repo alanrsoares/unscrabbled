@@ -54,7 +54,7 @@
 			<input
 				id={`${id}-${i}`}
 				type="text"
-				class="h-12 w-12 rounded text-3xl text-black text-center uppercase mx-auto"
+				class="h-14 w-14 rounded text-4xl font-display text-black/90 text-center uppercase mx-auto"
 				maxlength={1}
 				value={letter}
 				on:keyup={onKeyUp}
