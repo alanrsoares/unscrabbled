@@ -13,7 +13,7 @@
 	];
 </script>
 
-<Navbar class="p-4 border-b border-white/30 bg-black/60">
+<Navbar class="p-4 border-b border-white/30 bg-black/70">
 	<div class="clamp  flex items-center justify-between gap-4">
 		<NavBrand href="/">
 			<span class="brand"> Unwordled </span>
