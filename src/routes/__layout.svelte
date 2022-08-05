@@ -9,7 +9,6 @@
 <div class="h-screen flex flex-col gap-16">
 	<AppBar />
 	<div
-		style="--gradient-border-radius=16px"
 		class="clamp p-4 grid place-items-center flex-1 ring-[6px] ring-black/40 rounded-sm gradient-border"
 	>
 		<slot />
