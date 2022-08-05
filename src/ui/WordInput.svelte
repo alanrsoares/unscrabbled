@@ -46,7 +46,7 @@
 			{label}
 		</label>
 	{/if}
-	<div class="flex items-center gap-2 bg-white/20 rounded-xl p-4 py-6">
+	<div class="flex items-center gap-2 bg-white/20 rounded-xl p-4 py-6" class:px-14={isStatic}>
 		{#if !isStatic}
 			<button on:click={pipe(preventDefault, dec)}>&minus;</button>
 		{/if}
@@ -54,7 +54,7 @@
 			<input
 				id={`${id}-${i}`}
 				type="text"
-				class="h-12 w-12 rounded text-3xl text-black text-center uppercase"
+				class="h-12 w-12 rounded text-3xl text-black text-center uppercase mx-auto"
 				maxlength={1}
 				value={letter}
 				on:keyup={onKeyUp}

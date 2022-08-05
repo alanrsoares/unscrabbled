@@ -15,6 +15,3 @@
 		<div class="clamp mx-auto grid place-items-center">&copy; {year} // unwordled</div>
 	</footer>
 </div>
-
-<style lang="postcss">
-</style>

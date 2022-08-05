@@ -1,13 +1,32 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+::root {
+ --gradient-1: 'linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2)')
+}
+
 html {
-	@apply bg-indigo-900 text-gray-200;
+	@apply bg-gray-900 text-gray-200;
 }
 
 @layer utilities {
 	.clamp {
 		@apply max-w-3xl w-full mx-auto;
+	}
+
+	.gradient-border {
+		@apply relative text-white bg-[#020117]/95;
+	}
+	.gradient-border::after {
+		@apply absolute -inset-[5px] -z-[1] blur-2xl content-[''];
+		content: '';
+		background: linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2);
+	}
+	.gradient-border::before {
+		@apply absolute inset-0 -z-[2];
+		content: '';
+		background: linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2);
 	}
 }

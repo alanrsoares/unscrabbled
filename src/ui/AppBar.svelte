@@ -1,5 +1,38 @@
-<header class="p-4 border-b border-white/30">
-	<div class="clamp">
-		<span class="text-3xl font-mono leading-snug font-semibold uppercase">unwordled</span>
+<script lang="ts">
+	import { Button, Navbar, NavBrand, NavUl, NavLi } from 'flowbite-svelte';
+	import { Cog } from 'svelte-heros';
+	const menu = [
+		{
+			label: 'search',
+			path: ''
+		},
+		{
+			label: 'definitions',
+			path: ''
+		}
+	];
+</script>
+
+<Navbar class="p-4 border-b border-white/30 gradient-border">
+	<div class="clamp  flex items-center justify-between gap-4">
+		<NavBrand href="/">
+			<span class="brand"> Unwordled </span>
+		</NavBrand>
+		<nav class="flex-1">
+			<NavUl class="flex gap-2 items-center justify-end">
+				{#each menu as item}
+					<NavLi>
+						{item.label}
+					</NavLi>
+				{/each}
+			</NavUl>
+		</nav>
+		<Button gradient color="purple" class="h-10 w-10 !p-0 !rounded-full"><Cog /></Button>
 	</div>
-</header>
+</Navbar>
+
+<style lang="postcss">
+	.brand {
+		@apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold dark:text-white uppercase;
+	}
+</style>
