@@ -21,7 +21,7 @@
 		<nav class="flex-1">
 			<NavUl class="flex gap-2 items-center justify-end">
 				{#each menu as item}
-					<NavLi>
+					<NavLi activeClass="text-pink-600" nonActiveClass="opacity-80">
 						{item.label}
 					</NavLi>
 				{/each}
