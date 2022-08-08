@@ -4,6 +4,8 @@
 	const handleSubmit: svelte.JSX.FormEventHandler<HTMLFormElement> = (e) => {
 		//
 		console.log({ submit: e });
+
+		e.preventDefault();
 		return;
 	};
 </script>

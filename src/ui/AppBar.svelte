@@ -13,10 +13,10 @@
 	];
 </script>
 
-<Navbar class="p-4 border-b border-white/30 bg-black/70">
+<Navbar class="p-4 border-b border-white/30 bg-black/80">
 	<div class="clamp  flex items-center justify-between gap-4">
 		<NavBrand href="/">
-			<span class="brand"> Unwordled </span>
+			<span class="brand"> Unscrabbled </span>
 		</NavBrand>
 		<nav class="flex-1">
 			<NavUl class="flex gap-2 items-center justify-end">
@@ -33,6 +33,7 @@
 
 <style lang="postcss">
 	.brand {
-		@apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold dark:text-white uppercase;
+		@apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold;
+		@apply dark:text-white uppercase;
 	}
 </style>
