@@ -29,7 +29,8 @@
 <section class="flex flex-col gap-8 flex-1">
 	<WordInput
 		id="pattern"
-		label={`Pattern with ${patternLength} letters`}
+		label={`Enter pattern with ${patternLength} letters`}
+		secondaryLabel="use * to match any"
 		bind:length={patternLength}
 		bind:value={pattern}
 	/>

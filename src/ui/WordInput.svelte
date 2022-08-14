@@ -59,10 +59,11 @@
 
 <div class="grid gap-2 w-fit m-auto">
 	{#if label}
-		<label for={`${id}-0`} class="inline-block text-2xl">
+		<label for={`${id}-0`} class="inline-block text-2xl text-center">
 			{label}
 		</label>
 	{/if}
+
 	<div class="flex items-center gap-2 bg-white/20 rounded-xl p-4 py-6" class:px-14={isStatic}>
 		{#if !isStatic}
 			<button on:click={pipe(preventDefault, dec)}>&minus;</button>
