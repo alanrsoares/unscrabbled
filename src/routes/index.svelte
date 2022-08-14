@@ -19,7 +19,7 @@
 		patternLength = maxLength;
 	}
 
-	$: patternRegex = toRgexp(pattern.slice(0, patternLength).replaceAll(/\w/gi, '*'));
+	$: patternRegex = toRgexp(pattern.slice(0, patternLength).replaceAll(/\s/gi, '*'));
 
 	$: queryResult = useQuery(['words-by-length', patternLength, pattern], () =>
 		geWordsByLength(patternLength, patternRegex)
