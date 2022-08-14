@@ -26,7 +26,7 @@
 	);
 </script>
 
-<section class="flex flex-col gap-8 flex-1">
+<section class="flex flex-col gap-8 flex-1 relative">
 	<WordInput
 		id="pattern"
 		label={`Enter pattern with ${patternLength} letters`}

@@ -57,14 +57,17 @@
 	$: letters = Array.from<string>({ length }).fill('');
 </script>
 
-<div class="grid gap-2 w-fit m-auto">
+<div class="grid gap-1.5 md:gap-2 w-fit m-auto">
 	{#if label}
-		<label for={`${id}-0`} class="inline-block text-2xl text-center">
+		<label for={`${id}-0`} class="inline-block text-lg md:text-2xl text-center">
 			{label}
 		</label>
 	{/if}
 
-	<div class="flex items-center gap-2 bg-white/20 rounded-xl p-4 py-6" class:px-14={isStatic}>
+	<div
+		class="flex items-center gap-2 bg-white/20 rounded-xl p-2 md:p-4 py-6 absolute left-0 right-0 -top-14 md:static"
+		class:px-14={isStatic}
+	>
 		{#if !isStatic}
 			<button on:click={pipe(preventDefault, dec)}>&minus;</button>
 		{/if}
@@ -72,7 +75,7 @@
 			<input
 				id={`${id}-${idx}`}
 				type="text"
-				class="h-16 w-16 rounded text-[2rem] font-display text-black/90 text-center uppercase mx-auto"
+				class="h-8 w-8 md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-black/90 text-center uppercase mx-auto"
 				maxlength={1}
 				value={letter}
 				on:input={onInput(idx)}
