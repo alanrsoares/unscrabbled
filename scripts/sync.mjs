@@ -1,19 +1,40 @@
+#!/usr/bin/env zx
+
+import fs from 'fs/promises';
 import got from 'got';
 import path from 'path';
-import fs from 'fs/promises';
-import { uniq } from 'rambda';
+import { range, uniq } from 'rambda';
+import { spinner } from 'zx/experimental';
 
-const BASE_URL = 'https://raw.githubusercontent.com/wordset/wordset-dictionary/master/data';
+const DICTIONARY_API_ENDPOINT =
+	'https://raw.githubusercontent.com/wordset/wordset-dictionary/master/data';
 
 const LETTERS = new Set('abcdefghijklmnopqrstuvwxyz'.split(''));
 
 const client = got.extend({
-	prefixUrl: BASE_URL,
+	prefixUrl: DICTIONARY_API_ENDPOINT,
 	cache: true
 });
 
+const MIN_LENGTH = 2;
+
+/**
+ * Returns a dictionary of words starting with the given letter.
+ *
+ * @param {string} letter
+ * @returns {Promise<Record<string, {
+ * 	word: string;
+ * 	wordset_id: string;
+ * 	meanings: {
+ * 		id: string;
+ * 		def: string;
+ * 		example: string;
+ * 		speech_part: string;
+ * 	}[];
+ * }>>}
+ */
 function getDictionaryByLetter(letter = '') {
-	if (!/^\w$/.test(letter)) {
+	if (!/^[a-z]$/.test(letter)) {
 		throw new Error('invalid argument');
 	}
 
@@ -33,12 +54,16 @@ async function readFileOrDefault(filePath = '', defaultContent = '') {
 	}
 }
 
+/**
+ *
+ * @param {number} length
+ * @param {string[]} words
+ * @returns
+ */
 async function syncByLength(length = 0, words = []) {
 	const filtered = words.filter((x) => x.length === length);
 
 	if (!filtered.length) return;
-
-	console.log('syncByLength', { length, words: filtered.length });
 
 	const filePath = `${BY_LENGTH_INDEX_PATH}/${length}.json`;
 	const wordsIndex = await readFileOrDefault(filePath, '[]');
@@ -50,17 +75,11 @@ async function syncByLength(length = 0, words = []) {
 }
 
 async function syncByLetter(letter = '') {
-	console.log('syncByLetter', { letter });
-
 	const dictionary = await getDictionaryByLetter(letter);
 
 	const words = Object.keys(dictionary);
 
 	const filtered = words.filter((x) => !/\s+/.test(x));
-
-	if (filtered.length !== words.length) {
-		console.log(`${words.length - filtered.length} words filtered`);
-	}
 
 	const encoded = JSON.stringify(dictionary, null, 2);
 
@@ -78,21 +97,20 @@ async function syncByLetter(letter = '') {
 
 	const fullMetaFilePath = path.resolve(`./static/db/full/${letter}.json`);
 
-	await Promise.all([
-		fs.writeFile(fullMetaFilePath, encoded),
-		fs.writeFile(BY_LETTER_INDEX_PATH, nextWordsIndex)
-	]);
-
 	const maxLength = Math.max(...filtered.map((x) => x.length));
 
-	for (let i = 2; i <= maxLength; i++) {
-		await syncByLength(i, filtered);
-	}
+	const syncFilteredByLength = async (length = 0) => syncByLength(length, filtered);
+
+	await Promise.all([
+		fs.writeFile(fullMetaFilePath, encoded),
+		fs.writeFile(BY_LETTER_INDEX_PATH, nextWordsIndex),
+		...range(MIN_LENGTH, maxLength + 1).map(syncFilteredByLength)
+	]);
 }
 
 async function syncAll() {
-	for (let letter of LETTERS) {
-		await syncByLetter(letter);
+	for (const letter of LETTERS) {
+		await spinner(`Syncing letter: ${letter}`, () => syncByLetter(letter));
 	}
 }
 
