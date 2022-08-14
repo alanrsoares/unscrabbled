@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { Card, Spinner } from 'flowbite-svelte';
-	import { range } from 'rambda';
 
 	import { geWordsByLength } from '~/lib/db';
 	import { toRgexp } from '~/lib/misc';
