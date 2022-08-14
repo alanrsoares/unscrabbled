@@ -11,6 +11,8 @@
 	 */
 	export let label: string;
 
+	export let secondaryLabel = 'Use * to match any letter';
+
 	/**
 	 * Whether length can be changed
 	 */
@@ -85,6 +87,7 @@
 			<button on:click={pipe(preventDefault, inc)}>&plus;</button>
 		{/if}
 	</div>
+	<span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
 </div>
 
 <style lang="postcss">
