@@ -1,7 +1,6 @@
 import got from 'got';
 import path from 'path';
 import fs from 'fs/promises';
-import { range } from 'rambda';
 import { uniq } from 'rambda';
 
 const BASE_URL = 'https://raw.githubusercontent.com/wordset/wordset-dictionary/master/data';
@@ -24,44 +23,54 @@ function getDictionaryByLetter(letter = '') {
 }
 
 const BY_LETTER_INDEX_PATH = path.resolve(`./static/db/words/index.json`);
-const BY_LENGTH_INDEX_PATH = path.resolve(`./static/db/words/by-length.json`);
+const BY_LENGTH_INDEX_PATH = path.resolve(`./static/db/words/by-length`);
+
+async function readFileOrDefault(filePath = '', defaultContent = '') {
+	try {
+		return await fs.readFile(filePath, 'utf-8');
+	} catch (error) {
+		return defaultContent;
+	}
+}
 
 async function syncByLength(length = 0, words = []) {
-	console.log('syncByLength', { length, words });
-
 	const filtered = words.filter((x) => x.length === length);
 
 	if (!filtered.length) return;
 
-	const wordsIndex = await fs.readFile(BY_LENGTH_INDEX_PATH, 'utf-8');
-	const currentWordsIndex = JSON.parse(wordsIndex || '{}');
+	console.log('syncByLength', { length, words: filtered.length });
 
-	const encoded = JSON.stringify(
-		{
-			...currentWordsIndex,
-			[length]: uniq([...(currentWordsIndex[length] ?? []), ...words])
-		},
-		null,
-		2
-	);
+	const filePath = `${BY_LENGTH_INDEX_PATH}/${length}.json`;
+	const wordsIndex = await readFileOrDefault(filePath, '[]');
+	const currentWordsIndex = JSON.parse(wordsIndex || '[]');
 
-	await fs.writeFile(BY_LETTER_INDEX_PATH, encoded);
+	const encoded = JSON.stringify([...uniq([...currentWordsIndex, ...filtered])], null, 2);
+
+	await fs.writeFile(filePath, encoded);
 }
 
 async function syncByLetter(letter = '') {
 	console.log('syncByLetter', { letter });
 
 	const dictionary = await getDictionaryByLetter(letter);
+
 	const words = Object.keys(dictionary);
+
+	const filtered = words.filter((x) => !/\s+/.test(x));
+
+	if (filtered.length !== words.length) {
+		console.log(`${words.length - filtered.length} words filtered`);
+	}
 
 	const encoded = JSON.stringify(dictionary, null, 2);
 
 	const wordsIndex = await fs.readFile(BY_LETTER_INDEX_PATH, 'utf-8');
+
 	const currentWordsIndex = JSON.parse(wordsIndex || '{}');
 	const nextWordsIndex = JSON.stringify(
 		{
 			...currentWordsIndex,
-			[letter]: words
+			[letter]: filtered
 		},
 		null,
 		2
@@ -71,11 +80,14 @@ async function syncByLetter(letter = '') {
 
 	await Promise.all([
 		fs.writeFile(fullMetaFilePath, encoded),
-		fs.writeFile(BY_LETTER_INDEX_PATH, nextWordsIndex),
-		...range(2, 10).map((i) => {
-			// syncByLength(i, words);
-		})
+		fs.writeFile(BY_LETTER_INDEX_PATH, nextWordsIndex)
 	]);
+
+	const maxLength = Math.max(...filtered.map((x) => x.length));
+
+	for (let i = 2; i <= maxLength; i++) {
+		await syncByLength(i, filtered);
+	}
 }
 
 async function syncAll() {

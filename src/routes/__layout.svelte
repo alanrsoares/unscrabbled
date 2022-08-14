@@ -1,19 +1,21 @@
 <script>
-	import AppBar from '../ui/AppBar.svelte';
+	import AppBar from '~/ui/AppBar.svelte';
+	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
 
-	import '../app.css';
+	import '~/app.css';
 
-	let year = new Date().getFullYear();
+	const queryClient = new QueryClient();
+	const year = new Date().getFullYear();
 </script>
 
-<div class="h-screen flex flex-col gap-16">
-	<AppBar />
-	<div
-		class="clamp p-4 grid place-items-center flex-1 ring-[6px] ring-black/40 rounded-sm gradient-border"
-	>
-		<slot />
+<QueryClientProvider client={queryClient}>
+	<div class="h-screen flex flex-col gap-12">
+		<AppBar />
+		<div class="clamp p-4 flex flex-col justify-center flex-1">
+			<slot />
+		</div>
+		<footer class="p-8">
+			<div class="clamp mx-auto grid place-items-center">&copy; {year} // unwordled</div>
+		</footer>
 	</div>
-	<footer class="p-4">
-		<div class="clamp mx-auto grid place-items-center">&copy; {year} // unwordled</div>
-	</footer>
-</div>
+</QueryClientProvider>

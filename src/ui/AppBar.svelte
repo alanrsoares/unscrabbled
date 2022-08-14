@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Navbar, NavBrand, NavUl, NavLi } from 'flowbite-svelte';
 	import { Cog } from 'svelte-heros';
+
 	const menu = [
 		{
 			label: 'search',
@@ -13,7 +14,7 @@
 	];
 </script>
 
-<Navbar class="p-4 border-b border-white/30 !bg-black/70">
+<Navbar class="p-4 border-b border-white/30 !bg-black/95 gradient-border">
 	<div class="clamp  flex items-center justify-between gap-4">
 		<NavBrand href="/">
 			<span class="brand"> Unscrabbled </span>
@@ -27,7 +28,7 @@
 				{/each}
 			</NavUl>
 		</nav>
-		<Button gradient color="purple" class="h-10 w-10 !p-0 !rounded-full"><Cog /></Button>
+		<Button gradient color="purpleToPink" class="h-10 w-10 !p-0 !rounded-full"><Cog /></Button>
 	</div>
 </Navbar>
 
