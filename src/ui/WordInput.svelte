@@ -34,9 +34,11 @@
 	const inc = () => length++;
 	const dec = () => length--;
 
-	const VALID_INPUT_REGEX = /[a-z*]/i;
+	const VALID_INPUT_REGEX = /[a-z*_]/i;
 
-	$: onInput = (focusedIndex: number) => <svelte.JSX.FormEventHandler<HTMLInputElement>>((e) => {
+	$: handleInput = (focusedIndex: number) => <svelte.JSX.FormEventHandler<HTMLInputElement>>((
+			e
+		) => {
 			const input = e.target as HTMLInputElement;
 
 			const nextFocusedIndex = clamp(
@@ -54,41 +56,51 @@
 			getInput(nextFocusedIndex)?.focus();
 		});
 
+	$: handleKeyDown = (e: KeyboardEvent) => {
+		if (e.key !== 'Backspace' && !VALID_INPUT_REGEX.test(e.key)) {
+			e.preventDefault();
+		}
+	};
+
 	$: letters = Array.from<string>({ length }).fill('');
 </script>
 
-<div class="grid gap-1.5 md:gap-2 w-fit m-auto">
+<div class="grid gap-1.5 md:gap-2 m-auto w-full md:w-fit">
 	{#if label}
 		<label for={`${id}-0`} class="inline-block text-lg md:text-2xl text-center">
 			{label}
 		</label>
 	{/if}
-
 	<div
-		class="flex items-center gap-2 bg-white/20 rounded-xl p-2 md:p-4 py-6 absolute left-0 right-0 -top-14 md:static"
+		class="flex items-center justify-between gap-2 bg-white/20 rounded-xl p-2 md:p-4 py-6 left-0 right-0 -top-14"
 		class:px-14={isStatic}
 	>
 		{#if !isStatic}
-			<button on:click={pipe(preventDefault, dec)}>&minus;</button>
+			<button class="-translate-x-3 md:-translate-x-7" on:click={pipe(preventDefault, dec)}
+				>&minus;</button
+			>
 		{/if}
 		{#each letters as letter, idx}
 			<input
 				id={`${id}-${idx}`}
 				type="text"
-				class="h-8 w-8 md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-black/90 text-center uppercase mx-auto"
+				class="h-8 w-8 hidden md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-black/90 text-center uppercase mx-auto"
 				maxlength={1}
 				value={letter}
-				on:input={onInput(idx)}
-				on:keydown={(e) => {
-					if (e.key !== 'Backspace' && !VALID_INPUT_REGEX.test(e.key)) {
-						console.log(e.key, 'ignored');
-						e.preventDefault();
-					}
-				}}
+				on:input={handleInput(idx)}
+				on:keydown={handleKeyDown}
 			/>
 		{/each}
+		<input
+			type="text"
+			class="block md:hidden h-16 rounded-lg text-xl font-display text-black/90 text-center uppercase w-[80%]"
+			bind:value
+			on:keydown={handleKeyDown}
+		/>
 		{#if !isStatic}
-			<button on:click={pipe(preventDefault, inc)}>&plus;</button>
+			<button class="translate-x-3 md:translate-x-7" on:click={pipe(preventDefault, inc)}
+				>&plus;</button
+			>
 		{/if}
 	</div>
 	<span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
@@ -96,6 +108,8 @@
 
 <style lang="postcss">
 	button {
-		@apply h-8 w-8 bg-white/40 rounded-full text-xl pb-0.5 select-none;
+		@apply block h-8 w-8 scale-150  bg-gray-800/80 rounded-full;
+		@apply font-semibold text-xl pb-0.5 select-none origin-center;
+		@apply md:bg-white/40;
 	}
 </style>

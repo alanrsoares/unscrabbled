@@ -1,17 +1,6 @@
 <script lang="ts">
-	import { Button, Navbar, NavBrand, NavUl, NavLi } from 'flowbite-svelte';
+	import { Button, Navbar, NavBrand } from 'flowbite-svelte';
 	import { Cog } from 'svelte-heros';
-
-	const menu = [
-		{
-			label: 'search',
-			path: ''
-		},
-		{
-			label: 'definitions',
-			path: ''
-		}
-	];
 </script>
 
 <Navbar class="p-4 border-b border-white/30 !bg-black/95 gradient-border">
@@ -19,16 +8,10 @@
 		<NavBrand href="/">
 			<span class="brand"> Unscrabbled </span>
 		</NavBrand>
-		<nav class="flex-1">
-			<NavUl class="flex gap-2 items-center justify-end">
-				{#each menu as item}
-					<NavLi activeClass="text-pink-600" nonActiveClass="opacity-80">
-						{item.label}
-					</NavLi>
-				{/each}
-			</NavUl>
-		</nav>
-		<Button gradient color="purpleToPink" class="h-10 w-10 !p-0 !rounded-full"><Cog /></Button>
+		<nav class="flex-1" />
+		<button class="settings-btn">
+			<Cog />
+		</button>
 	</div>
 </Navbar>
 
@@ -36,5 +19,10 @@
 	.brand {
 		@apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold;
 		@apply dark:text-white uppercase;
+	}
+
+	.settings-btn {
+		@apply h-8 w-8 md:h-10 md:w-10 bg-gradient-to-br from-pink-500 to-blue-500 rounded-full;
+		@apply grid place-items-center hover:opacity-70 transition-opacity;
 	}
 </style>

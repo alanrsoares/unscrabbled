@@ -9,7 +9,7 @@
 </script>
 
 <QueryClientProvider client={queryClient}>
-	<div class="h-screen flex flex-col gap-12 overflow-x-hidden">
+	<div class="h-screen flex flex-col gap-4 sm:gap-8 md:gap-12 overflow-x-hidden">
 		<AppBar />
 		<div class="clamp p-4 flex flex-col justify-center flex-1">
 			<slot />

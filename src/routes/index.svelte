@@ -30,11 +30,11 @@
 	<WordInput
 		id="pattern"
 		label={`Enter pattern with ${patternLength} letters`}
-		secondaryLabel="use * to match any"
+		secondaryLabel="use * or _ to match any"
 		bind:length={patternLength}
 		bind:value={pattern}
 	/>
-	<Card class="m-auto w-full flex-1 overflow-y-scroll max-h-[60vh] relative">
+	<Card class="m-auto w-full flex-1 overflow-y-scroll max-h-[60vh] relative !p-2">
 		{#if $queryResult.isError}
 			<div>failed {JSON.stringify($queryResult.error)}</div>
 		{:else if $queryResult.isLoading}
