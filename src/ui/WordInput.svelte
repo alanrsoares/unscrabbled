@@ -99,6 +99,7 @@
 			type="text"
 			class="block md:hidden h-16 bg-gray-200/80 rounded-lg text-xl font-display text-black/80 text-center uppercase w-[80%] tracking-widest"
 			placeholder={'_'.repeat(length)}
+			maxlength={length}
 			bind:value
 			on:keydown={handleKeyDown}
 		/>
