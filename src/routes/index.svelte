@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { Card, Spinner } from 'flowbite-svelte';
+	import { dataset_dev } from 'svelte/internal';
 
 	import { geWordsByLength } from '~/lib/db';
 	import { toChars, toRgexp } from '~/lib/misc';
@@ -51,6 +52,12 @@
 		bind:exclude
 		bind:include
 	/>
+
+	{#if $queryResult.isSuccess && pattern.length}
+		<div class="clamp m-auto text-center">
+			{$queryResult.data.length ? $queryResult.data.length : 'No'} results found
+		</div>
+	{/if}
 	<Card class="m-auto w-full flex-1 overflow-y-scroll max-h-[60vh] relative !p-2">
 		{#if $queryResult.isError}
 			<div>failed {JSON.stringify($queryResult.error)}</div>
