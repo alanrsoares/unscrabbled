@@ -3,12 +3,14 @@
 	import { Card, Spinner } from 'flowbite-svelte';
 
 	import { geWordsByLength } from '~/lib/db';
-	import { toRgexp } from '~/lib/misc';
+	import { toChars, toRgexp } from '~/lib/misc';
 	import WordInput from '~/ui/WordInput.svelte';
 
 	let pattern = '';
-	let patternLength = 5;
+	let include = '';
+	let exclude = '';
 
+	let patternLength = 5;
 	let minLength = 2;
 	let maxLength = 16;
 
@@ -19,10 +21,23 @@
 		patternLength = maxLength;
 	}
 
-	$: patternRegex = toRgexp(pattern.slice(0, patternLength).replaceAll(/\s/gi, '*'));
+	$: patternRegex = toRgexp(pattern.toLowerCase().slice(0, patternLength).replaceAll(/\s/gi, '*'));
 
-	$: queryResult = useQuery(['words-by-length', patternLength, pattern], () =>
-		geWordsByLength(patternLength, patternRegex)
+	$: queryResult = useQuery(
+		['words-by-length', patternLength, pattern, include, exclude],
+		async () => {
+			let result = await geWordsByLength(patternLength, patternRegex);
+
+			if (include) {
+				result = result.filter((x) => toChars(include).every((y) => x.includes(y)));
+			}
+
+			if (exclude) {
+				result = result.filter((x) => !toChars(exclude).some((y) => x.includes(y)));
+			}
+
+			return result;
+		}
 	);
 </script>
 
@@ -30,9 +45,11 @@
 	<WordInput
 		id="pattern"
 		label={`Enter pattern with ${patternLength} letters`}
-		secondaryLabel="use * or _ to match any"
+		secondaryLabel="use * to match any"
 		bind:length={patternLength}
 		bind:value={pattern}
+		bind:exclude
+		bind:include
 	/>
 	<Card class="m-auto w-full flex-1 overflow-y-scroll max-h-[60vh] relative !p-2">
 		{#if $queryResult.isError}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Navbar, NavBrand } from 'flowbite-svelte';
+	import { Navbar, NavBrand } from 'flowbite-svelte';
 	import { Cog } from 'svelte-heros';
 </script>
 
