@@ -92,8 +92,10 @@
 			/>
 		{/each}
 		<input
+			id={`${id}-0`}
 			type="text"
-			class="block md:hidden h-16 rounded-lg text-xl font-display text-black/90 text-center uppercase w-[80%]"
+			class="block md:hidden h-16 rounded-lg text-xl font-display text-black/90 text-center uppercase w-[80%] tracking-widest"
+			placeholder={'_'.repeat(length)}
 			bind:value
 			on:keydown={handleKeyDown}
 		/>
