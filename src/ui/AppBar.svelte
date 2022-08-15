@@ -18,7 +18,7 @@
 <style lang="postcss">
 	.brand {
 		@apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold;
-		@apply dark:text-white uppercase;
+		@apply text-white uppercase;
 	}
 
 	.settings-btn {

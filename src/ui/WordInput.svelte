@@ -79,15 +79,15 @@
 		class:px-14={isStatic}
 	>
 		{#if !isStatic}
-			<button class="-translate-x-3 md:-translate-x-7" on:click={pipe(preventDefault, dec)}
-				>&minus;</button
-			>
+			<button class="-translate-x-3 md:-translate-x-7" on:click={pipe(preventDefault, dec)}>
+				&minus;
+			</button>
 		{/if}
 		{#each letters as letter, idx}
 			<input
 				id={`${id}-${idx}`}
 				type="text"
-				class="h-8 w-8 hidden md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-black/80 text-center uppercase mx-auto"
+				class="h-8 w-8 hidden bg-gray-200/80 md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-black/80 text-center uppercase mx-auto"
 				maxlength={1}
 				value={letter}
 				on:input={handleInput(idx)}
@@ -97,15 +97,15 @@
 		<input
 			id={`${id}-0`}
 			type="text"
-			class="block md:hidden h-16 rounded-lg text-xl font-display text-black/80 text-center uppercase w-[80%] tracking-widest"
+			class="block md:hidden h-16 bg-gray-200/80 rounded-lg text-xl font-display text-black/80 text-center uppercase w-[80%] tracking-widest"
 			placeholder={'_'.repeat(length)}
 			bind:value
 			on:keydown={handleKeyDown}
 		/>
 		{#if !isStatic}
-			<button class="translate-x-3 md:translate-x-7" on:click={pipe(preventDefault, inc)}
-				>&plus;</button
-			>
+			<button class="translate-x-3 md:translate-x-7" on:click={pipe(preventDefault, inc)}>
+				&plus;
+			</button>
 		{/if}
 	</div>
 	<span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
@@ -133,6 +133,7 @@
 	}
 
 	.input {
-		@apply h-12 rounded text-black/80 p-2 font-mono text-lg uppercase tracking-widest font-semibold;
+		@apply h-12 rounded bg-gray-200/80 p-2 px-3.5;
+		@apply text-black/80 text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
 	}
 </style>
