@@ -114,8 +114,7 @@
 
 <style lang="postcss">
 	button {
-		@apply block h-8 w-8 scale-150  bg-gray-800/80 rounded-full;
+		@apply block h-8 w-8 scale-150 bg-gray-500/90 rounded-full;
 		@apply font-semibold text-xl pb-0.5 select-none origin-center;
-		@apply md:bg-white/40;
 	}
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { Button, Card, Spinner } from 'flowbite-svelte';
+	import { Eye } from 'svelte-heros';
 
 	import { geWordsByLength } from '~/lib/db';
 	import { dedupeString, sanitizePattern, toChars, toRgexp } from '~/lib/misc';
@@ -130,7 +131,7 @@
 						{#each $wordsQuery.data as word}
 							<li
 								role="button"
-								class="rounded p-2 px-3 bg-white/20 group flex items-center justify-between"
+								class="rounded p-2 px-3 bg-white/20 group flex items-center justify-between uppercase"
 								on:click={() => {
 									selectedWord = word;
 								}}
@@ -138,7 +139,7 @@
 								<span class="text-base font-medium">
 									{word}
 								</span>
-								<span class="pill"> view definition </span>
+								<span class="pill"> <Eye /> definition </span>
 							</li>
 						{/each}
 					</ul>
@@ -157,6 +158,7 @@
 	}
 
 	.pill {
-		@apply opacity-0 group-hover:opacity-100 text-purple-400 transition-opacity self-end rounded-md text-xs py-1 px-2 border border-purple-400;
+		@apply flex items-center gap-2 opacity-0 group-hover:opacity-100 text-purple-400;
+		@apply transition-opacity self-end rounded-md text-xs py-1 px-2 border border-purple-400;
 	}
 </style>

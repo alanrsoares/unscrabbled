@@ -16,46 +16,40 @@
 </script>
 
 <Modal
+	title={selectedWord.toUpperCase()}
 	open={selectedWord.length > 0}
 	on:hide={() => {
-		if (selectedWord) {
-			selectedWord = '';
-		}
+		selectedWord = '';
 	}}
 >
 	<section class="grid gap-4">
-		<header>
-			<h1 class="uppercase font-semibold text-xl">{selectedWord}</h1>
-		</header>
-		<main class="grid gap-2">
-			{#if $definitionQuery.isError}
-				<div>failed {JSON.stringify($definitionQuery.error)}</div>
-			{:else if $definitionQuery.isLoading}
-				<div class="p-2 flex gap-2 items-center justify-center">
-					<Spinner size="6" color="purple" />
-				</div>
-			{:else if $definitionQuery.isSuccess}
-				<span class="font-semibold text-lg text-white/60"
-					>Meanings ({$definitionQuery.data.meanings.length})</span
-				>
-				<ul class="grid gap-3 list-decimal list-outside ml-4">
-					{#each $definitionQuery.data.meanings as meaning}
-						<li class="list-item gap-2">
-							<blockquote>
-								<i>{meaning.speech_part}</i> <span>&middot;</span>
-								{meaning.def}
-							</blockquote>
+		{#if $definitionQuery.isError}
+			<div>failed {JSON.stringify($definitionQuery.error)}</div>
+		{:else if $definitionQuery.isLoading}
+			<div class="p-2 flex gap-2 items-center justify-center">
+				<Spinner size="6" color="purple" />
+			</div>
+		{:else if $definitionQuery.isSuccess}
+			<span class="font-semibold text-lg text-white/60"
+				>Meanings ({$definitionQuery.data.meanings.length})</span
+			>
+			<ul class="grid gap-3 list-decimal list-outside ml-4">
+				{#each $definitionQuery.data.meanings as meaning}
+					<li class="list-item gap-2">
+						<blockquote>
+							<i>{meaning.speech_part}</i> <span>&middot;</span>
+							{meaning.def}
+						</blockquote>
 
-							{#if meaning.example}
-								<span class="font-semibold text-sm md:text-md text-white/60">Example:</span>
-								<blockquote class="italic">
-									&dash; "{meaning.example}"
-								</blockquote>
-							{/if}
-						</li>
-					{/each}
-				</ul>
-			{/if}
-		</main>
+						{#if meaning.example}
+							<span class="font-semibold text-sm md:text-md text-white/60">Example:</span>
+							<blockquote class="italic">
+								&dash; "{meaning.example}"
+							</blockquote>
+						{/if}
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	</section>
 </Modal>
