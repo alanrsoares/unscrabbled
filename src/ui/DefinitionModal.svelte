@@ -15,13 +15,7 @@
 	);
 </script>
 
-<Modal
-	title={selectedWord.toUpperCase()}
-	open={selectedWord.length > 0}
-	on:hide={() => {
-		selectedWord = '';
-	}}
->
+<Modal title={selectedWord.toUpperCase()} open={selectedWord.length > 0}>
 	<section class="grid gap-4">
 		{#if $definitionQuery.isError}
 			<div>failed {JSON.stringify($definitionQuery.error)}</div>
