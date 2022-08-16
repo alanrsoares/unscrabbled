@@ -35,7 +35,8 @@
 					<Spinner size="6" color="purple" />
 				</div>
 			{:else if $definitionQuery.isSuccess}
-				<span class="font-semibold text-lg">Meanings ({$definitionQuery.data.meanings.length})</span
+				<span class="font-semibold text-lg text-white/60"
+					>Meanings ({$definitionQuery.data.meanings.length})</span
 				>
 				<ul class="grid gap-3 list-decimal list-outside ml-4">
 					{#each $definitionQuery.data.meanings as meaning}
@@ -46,9 +47,9 @@
 							</blockquote>
 
 							{#if meaning.example}
-								<span class="font-semibold text-md md:text-lg">Example:</span>
+								<span class="font-semibold text-sm md:text-md text-white/60">Example:</span>
 								<blockquote class="italic">
-									"{meaning.example}"
+									&dash; "{meaning.example}"
 								</blockquote>
 							{/if}
 						</li>

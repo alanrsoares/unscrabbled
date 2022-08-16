@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { Button } from 'flowbite-svelte';
-
 	import { clamp, pipe, prop, range } from 'rambda';
 	import { createEventDispatcher } from 'svelte/internal';
 
@@ -25,15 +23,10 @@
 	 */
 	export let length = 4;
 
-	export let include: string | undefined;
-	export let exclude: string | undefined;
-
 	/**
 	 * Input value
 	 */
 	export let value = '';
-
-	export let showAdvancedFilters = false;
 
 	const dispatch = createEventDispatcher();
 	const getInput = (i: number) => document.getElementById(`${id}-${i}`) as HTMLInputElement;
@@ -117,46 +110,6 @@
 		{/if}
 	</div>
 	<span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
-	<Button
-		size="xs"
-		outline
-		class="mx-auto mt-8 h-min transition-colors"
-		aria-label="hide advanced filters"
-		on:click={() => {
-			showAdvancedFilters = !showAdvancedFilters;
-		}}
-	>
-		{#if showAdvancedFilters}
-			&minus;
-		{:else}
-			&plus;
-		{/if}
-		filters
-	</Button>
-	{#if showAdvancedFilters}
-		<div class="grid gap-8 animate-appear-2">
-			{#if include !== undefined}
-				<div class="grid">
-					<label class="opacity-70" for="include"> Must inlcude </label>
-					<input
-						class="input flex-1 focus:border-b-purple-500 text-purple-500"
-						id="include"
-						bind:value={include}
-					/>
-				</div>
-			{/if}
-			{#if exclude !== undefined}
-				<div class="grid">
-					<label class="opacity-70" for="exclude"> Must exclude </label>
-					<input
-						class="input flex-1 focus:border-b-pink-500 text-pink-500"
-						id="exclude"
-						bind:value={exclude}
-					/>
-				</div>
-			{/if}
-		</div>
-	{/if}
 </div>
 
 <style lang="postcss">
@@ -164,11 +117,5 @@
 		@apply block h-8 w-8 scale-150  bg-gray-800/80 rounded-full;
 		@apply font-semibold text-xl pb-0.5 select-none origin-center;
 		@apply md:bg-white/40;
-	}
-
-	.input {
-		@apply transition-colors;
-		@apply h-12 bg-transparent border-b-2 outline-none;
-		@apply text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
 	}
 </style>
