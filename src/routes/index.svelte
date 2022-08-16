@@ -67,7 +67,7 @@
 			bind:value={pattern}
 		/>
 		{#if $wordsQuery.isSuccess && pattern.length}
-			<div class="clamp flex items-center justify-between md:justify-around">
+			<div class="max-w-md mx-auto w-full flex items-center justify-between">
 				<div class="text-lg font-mono">
 					<span class="text-orange-400"
 						>{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'}</span
@@ -91,7 +91,7 @@
 				</Button>
 			</div>
 			{#if showAdvancedFilters}
-				<div class="grid gap-8 animate-appear-2">
+				<div class="grid gap-8 animate-appear-2 max-w-md mx-auto w-full">
 					{#if include !== undefined}
 						<div class="grid">
 							<label class="opacity-70" for="include"> Must inlcude </label>
