@@ -46,7 +46,7 @@
 							</blockquote>
 
 							{#if meaning.example}
-								<span class="font-semibold text-lg">Exampes:</span>
+								<span class="font-semibold text-md md:text-lg">Example:</span>
 								<blockquote class="italic">
 									"{meaning.example}"
 								</blockquote>
