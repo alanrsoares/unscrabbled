@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Button } from 'flowbite-svelte';
+
 	import { clamp, pipe, prop, range } from 'rambda';
 	import { createEventDispatcher } from 'svelte/internal';
 
@@ -30,6 +32,8 @@
 	 * Input value
 	 */
 	export let value = '';
+
+	export let showAdvancedFilters = false;
 
 	const dispatch = createEventDispatcher();
 	const getInput = (i: number) => document.getElementById(`${id}-${i}`) as HTMLInputElement;
@@ -112,20 +116,45 @@
 		{/if}
 	</div>
 	<span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
-	<div class="md:flex grid gap-2">
-		{#if include !== undefined}
-			<label class="grid flex-1 gap-2" for="include">
-				Must inlcude
-				<input class="input" name="include" bind:value={include} />
-			</label>
-		{/if}
-		{#if exclude !== undefined}
-			<label class="grid flex-1 gap-2" for="exclude">
-				Must exclude
-				<input class="input" name="exclude" bind:value={exclude} />
-			</label>
-		{/if}
-	</div>
+	{#if showAdvancedFilters}
+		<div class="md:flex grid gap-2 animate-appear-2">
+			{#if include !== undefined}
+				<label class="grid flex-1 gap-2" for="include">
+					Must inlcude
+					<input class="input" name="include" bind:value={include} />
+				</label>
+			{/if}
+			{#if exclude !== undefined}
+				<label class="grid flex-1 gap-2" for="exclude">
+					Must exclude
+					<input class="input" name="exclude" bind:value={exclude} />
+				</label>
+			{/if}
+			<Button
+				size="xs"
+				outline
+				class="mx-auto mt-8"
+				aria-label="hide advanced filters"
+				on:click={() => {
+					showAdvancedFilters = false;
+				}}
+			>
+				&minus; filters
+			</Button>
+		</div>
+	{:else}
+		<Button
+			size="xs"
+			outline
+			class="mx-auto mt-8"
+			aria-label="show advanced filters"
+			on:click={() => {
+				showAdvancedFilters = true;
+			}}
+		>
+			&plus; filters
+		</Button>
+	{/if}
 </div>
 
 <style lang="postcss">

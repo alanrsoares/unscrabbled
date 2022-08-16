@@ -68,7 +68,9 @@
 		/>
 		{#if $wordsQuery.isSuccess && pattern.length}
 			<div class="clamp m-auto text-center">
-				{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'} results found
+				<span class="text-orange-400 text-lg font-mono"
+					>{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'}</span
+				> results
 			</div>
 		{/if}
 		{#if $wordsQuery.isFetched}
