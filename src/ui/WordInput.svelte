@@ -41,7 +41,7 @@
 	const inc = () => length++;
 	const dec = () => length--;
 
-	const VALID_INPUT_REGEX = /[a-z*_]/i;
+	const VALID_INPUT_REGEX = /[a-z\*_]/i;
 
 	$: handleInput = (focusedIndex: number) => <svelte.JSX.FormEventHandler<HTMLInputElement>>((
 			e
@@ -116,44 +116,37 @@
 		{/if}
 	</div>
 	<span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
+	<Button
+		size="xs"
+		outline
+		class="mx-auto mt-8 h-min transition-colors"
+		aria-label="hide advanced filters"
+		on:click={() => {
+			showAdvancedFilters = !showAdvancedFilters;
+		}}
+	>
+		{#if showAdvancedFilters}
+			&minus;
+		{:else}
+			&plus;
+		{/if}
+		filters
+	</Button>
 	{#if showAdvancedFilters}
-		<div class="md:flex grid gap-2 animate-appear-2">
+		<div class="grid gap-8 animate-appear-2">
 			{#if include !== undefined}
-				<label class="grid flex-1 gap-2" for="include">
-					Must inlcude
-					<input class="input" name="include" bind:value={include} />
-				</label>
+				<div class="grid">
+					<label class="opacity-70" for="include"> Must inlcude </label>
+					<input class="input flex-1" id="include" bind:value={include} />
+				</div>
 			{/if}
 			{#if exclude !== undefined}
-				<label class="grid flex-1 gap-2" for="exclude">
-					Must exclude
-					<input class="input" name="exclude" bind:value={exclude} />
-				</label>
+				<div class="grid">
+					<label class="opacity-70" for="exclude"> Must exclude </label>
+					<input class="input flex-1" id="exclude" bind:value={exclude} />
+				</div>
 			{/if}
-			<Button
-				size="xs"
-				outline
-				class="mx-auto mt-8"
-				aria-label="hide advanced filters"
-				on:click={() => {
-					showAdvancedFilters = false;
-				}}
-			>
-				&minus; filters
-			</Button>
 		</div>
-	{:else}
-		<Button
-			size="xs"
-			outline
-			class="mx-auto mt-8"
-			aria-label="show advanced filters"
-			on:click={() => {
-				showAdvancedFilters = true;
-			}}
-		>
-			&plus; filters
-		</Button>
 	{/if}
 </div>
 
@@ -165,7 +158,8 @@
 	}
 
 	.input {
-		@apply h-12 rounded-lg bg-gray-200/80 p-2 px-3.5;
-		@apply text-black/80 text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
+		@apply transition-colors;
+		@apply h-12 bg-transparent border-b-2 focus:border-b-pink-400 outline-none;
+		@apply text-pink-500 text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
 	}
 </style>
