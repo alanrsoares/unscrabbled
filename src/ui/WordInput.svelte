@@ -98,10 +98,11 @@
 				value={letter}
 				on:input={handleInput(idx)}
 				on:keydown={handleKeyDown}
+				aria-label={`pattern input ${idx + 1}`}
 			/>
 		{/each}
 		<input
-			id={`${id}-0`}
+			id={`-${id}-1`}
 			type="text"
 			class="block md:hidden h-16 bg-gray-200/80 rounded-lg text-xl font-display text-black/80 text-center uppercase w-[80%] tracking-widest"
 			placeholder={'_'.repeat(length)}
