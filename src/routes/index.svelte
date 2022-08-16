@@ -67,7 +67,7 @@
 			bind:value={pattern}
 		/>
 		{#if $wordsQuery.isSuccess && pattern.length}
-			<div class="clamp flex items-center justify-between">
+			<div class="clamp flex items-center justify-between md:justify-around">
 				<div class="text-lg font-mono">
 					<span class="text-orange-400"
 						>{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'}</span
