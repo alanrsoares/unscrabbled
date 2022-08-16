@@ -10,4 +10,7 @@ export const toChars = pipe(toLower, split(''));
 
 export const dedupeString = pipe(toChars, uniq, join(''));
 
+export const sanitizePattern = (pattern: string, patternLength: number) =>
+	pattern.toLowerCase().slice(0, patternLength).replaceAll(/\s/gi, '*');
+
 export const toRgexp = (pattern: string) => new RegExp(`^${pattern.replaceAll('*', '\\w')}$`);
