@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { Card, Spinner } from 'flowbite-svelte';
+	import { uniq } from 'rambda';
 	import { dataset_dev } from 'svelte/internal';
 
 	import { geWordsByLength } from '~/lib/db';
-	import { toChars, toRgexp } from '~/lib/misc';
+	import { dedupeString, toChars, toRgexp } from '~/lib/misc';
 	import WordInput from '~/ui/WordInput.svelte';
 
 	let pattern = '';
@@ -20,6 +21,14 @@
 		patternLength = minLength;
 	} else if (patternLength > maxLength) {
 		patternLength = maxLength;
+	}
+
+	// guard include/exclude
+	$: if (include.length) {
+		include = dedupeString(include);
+	}
+	$: if (exclude.length) {
+		exclude = dedupeString(exclude);
 	}
 
 	$: patternRegex = toRgexp(pattern.toLowerCase().slice(0, patternLength).replaceAll(/\s/gi, '*'));

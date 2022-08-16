@@ -60,7 +60,9 @@
 		});
 
 	$: handleKeyDown = (e: KeyboardEvent) => {
-		if (e.key !== 'Backspace' && !VALID_INPUT_REGEX.test(e.key)) {
+		const { key } = e;
+
+		if (key !== 'Backspace' && !VALID_INPUT_REGEX.test(key)) {
 			e.preventDefault();
 		}
 	};
@@ -100,8 +102,8 @@
 			class="block md:hidden h-16 bg-gray-200/80 rounded-lg text-xl font-display text-black/80 text-center uppercase w-[80%] tracking-widest"
 			placeholder={'_'.repeat(length)}
 			maxlength={length}
-			bind:value
 			on:keydown={handleKeyDown}
+			bind:value
 		/>
 		{#if !isStatic}
 			<button class="translate-x-3 md:translate-x-7" on:click={pipe(preventDefault, inc)}>
@@ -134,7 +136,7 @@
 	}
 
 	.input {
-		@apply h-12 rounded bg-gray-200/80 p-2 px-3.5;
+		@apply h-12 rounded-lg bg-gray-200/80 p-2 px-3.5;
 		@apply text-black/80 text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
 	}
 </style>
