@@ -83,9 +83,8 @@ async function syncByLetter(letter = '') {
 
 	const encoded = JSON.stringify(dictionary, null, 2);
 
-	const wordsIndex = await fs.readFile(BY_LETTER_INDEX_PATH, 'utf-8');
+	const currentWordsIndex = await readFileOrDefault(BY_LETTER_INDEX_PATH, '{}').then(JSON.parse);
 
-	const currentWordsIndex = JSON.parse(wordsIndex || '{}');
 	const nextWordsIndex = JSON.stringify(
 		{
 			...currentWordsIndex,
@@ -95,14 +94,14 @@ async function syncByLetter(letter = '') {
 		2
 	);
 
-	const fullMetaFilePath = path.resolve(`./static/db/dictionary/${letter}.json`);
+	const dictionaryByLetterPath = path.resolve(`./static/db/dictionary/${letter}.json`);
 
 	const maxLength = Math.max(...filtered.map((x) => x.length));
 
 	const syncFilteredByLength = async (length = 0) => syncByLength(length, filtered);
 
 	await Promise.all([
-		fs.writeFile(fullMetaFilePath, encoded),
+		fs.writeFile(dictionaryByLetterPath, encoded),
 		fs.writeFile(BY_LETTER_INDEX_PATH, nextWordsIndex),
 		...range(MIN_LENGTH, maxLength + 1).map(syncFilteredByLength)
 	]);
