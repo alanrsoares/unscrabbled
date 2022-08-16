@@ -71,7 +71,7 @@
 				<div class="text-lg font-mono">
 					<span class="text-orange-400"
 						>{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'}</span
-					> wordss
+					> words
 				</div>
 				<Button
 					size="xs"
