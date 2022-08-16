@@ -47,7 +47,9 @@ export async function getWordDefinition(word: string) {
 
 		const [initial] = [...word];
 
-		const indexed = await client.get(`/db/full/${initial}.json`).json<Record<string, Definition>>();
+		const indexed = await client
+			.get(`/db/dictionary/${initial}.json`)
+			.json<Record<string, Definition>>();
 
 		if (word in indexed) {
 			return indexed[word];

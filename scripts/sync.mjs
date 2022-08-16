@@ -95,7 +95,7 @@ async function syncByLetter(letter = '') {
 		2
 	);
 
-	const fullMetaFilePath = path.resolve(`./static/db/full/${letter}.json`);
+	const fullMetaFilePath = path.resolve(`./static/db/dictionary/${letter}.json`);
 
 	const maxLength = Math.max(...filtered.map((x) => x.length));
 
