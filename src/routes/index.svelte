@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
-	import { Card, Spinner } from 'flowbite-svelte';
-	import { uniq } from 'rambda';
-	import { dataset_dev } from 'svelte/internal';
+	import { Card, Modal, Spinner } from 'flowbite-svelte';
 
-	import { geWordsByLength } from '~/lib/db';
+	import { getWordDefinition, geWordsByLength } from '~/lib/db';
 	import { dedupeString, toChars, toRgexp } from '~/lib/misc';
 	import WordInput from '~/ui/WordInput.svelte';
 
@@ -15,6 +13,8 @@
 	let patternLength = 5;
 	let minLength = 2;
 	let maxLength = 16;
+
+	let selectedWord: string | undefined;
 
 	// guard min/max length bounds
 	$: if (patternLength < minLength) {
@@ -33,7 +33,7 @@
 
 	$: patternRegex = toRgexp(pattern.toLowerCase().slice(0, patternLength).replaceAll(/\s/gi, '*'));
 
-	$: queryResult = useQuery(
+	$: wordsQuery = useQuery(
 		['words-by-length', patternLength, pattern, include, exclude],
 		async () => {
 			let result = await geWordsByLength(patternLength, patternRegex);
@@ -47,39 +47,103 @@
 			}
 
 			return result;
+		},
+		{
+			enabled: pattern.length === patternLength
+		}
+	);
+
+	$: definitionQuery = useQuery(
+		['word-definitions', selectedWord],
+		() => getWordDefinition(String(selectedWord)),
+		{
+			enabled: Boolean(selectedWord)
 		}
 	);
 </script>
 
-<section class="flex flex-col gap-8 flex-1 relative">
-	<WordInput
-		id="pattern"
-		label={`Enter pattern with ${patternLength} letters`}
-		secondaryLabel="use * to match any"
-		bind:length={patternLength}
-		bind:value={pattern}
-		bind:exclude
-		bind:include
-	/>
-
-	{#if $queryResult.isSuccess && pattern.length}
-		<div class="clamp m-auto text-center">
-			{$queryResult.data.length ? $queryResult.data.length : 'No'} results found
-		</div>
-	{/if}
-	<Card class="m-auto w-full flex-1 overflow-y-scroll max-h-[60vh] relative !p-2">
-		{#if $queryResult.isError}
-			<div>failed {JSON.stringify($queryResult.error)}</div>
-		{:else if $queryResult.isLoading}
-			<div class="p-2 flex gap-2 items-center justify-center absolute top-2 right-0">
-				<Spinner size="6" color="purple" />
+<template>
+	<section class="flex flex-col gap-8 flex-1 relative">
+		<WordInput
+			id="pattern"
+			label={`Enter pattern with ${patternLength} letters`}
+			secondaryLabel="use * to match any"
+			bind:length={patternLength}
+			bind:value={pattern}
+			bind:exclude
+			bind:include
+		/>
+		{#if $wordsQuery.isSuccess && pattern.length}
+			<div class="clamp m-auto text-center">
+				{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'} results found
 			</div>
-		{:else if $queryResult.isSuccess}
-			<ul class="grid gap-1">
-				{#each $queryResult.data ?? [] as word}
-					<li class="rounded p-2 px-3 bg-white/20">{word}</li>
-				{/each}
-			</ul>
 		{/if}
-	</Card>
-</section>
+		<Card class="m-auto w-full flex-1 overflow-y-scroll max-h-[60vh] relative !p-2">
+			{#if $wordsQuery.isError}
+				<div>failed {JSON.stringify($wordsQuery.error)}</div>
+			{:else if $wordsQuery.isLoading}
+				<div class="p-2 flex gap-2 items-center justify-center absolute top-2 right-0">
+					<Spinner size="6" color="purple" />
+				</div>
+			{:else if $wordsQuery.isSuccess}
+				<ul class="grid gap-1">
+					{#each $wordsQuery.data as word}
+						<li
+							role="button"
+							class="rounded p-2 px-3 bg-white/20"
+							on:click={() => {
+								selectedWord = word;
+							}}
+						>
+							{word}
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</Card>
+	</section>
+	<Modal
+		open={Boolean(selectedWord)}
+		on:hide={() => {
+			if (selectedWord) {
+				selectedWord = undefined;
+			}
+		}}
+	>
+		<section class="grid gap-4">
+			<header>
+				<h1 class="uppercase font-semibold text-xl">{selectedWord}</h1>
+			</header>
+			<main class="grid gap-2">
+				{#if $definitionQuery.isError}
+					<div>failed {JSON.stringify($definitionQuery.error)}</div>
+				{:else if $definitionQuery.isLoading}
+					<div class="p-2 flex gap-2 items-center justify-center">
+						<Spinner size="6" color="purple" />
+					</div>
+				{:else if $definitionQuery.isSuccess}
+					<span class="font-semibold text-lg"
+						>Meanings ({$definitionQuery.data.meanings.length})</span
+					>
+					<ul class="grid gap-3 list-decimal list-outside ml-4">
+						{#each $definitionQuery.data.meanings as meaning}
+							<li class="list-item gap-2">
+								<blockquote>
+									<i>{meaning.speech_part}</i> <span>&middot;</span>
+									{meaning.def}
+								</blockquote>
+
+								{#if meaning.example}
+									<span class="font-semibold text-lg">Exampes:</span>
+									<blockquote class="italic">
+										"{meaning.example}"
+									</blockquote>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</main>
+		</section>
+	</Modal>
+</template>
