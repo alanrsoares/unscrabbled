@@ -130,12 +130,15 @@
 						{#each $wordsQuery.data as word}
 							<li
 								role="button"
-								class="rounded p-2 px-3 bg-white/20"
+								class="rounded p-2 px-3 bg-white/20 group flex items-center justify-between"
 								on:click={() => {
 									selectedWord = word;
 								}}
 							>
-								{word}
+								<span class="text-base font-medium">
+									{word}
+								</span>
+								<span class="pill"> view definition </span>
 							</li>
 						{/each}
 					</ul>
@@ -151,5 +154,9 @@
 		@apply transition-colors;
 		@apply h-12 bg-transparent border-b-2 outline-none;
 		@apply text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
+	}
+
+	.pill {
+		@apply opacity-0 group-hover:opacity-100 text-purple-400 transition-opacity self-end rounded-md text-xs py-1 px-2 border border-purple-400;
 	}
 </style>
