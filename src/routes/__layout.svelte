@@ -3,6 +3,7 @@
 	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
 
 	import '~/app.css';
+	import { APP_NAME } from '~/config';
 
 	const queryClient = new QueryClient();
 	const year = new Date().getFullYear();
@@ -15,7 +16,7 @@
 			<slot />
 		</div>
 		<footer class="p-8">
-			<div class="clamp mx-auto grid place-items-center">&copy; {year} // unwordled</div>
+			<div class="clamp mx-auto grid place-items-center">&copy; {year} // {APP_NAME}</div>
 		</footer>
 	</div>
 </QueryClientProvider>

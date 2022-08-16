@@ -78,7 +78,7 @@
 		class:px-14={isStatic}
 	>
 		{#if !isStatic}
-			<button class="-translate-x-3 md:-translate-x-7" on:click={pipe(preventDefault, dec)}>
+			<button class="-translate-x-3 md:-translate-x-8" on:click={pipe(preventDefault, dec)}>
 				&minus;
 			</button>
 		{/if}
@@ -104,7 +104,7 @@
 			bind:value
 		/>
 		{#if !isStatic}
-			<button class="translate-x-3 md:translate-x-7" on:click={pipe(preventDefault, inc)}>
+			<button class="translate-x-3 md:translate-x-8" on:click={pipe(preventDefault, inc)}>
 				&plus;
 			</button>
 		{/if}
