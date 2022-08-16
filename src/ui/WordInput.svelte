@@ -137,13 +137,21 @@
 			{#if include !== undefined}
 				<div class="grid">
 					<label class="opacity-70" for="include"> Must inlcude </label>
-					<input class="input flex-1" id="include" bind:value={include} />
+					<input
+						class="input flex-1 focus:border-b-purple-500 text-purple-500"
+						id="include"
+						bind:value={include}
+					/>
 				</div>
 			{/if}
 			{#if exclude !== undefined}
 				<div class="grid">
 					<label class="opacity-70" for="exclude"> Must exclude </label>
-					<input class="input flex-1" id="exclude" bind:value={exclude} />
+					<input
+						class="input flex-1 focus:border-b-pink-500 text-pink-500"
+						id="exclude"
+						bind:value={exclude}
+					/>
 				</div>
 			{/if}
 		</div>
@@ -159,7 +167,7 @@
 
 	.input {
 		@apply transition-colors;
-		@apply h-12 bg-transparent border-b-2 focus:border-b-pink-400 outline-none;
-		@apply text-pink-500 text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
+		@apply h-12 bg-transparent border-b-2 outline-none;
+		@apply text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
 	}
 </style>
