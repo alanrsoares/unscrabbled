@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { Navbar, NavBrand } from 'flowbite-svelte';
-	import { Cog } from 'svelte-heros';
+	import { Modal, Navbar, NavBrand } from 'flowbite-svelte';
+	import { InformationCircle } from 'svelte-heros';
+
+	let isModalOpen = false;
 </script>
 
 <Navbar class="p-4 border-b border-white/30 !bg-black/95 gradient-border">
@@ -9,12 +11,18 @@
 			<span class="brand"> Unscrabbled </span>
 		</NavBrand>
 		<nav class="flex-1" />
-		<button class="settings-btn">
-			<Cog />
-		</button>
+		<!-- <button
+			class="settings-btn"
+			on:click={() => {
+				isModalOpen = true;
+			}}
+		>
+			<InformationCircle />
+		</button> -->
 	</div>
 </Navbar>
 
+<!-- <Modal bind:open={isModalOpen} placement="center">info</Modal> -->
 <style lang="postcss">
 	.brand {
 		@apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold;

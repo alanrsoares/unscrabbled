@@ -58,97 +58,95 @@
 	);
 </script>
 
-<template>
-	<section class="flex flex-col gap-8 flex-1 relative">
-		<WordInput
-			id="pattern"
-			label={`Enter pattern with ${patternLength} letters`}
-			secondaryLabel="use * to match any"
-			bind:length={patternLength}
-			bind:value={pattern}
-		/>
-		{#if $wordsQuery.isSuccess && pattern.length}
-			<div class="max-w-md mx-auto w-full flex items-center justify-between">
-				<div class="text-lg font-mono">
-					<span class="text-orange-400"
-						>{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'}</span
-					> words
-				</div>
-				<Button
-					size="xs"
-					outline
-					class="h-min transition-colors"
-					aria-label="hide advanced filters"
-					on:click={() => {
-						showAdvancedFilters = !showAdvancedFilters;
-					}}
-				>
-					{#if showAdvancedFilters}
-						&minus;
-					{:else}
-						&plus;
-					{/if}
-					filters
-				</Button>
+<section class="flex flex-col gap-8 flex-1 relative">
+	<WordInput
+		id="pattern"
+		label={`Enter pattern with ${patternLength} letters`}
+		secondaryLabel="use * to match any"
+		bind:length={patternLength}
+		bind:value={pattern}
+	/>
+	{#if $wordsQuery.isSuccess && pattern.length}
+		<div class="max-w-md mx-auto w-full flex items-center justify-between">
+			<div class="text-lg font-mono">
+				<span class="text-orange-400"
+					>{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'}</span
+				> words
 			</div>
-			{#if showAdvancedFilters}
-				<div class="grid gap-8 animate-appear-2 max-w-md mx-auto w-full">
-					{#if include !== undefined}
-						<div class="grid">
-							<label class="opacity-70" for="include"> Must inlcude </label>
-							<input
-								class="input flex-1 focus:border-b-purple-500 text-purple-500"
-								id="include"
-								bind:value={include}
-							/>
-						</div>
-					{/if}
-					{#if exclude !== undefined}
-						<div class="grid">
-							<label class="opacity-70" for="exclude"> Must exclude </label>
-							<input
-								class="input flex-1 focus:border-b-pink-500 text-pink-500"
-								id="exclude"
-								bind:value={exclude}
-							/>
-						</div>
-					{/if}
-				</div>
-			{/if}
-		{/if}
-		{#if $wordsQuery.isFetched}
-			<Card
-				class="m-auto w-full flex-1 overflow-y-scroll max-h-[50vh] relative !p-2 animate-appear-1 shadow-lg md:shadow-2xl"
+			<Button
+				size="xs"
+				outline
+				class="h-min transition-colors"
+				aria-label="hide advanced filters"
+				on:click={() => {
+					showAdvancedFilters = !showAdvancedFilters;
+				}}
 			>
-				{#if $wordsQuery.isError}
-					<div>failed {JSON.stringify($wordsQuery.error)}</div>
-				{:else if $wordsQuery.isLoading}
-					<div class="p-2 flex gap-2 items-center justify-center absolute top-2 right-0">
-						<Spinner size="6" color="purple" />
-					</div>
-				{:else if $wordsQuery.isSuccess}
-					<ul class="grid gap-1">
-						{#each $wordsQuery.data as word}
-							<li
-								role="button"
-								class="rounded p-2 px-3 bg-white/20 group flex items-center justify-between uppercase"
-								on:click={() => {
-									selectedWord = word;
-								}}
-							>
-								<span class="text-base font-medium">
-									{word}
-								</span>
-								<span class="pill"> <Eye /> definition </span>
-							</li>
-						{/each}
-					</ul>
+				{#if showAdvancedFilters}
+					&minus;
+				{:else}
+					&plus;
 				{/if}
-			</Card>
+				filters
+			</Button>
+		</div>
+		{#if showAdvancedFilters}
+			<div class="grid gap-8 animate-appear-2 max-w-md mx-auto w-full">
+				{#if include !== undefined}
+					<div class="grid">
+						<label class="opacity-70" for="include"> Must inlcude </label>
+						<input
+							class="input flex-1 focus:border-b-purple-500 text-purple-500"
+							id="include"
+							bind:value={include}
+						/>
+					</div>
+				{/if}
+				{#if exclude !== undefined}
+					<div class="grid">
+						<label class="opacity-70" for="exclude"> Must exclude </label>
+						<input
+							class="input flex-1 focus:border-b-pink-500 text-pink-500"
+							id="exclude"
+							bind:value={exclude}
+						/>
+					</div>
+				{/if}
+			</div>
 		{/if}
-	</section>
-	<DefinitionModal bind:selectedWord />
-</template>
+	{/if}
+	{#if $wordsQuery.isFetched}
+		<Card
+			class="m-auto w-full flex-1 overflow-y-scroll max-h-[50vh] relative !p-2 animate-appear-1 shadow-lg md:shadow-2xl"
+		>
+			{#if $wordsQuery.isError}
+				<div>failed {JSON.stringify($wordsQuery.error)}</div>
+			{:else if $wordsQuery.isLoading}
+				<div class="p-2 flex gap-2 items-center justify-center absolute top-2 right-0">
+					<Spinner size="6" color="purple" />
+				</div>
+			{:else if $wordsQuery.isSuccess}
+				<ul class="grid gap-1">
+					{#each $wordsQuery.data as word}
+						<li
+							role="button"
+							class="rounded p-2 px-3 bg-white/20 group flex items-center justify-between uppercase"
+							on:click={() => {
+								selectedWord = word;
+							}}
+						>
+							<span class="text-base font-medium">
+								{word}
+							</span>
+							<span class="pill"> <Eye /> definition </span>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</Card>
+	{/if}
+</section>
+<DefinitionModal bind:selectedWord />
 
 <style lang="postcss">
 	.input {
