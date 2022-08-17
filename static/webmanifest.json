@@ -14,9 +14,9 @@
 			"purpose": "maskable"
 		}
 	],
-	"background_color": "#3367D6",
+	"background_color": "#000",
 	"display": "standalone",
 	"scope": "/",
-	"theme_color": "#3367D6",
+	"theme_color": "#000",
 	"description": "Be not fooled by wordles and scrabbles, ye!"
 }
