@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { Modal, Spinner } from 'flowbite-svelte';
+	import { groupBy, prop } from 'rambda';
 
 	import { getWordDefinition } from '~/lib/db';
 
@@ -13,6 +14,9 @@
 			enabled: Boolean(selectedWord)
 		}
 	);
+
+	$: meanings = $definitionQuery?.data?.meanings ?? [];
+	$: groupedBySpeechPart = groupBy(prop('speech_part'), meanings);
 </script>
 
 <Modal title={selectedWord.toUpperCase()} open={selectedWord.length > 0} placement="center">
@@ -24,23 +28,30 @@
 				<Spinner size="6" color="purple" />
 			</div>
 		{:else if $definitionQuery.isSuccess}
-			<span class="font-semibold text-lg text-white/60"
-				>Meanings ({$definitionQuery.data.meanings.length})</span
-			>
-			<ul class="grid gap-3 list-decimal list-outside ml-4">
-				{#each $definitionQuery.data.meanings as meaning}
+			<span class="font-semibold text-lg text-white/60">
+				Meanings ({meanings.length})
+			</span>
+			<ul aria-label={`${meanings.length} meanings for "${selectedWord}"`} class="grid gap-3">
+				{#each Object.entries(groupedBySpeechPart) as [speech_part, meanings]}
 					<li class="list-item gap-2">
-						<blockquote>
-							<i>{meaning.speech_part}</i> <span>&middot;</span>
-							{meaning.def}
-						</blockquote>
-
-						{#if meaning.example}
-							<span class="font-semibold text-sm md:text-md text-white/60">Example:</span>
-							<blockquote class="italic">
-								&dash; "{meaning.example}"
-							</blockquote>
-						{/if}
+						<span>
+							<i class="font-serif italic text-gray-400/80">{speech_part}</i>
+						</span>
+						<ul class="list-decimal list-outside ml-3 grid gap-2">
+							{#each meanings as meaning}
+								<li class="gap-1 list-item">
+									{meaning.def}
+									{#if meaning.example}
+										<div>
+											<span class="text-gray-400/80">Example</span>
+											<blockquote class="font-serif italic">
+												&mdash; "{meaning.example}"
+											</blockquote>
+										</div>
+									{/if}
+								</li>
+							{/each}
+						</ul>
 					</li>
 				{/each}
 			</ul>
