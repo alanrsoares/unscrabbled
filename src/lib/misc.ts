@@ -10,6 +10,8 @@ export const toChars = pipe(toLower, split(''));
 
 export const dedupeString = pipe(toChars, uniq, join(''));
 
+export const capitalize = (x: string) => x[0].toUpperCase().concat(x.slice(1));
+
 export const sanitizePattern = (pattern: string, patternLength: number) =>
 	pattern.toLowerCase().slice(0, patternLength).replaceAll(/\s/gi, '*');
 

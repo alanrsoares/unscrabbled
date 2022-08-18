@@ -4,6 +4,7 @@
 	import { groupBy, prop } from 'rambda';
 
 	import { getWordDefinition } from '~/lib/db';
+	import { capitalize } from '~/lib/misc';
 
 	export let selectedWord = '';
 
@@ -31,21 +32,24 @@
 			<span class="font-semibold text-lg text-white/60">
 				Meanings ({meanings.length})
 			</span>
-			<ul aria-label={`${meanings.length} meanings for "${selectedWord}"`} class="grid gap-3">
+			<ul
+				aria-label={`${meanings.length} meanings for "${selectedWord}"`}
+				class="grid gap-4 divide-y divide-gray-400"
+			>
 				{#each Object.entries(groupedBySpeechPart) as [speech_part, meanings]}
-					<li class="list-item gap-2">
+					<li class="list-item gap-2.5 pt-2">
 						<span>
-							<i class="font-serif italic text-gray-400/80">{speech_part}</i>
+							<i class="font-serif italic text-gray-400/80">{capitalize(speech_part)}</i>
 						</span>
 						<ul class="list-decimal list-outside ml-3 grid gap-2">
 							{#each meanings as meaning}
-								<li class="gap-1 list-item">
-									{meaning.def}
+								<li class="gap-2 list-item">
+									{capitalize(meaning.def)}
 									{#if meaning.example}
 										<div>
 											<span class="text-gray-400/80">Example</span>
 											<blockquote class="font-serif italic">
-												&mdash; "{meaning.example}"
+												&dash; "{meaning.example}"
 											</blockquote>
 										</div>
 									{/if}
