@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { Button, Card, Spinner } from 'flowbite-svelte';
-	import { Eye } from 'svelte-heros';
+	import { Eye, Minus, Plus, Search } from 'svelte-heros';
 
 	import { geWordsByLength } from '~/lib/db';
 	import { dedupeString, sanitizePattern, toChars, toRgexp } from '~/lib/misc';
@@ -69,23 +69,24 @@
 	{#if $wordsQuery.isSuccess && pattern.length}
 		<div class="max-w-md mx-auto w-full flex items-center justify-between">
 			<div class="text-lg font-mono">
-				<span class="text-orange-400"
-					>{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'}</span
-				> words
+				<span class="text-orange-400">
+					{$wordsQuery.data.length ? $wordsQuery.data.length : 'No'}
+				</span>
+				words
 			</div>
 			<Button
 				size="xs"
 				outline
-				class="h-min transition-colors"
+				class="h-min transition-colors gap-1"
 				aria-label="hide advanced filters"
 				on:click={() => {
 					showAdvancedFilters = !showAdvancedFilters;
 				}}
 			>
 				{#if showAdvancedFilters}
-					&minus;
+					<Minus size="14" />
 				{:else}
-					&plus;
+					<Plus size="14" />
 				{/if}
 				filters
 			</Button>
@@ -125,7 +126,7 @@
 				<div class="p-2 flex gap-2 items-center justify-center absolute top-2 right-0">
 					<Spinner size="6" color="purple" />
 				</div>
-			{:else if $wordsQuery.isSuccess}
+			{:else if $wordsQuery.data?.length}
 				<ul class="grid gap-1">
 					{#each $wordsQuery.data as word}
 						<li
@@ -142,6 +143,13 @@
 						</li>
 					{/each}
 				</ul>
+			{:else}
+				<div class="grid absolute inset-0 place-items-center">
+					<div class="grid place-items-center gap-2">
+						<Search size="48" />
+						<span> No words matching the provided filters. </span>
+					</div>
+				</div>
 			{/if}
 		</Card>
 	{/if}

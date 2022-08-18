@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { clamp, pipe, prop, range } from 'rambda';
 	import { createEventDispatcher } from 'svelte/internal';
+	import { Plus, Minus } from 'svelte-heros';
 
 	import { preventDefault } from '~/lib/misc';
 
@@ -79,7 +80,7 @@
 	>
 		{#if !isStatic}
 			<button class="-translate-x-3 md:-translate-x-8" on:click={pipe(preventDefault, dec)}>
-				&minus;
+				<Minus size="18" />
 			</button>
 		{/if}
 		{#each letters as letter, idx}
@@ -105,7 +106,7 @@
 		/>
 		{#if !isStatic}
 			<button class="translate-x-3 md:translate-x-8" on:click={pipe(preventDefault, inc)}>
-				&plus;
+				<Plus size="18" />
 			</button>
 		{/if}
 	</div>
@@ -114,7 +115,8 @@
 
 <style lang="postcss">
 	button {
-		@apply block h-8 w-8 scale-150 bg-gray-500/90 rounded-full;
-		@apply font-semibold text-xl pb-0.5 select-none origin-center;
+		@apply block h-6 w-6 scale-[2] bg-gray-500/95 rounded-full;
+		@apply font-semibold text-xl select-none origin-center;
+		@apply grid place-items-center;
 	}
 </style>
