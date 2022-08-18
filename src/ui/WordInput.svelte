@@ -79,7 +79,11 @@
 		class:px-14={isStatic}
 	>
 		{#if !isStatic}
-			<button class="-translate-x-3 md:-translate-x-8" on:click={pipe(preventDefault, dec)}>
+			<button
+				aria-label="decrease word length by 1 character"
+				class="-translate-x-3 md:-translate-x-8"
+				on:click={pipe(preventDefault, dec)}
+			>
 				<Minus size="18" />
 			</button>
 		{/if}
@@ -105,7 +109,11 @@
 			bind:value
 		/>
 		{#if !isStatic}
-			<button class="translate-x-3 md:translate-x-8" on:click={pipe(preventDefault, inc)}>
+			<button
+				aria-label="increase word length by 1 character"
+				class="translate-x-3 md:translate-x-8"
+				on:click={pipe(preventDefault, inc)}
+			>
 				<Plus size="18" />
 			</button>
 		{/if}
@@ -115,7 +123,7 @@
 
 <style lang="postcss">
 	button {
-		@apply block h-6 w-6 scale-[2] bg-gray-500/95 rounded-full;
+		@apply block h-6 w-6 scale-[1.75] md:scale-[2] bg-gray-500/95 rounded-full;
 		@apply font-semibold text-xl select-none origin-center;
 		@apply grid place-items-center;
 	}
