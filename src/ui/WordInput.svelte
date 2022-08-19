@@ -10,9 +10,9 @@
 	/**
 	 * Input label
 	 */
-	export let label: string;
+	export let label = '';
 
-	export let secondaryLabel = 'Use * to match any letter';
+	export let secondaryLabel = '';
 
 	/**
 	 * Whether length can be changed
@@ -50,7 +50,8 @@
 
 			const word = range(0, length)
 				.map(pipe(getInput, prop('value')))
-				.join('');
+				.join('')
+				.replace(/\_/gi, '*');
 
 			dispatch('change', word);
 			value = word;
@@ -69,11 +70,11 @@
 </script>
 
 <div class="grid gap-1.5 md:gap-2 m-auto w-full md:w-fit">
-	{#if label}
+	<slot name="label">
 		<label for={`${id}-0`} class="inline-block text-lg md:text-2xl text-center">
 			{label}
 		</label>
-	{/if}
+	</slot>
 	<div
 		class="flex items-center justify-between gap-2 bg-white/20 rounded-xl p-2 md:p-4 py-6 left-0 right-0 -top-14"
 		class:px-14={isStatic}
@@ -118,7 +119,9 @@
 			</button>
 		{/if}
 	</div>
-	<span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
+	<slot name="secondary-label">
+		<span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
+	</slot>
 </div>
 
 <style lang="postcss">

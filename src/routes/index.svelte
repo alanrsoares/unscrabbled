@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useQuery } from '@sveltestack/svelte-query';
-	import { Button, Card, Spinner } from 'flowbite-svelte';
+	import { Button, Card, Kbd, Spinner } from 'flowbite-svelte';
 	import { Eye, Minus, Plus, Search } from 'svelte-heros';
 
 	import { geWordsByLength } from '~/lib/db';
@@ -59,13 +59,14 @@
 </script>
 
 <section class="flex flex-col gap-8 flex-1 relative">
-	<WordInput
-		id="pattern"
-		label={`Enter pattern with ${patternLength} letters`}
-		secondaryLabel="use * to match any"
-		bind:length={patternLength}
-		bind:value={pattern}
-	/>
+	<WordInput id="pattern" bind:length={patternLength} bind:value={pattern}>
+		<label for="pattern-0" slot="label" class="inline-block text-lg md:text-2xl text-center">
+			Enter word pattern with <span class="border rounded px-2">{patternLength}</span> letters
+		</label>
+		<span slot="secondary-label" class="text-center p-1">
+			use <kbd>*</kbd> or <kbd>_</kbd> to match any
+		</span>
+	</WordInput>
 	{#if $wordsQuery.isSuccess && pattern.length}
 		<div class="max-w-md mx-auto w-full flex items-center justify-between">
 			<div class="text-lg font-mono">
@@ -166,5 +167,12 @@
 	.pill {
 		@apply flex items-center gap-2 opacity-0 group-hover:opacity-100 text-purple-400;
 		@apply transition-opacity self-end rounded-md text-xs py-1 px-2 border border-purple-400;
+	}
+
+	kbd {
+		@apply bg-gray-600 text-white font-mono align-bottom font-semibold leading-tight;
+		@apply transition-colors;
+		@apply rounded-md px-2 py-1 border-2 border-gray-500;
+		@apply hover:bg-purple-500;
 	}
 </style>

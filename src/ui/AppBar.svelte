@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { Modal, Navbar, NavBrand } from 'flowbite-svelte';
-	import { InformationCircle } from 'svelte-heros';
-
-	let isModalOpen = false;
+	import { Navbar, NavBrand } from 'flowbite-svelte';
 </script>
 
 <Navbar class="p-4 border-b border-white/30 !bg-black/95 gradient-border">
