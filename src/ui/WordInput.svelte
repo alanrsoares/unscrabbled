@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte/internal';
 	import { Plus, Minus } from 'svelte-heros';
 
-	import { preventDefault } from '~/lib/misc';
+	import { preventDefault, sanitizePattern } from '~/lib/misc';
 
 	export let id: string;
 
@@ -48,10 +48,12 @@
 				Boolean(input.value.length) ? focusedIndex + 1 : focusedIndex - 1
 			);
 
-			const word = range(0, length)
-				.map(pipe(getInput, prop('value')))
-				.join('')
-				.replace(/\_/gi, '*');
+			const word = sanitizePattern(
+				range(0, length)
+					.map(pipe(getInput, prop('value')))
+					.join(''),
+				length
+			);
 
 			dispatch('change', word);
 			value = word;
@@ -64,6 +66,13 @@
 		if (key !== 'Backspace' && !VALID_INPUT_REGEX.test(key)) {
 			e.preventDefault();
 		}
+	};
+
+	$: handleSingleInput = (value: string) => {
+		const word = sanitizePattern(value, length);
+
+		dispatch('change', word);
+		value = word;
 	};
 
 	$: letters = Array.from<string>({ length }).fill('');
@@ -108,6 +117,7 @@
 			maxlength={length}
 			on:keydown={handleKeyDown}
 			bind:value
+			on:input={(e) => handleSingleInput(e.currentTarget.value)}
 		/>
 		{#if !isStatic}
 			<button

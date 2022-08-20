@@ -1,23 +1,20 @@
-<script lang="ts">
-	import { Navbar, NavBrand } from 'flowbite-svelte';
-</script>
-
-<Navbar class="p-4 border-b border-white/30 !bg-black/95 gradient-border">
-	<div class="clamp  flex items-center justify-between gap-4">
-		<NavBrand href="/">
-			<span class="brand"> Unscrabbled </span>
-		</NavBrand>
-		<nav class="flex-1" />
-		<!-- <button
+<header class="sticky top-0 left-0 right-0 bg-black md:bg-black/30 border-white/30">
+	<div class="p-4 border-b gradient-border">
+		<nav class="clamp  flex items-center justify-between gap-4">
+			<a href="/" class="w-full text-center md:text-left">
+				<span class="brand">Unscrabbled</span>
+			</a>
+			<!-- <button
 			class="settings-btn"
 			on:click={() => {
 				isModalOpen = true;
 			}}
-		>
+			>
 			<InformationCircle />
 		</button> -->
+		</nav>
 	</div>
-</Navbar>
+</header>
 
 <!-- <Modal bind:open={isModalOpen} placement="center">info</Modal> -->
 <style lang="postcss">

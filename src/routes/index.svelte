@@ -58,7 +58,7 @@
 	);
 </script>
 
-<section class="flex flex-col gap-8 flex-1 relative">
+<section class="flex flex-col gap-4 md:gap-8 flex-1 relative">
 	<WordInput id="pattern" bind:length={patternLength} bind:value={pattern}>
 		<label for="pattern-0" slot="label" class="inline-block text-lg md:text-2xl text-center">
 			Enter word pattern with <span class="border rounded px-2">{patternLength}</span> letters
@@ -119,7 +119,7 @@
 	{/if}
 	{#if $wordsQuery.isFetched}
 		<Card
-			class="m-auto w-full flex-1 overflow-y-scroll max-h-[50vh] relative !p-2 animate-appear-1 shadow-lg md:shadow-2xl"
+			class="m-auto w-full flex-1 overflow-y-scroll max-h-[49vh] md:max-h-[60vh] relative !p-2 animate-appear-1 shadow-lg md:shadow-2xl"
 		>
 			{#if $wordsQuery.isError}
 				<div>failed {JSON.stringify($wordsQuery.error)}</div>
