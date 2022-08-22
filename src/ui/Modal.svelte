@@ -38,7 +38,13 @@
 
 <div role="dialog" class="modal modal-bottom sm:modal-middle" use:clickoutDetector>
 	<div class="modal-box relative" use:clickoutDetector on:clickout={close}>
-		<label for={id} class="btn btn-sm btn-circle absolute right-2 top-2" on:click={close}>
+		<label
+			for={id}
+			class="btn btn-sm btn-circle absolute right-2 top-2"
+			on:click={() => {
+				dispatch('close', false);
+			}}
+		>
 			&Cross;
 		</label>
 		<slot name="title">
