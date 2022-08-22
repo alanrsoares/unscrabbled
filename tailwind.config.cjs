@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: [
-		'./src/**/*.{html,js,svelte,ts}',
-		'./node_modules/flowbite-svelte/**/*.{html,js,svelte,ts}'
-	],
+	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		extend: {
 			fontFamily: {
@@ -25,7 +22,7 @@ module.exports = {
 				'fade-in-down': {
 					'0%': {
 						opacity: 0,
-						transform: 'translateY(-50vh)'
+						transform: 'translateY(-25vh)'
 					},
 					'66%': {
 						transform: 'translateY(0)'

@@ -5,7 +5,7 @@
 	let isModalOpen = false;
 </script>
 
-<header class="sticky top-0 left-0 right-0 bg-black md:bg-black/30 border-white/30">
+<header class="sticky top-0 left-0 right-0 bg-black/20 backdrop-blur-sm z-10 border-white/30">
 	<div class="p-4 border-b gradient-border">
 		<nav class="clamp  flex items-center justify-between gap-4">
 			<a href="/" class="w-full text-center md:text-left">
@@ -34,7 +34,6 @@
 	}
 
 	.settings-btn {
-		@apply h-8 w-8 md:h-10 md:w-10 bg-gradient-to-br from-pink-500 to-blue-500 rounded-full;
-		@apply grid place-items-center hover:opacity-70 transition-opacity;
+		@apply btn rounded-full h-10 w-12 bg-gradient-to-br from-pink-500 to-purple-800 grid place-items-center;
 	}
 </style>

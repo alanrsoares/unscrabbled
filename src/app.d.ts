@@ -9,3 +9,20 @@ declare namespace App {
 	// interface Session {}
 	// interface Stuff {}
 }
+
+declare namespace svelte.JSX {
+	export interface HTMLAttributes<T> {
+		/**
+		 * must be used in conjunction with `clickoutDetector`
+		 *
+		 * @example
+		 * ```svelte
+		 * <div use:clickoutDetector on:clickout={() => { ... })}>
+		 *   content...
+		 * </div>
+		 * ```
+		 *
+		 */
+		onclickout?: () => void;
+	}
+}

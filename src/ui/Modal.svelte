@@ -1,14 +1,23 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount, onDestroy } from 'svelte/internal';
 
+	import { clickoutDetector } from '~/ui/directives';
+
 	export let id: string;
 	export let title: string;
 	export let open = false;
 
+	const dispatch = createEventDispatcher();
+
+	const close = () => {
+		if (!open) return;
+		open = false;
+		dispatch('close', false);
+	};
+
 	const onKeydown = (e: KeyboardEvent) => {
 		if (e.key === 'Escape') {
-			open = false;
-			dispatch('close', false);
+			close();
 		}
 	};
 
@@ -23,19 +32,15 @@
 
 		document.removeEventListener('keydown', onKeydown);
 	});
-
-	const dispatch = createEventDispatcher();
 </script>
 
 <input type="checkbox" {id} bind:checked={open} class="modal-toggle" />
 
-<div role="dialog" class="modal modal-bottom sm:modal-middle">
-	<div class="modal-box relative">
-		<label
-			for={id}
-			class="btn btn-sm btn-circle absolute right-2 top-2"
-			on:click={() => dispatch('close', false)}>&Cross;</label
-		>
+<div role="dialog" class="modal modal-bottom sm:modal-middle" use:clickoutDetector>
+	<div class="modal-box relative" use:clickoutDetector on:clickout={close}>
+		<label for={id} class="btn btn-sm btn-circle absolute right-2 top-2" on:click={close}>
+			&Cross;
+		</label>
 		<slot name="title">
 			{#if title}
 				<h3 class="text-lg font-bold">
