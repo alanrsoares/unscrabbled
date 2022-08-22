@@ -29,7 +29,7 @@
 
 <input type="checkbox" {id} bind:checked={open} class="modal-toggle" />
 
-<div class="modal modal-bottom sm:modal-middle">
+<div role="dialog" class="modal modal-bottom sm:modal-middle">
 	<div class="modal-box relative">
 		<label
 			for={id}

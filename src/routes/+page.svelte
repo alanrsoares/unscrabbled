@@ -118,7 +118,7 @@
 	{/if}
 	{#if $wordsQuery.isFetched}
 		<article
-			class="card m-auto bg-gray-800 w-full flex-1 relative animate-appear-1 shadow-lg md:shadow-xl p-2"
+			class="card m-auto bg-gray-900 w-full flex-1 relative animate-appear-1 shadow-lg md:shadow-xl p-2"
 		>
 			<div class="card-body overflow-y-scroll max-h-[49vh] md:max-h-[60vh] p-4">
 				{#if $wordsQuery.isError}
