@@ -95,7 +95,7 @@
 			<div class="grid gap-8 animate-appear-2 max-w-md mx-auto w-full">
 				{#if include !== undefined}
 					<div class="grid">
-						<label class="opacity-70" for="include"> Must inlcude </label>
+						<label class="opacity-70" for="include"> Must include </label>
 						<input
 							class="filter-input flex-1 focus:border-b-purple-500 text-purple-500"
 							id="include"
