@@ -21,7 +21,7 @@
 </script>
 
 <Modal
-	title={word}
+	title={word.length ? capitalize(word) : ''}
 	id="definition"
 	open={word.length > 0}
 	on:close={() => {
@@ -51,7 +51,7 @@
 						<span>
 							<i class="font-serif italic text-gray-400/80">{capitalize(speech_part)}</i>
 						</span>
-						<ul class="list-decimal list-outside ml-3 grid gap-2">
+						<ul class="list-decimal list-outside ml-3.5 grid gap-2">
 							{#each meanings as meaning}
 								<li class="gap-2 list-item">
 									{capitalize(meaning.def)}
