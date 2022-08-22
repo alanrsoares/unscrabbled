@@ -22,8 +22,25 @@
 		</nav>
 	</div>
 </header>
-<Modal bind:open={isModalOpen} title="About" id="info-modal">
-	<div>hello</div>
+<Modal bind:open={isModalOpen} title="About Unscrabbled" id="info-modal">
+	<div class="prose">
+		<p>
+			Unscrabbled is a dictionary search engine that will help you solve complex word puzzles.
+
+			<br />
+
+			Here are some of the features:
+		</p>
+
+		<ol>
+			<li>
+				Find words with patterns: <br />
+			</li>
+			<li>Filter out words that includes a set of letters</li>
+			<li>Filter out words that DOES NOT include a set of letters</li>
+			<li>View the definition for a word</li>
+		</ol>
+	</div>
 </Modal>
 
 <!-- <Modal bind:open={isModalOpen} placement="center">info</Modal> -->
