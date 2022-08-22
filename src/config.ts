@@ -1,1 +1,1 @@
-export const APP_NAME = 'unscrabbled';
+export const APP_NAME = "unscrabbled";

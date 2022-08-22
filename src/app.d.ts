@@ -4,25 +4,25 @@
 // for information about these interfaces
 // and what to do when importing types
 declare namespace App {
-	// interface Locals {}
-	// interface Platform {}
-	// interface Session {}
-	// interface Stuff {}
+  // interface Locals {}
+  // interface Platform {}
+  // interface Session {}
+  // interface Stuff {}
 }
 
 declare namespace svelte.JSX {
-	export interface HTMLAttributes<T> {
-		/**
-		 * must be used in conjunction with `clickoutDetector`
-		 *
-		 * @example
-		 * ```svelte
-		 * <div use:clickoutDetector on:clickout={() => { ... })}>
-		 *   content...
-		 * </div>
-		 * ```
-		 *
-		 */
-		onclickout?: () => void;
-	}
+  export interface HTMLAttributes<T> {
+    /**
+     * must be used in conjunction with `clickoutDetector`
+     *
+     * @example
+     * ```svelte
+     * <div use:clickoutDetector on:clickout={() => { ... })}>
+     *   content...
+     * </div>
+     * ```
+     *
+     */
+    onclickout?: () => void;
+  }
 }

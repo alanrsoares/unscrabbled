@@ -3,63 +3,63 @@
 @tailwind utilities;
 
 html {
-	@apply bg-gray-900 text-gray-200;
+  @apply bg-gray-900 text-gray-200;
 }
 
 ::root {
-	--gradient-border-radius: 1rem;
+  --gradient-border-radius: 1rem;
 }
 
 @layer utilities {
-	.clamp {
-		@apply max-w-3xl w-full mx-auto;
-	}
+  .clamp {
+    @apply max-w-3xl w-full mx-auto;
+  }
 
-	.gradient-border {
-		@apply relative text-white bg-[#020117]/95;
-	}
+  .gradient-border {
+    @apply relative text-white bg-[#020117]/95;
+  }
 
-	.gradient-border::after {
-		@apply absolute -inset-[5px] -z-[1] blur-2xl content-[''];
-		content: '';
-		background: linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2);
-		border-radius: var(--gradient-border-radius, 0);
-	}
+  .gradient-border::after {
+    @apply absolute -inset-[5px] -z-[1] blur-2xl content-[''];
+    content: "";
+    background: linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2);
+    border-radius: var(--gradient-border-radius, 0);
+  }
 
-	.gradient-border::before {
-		@apply absolute inset-0 -z-[2];
-		content: '';
-		background: linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2);
-		border-radius: var(--gradient-border-radius, 0);
-	}
+  .gradient-border::before {
+    @apply absolute inset-0 -z-[2];
+    content: "";
+    background: linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2);
+    border-radius: var(--gradient-border-radius, 0);
+  }
 }
 
 @layer base {
-	::-webkit-scrollbar {
-		width: 9px;
-	}
-	::-webkit-scrollbar-thumb {
-		@apply bg-gray-600 rounded;
-	}
-	::-webkit-scrollbar-track {
-		@apply rounded bg-transparent;
-	}
+  ::-webkit-scrollbar {
+    width: 9px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-600 rounded;
+  }
+  ::-webkit-scrollbar-track {
+    @apply rounded bg-transparent;
+  }
 
-	input[type='search']::-webkit-search-decoration,
-	input[type='search']::-webkit-search-cancel-button,
-	input[type='search']::-webkit-search-results-button,
-	input[type='search']::-webkit-search-results-decoration {
-		-webkit-appearance: none;
-	}
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
 
-	input::-webkit-outer-spin-button,
-	input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-	/* Firefox */
-	input[type='number'] {
-		-moz-appearance: textfield;
-	}
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 }
