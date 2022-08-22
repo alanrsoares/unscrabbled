@@ -97,7 +97,7 @@
 					<div class="grid">
 						<label class="opacity-70" for="include"> Must inlcude </label>
 						<input
-							class="input flex-1 focus:border-b-purple-500 text-purple-500"
+							class="filter-input flex-1 focus:border-b-purple-500 text-purple-500"
 							id="include"
 							bind:value={include}
 						/>
@@ -107,7 +107,7 @@
 					<div class="grid">
 						<label class="opacity-70" for="exclude"> Must exclude </label>
 						<input
-							class="input flex-1 focus:border-b-pink-500 text-pink-500"
+							class="filter-input flex-1 focus:border-b-pink-500 text-pink-500"
 							id="exclude"
 							bind:value={exclude}
 						/>
@@ -159,7 +159,7 @@
 <DefinitionModal bind:word={selectedWord} />
 
 <style lang="postcss">
-	.input {
+	.filter-input {
 		@apply transition-colors;
 		@apply h-12 bg-transparent border-b-2 outline-none;
 		@apply text-center md:text-left font-mono text-lg uppercase tracking-widest font-semibold;
