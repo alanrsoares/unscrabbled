@@ -77,7 +77,7 @@
 				words
 			</div>
 			<button
-				class="btn btn-primary btn-xs md:btn-md h-min transition-colors gap-1"
+				class="btn btn-primary btn-xs md:btn-sm h-min transition-colors gap-1"
 				aria-label="hide advanced filters"
 				on:click={() => {
 					showAdvancedFilters = !showAdvancedFilters;
