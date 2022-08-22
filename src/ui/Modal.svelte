@@ -37,7 +37,7 @@
 <input type="checkbox" {id} bind:checked={open} class="modal-toggle" />
 
 <div role="dialog" class="modal modal-bottom sm:modal-middle" use:clickoutDetector>
-	<div class="modal-box relative" use:clickoutDetector on:clickout={close}>
+	<div class={'modal-box relative' + $$props.class} use:clickoutDetector on:clickout={close}>
 		<label
 			for={id}
 			class="btn btn-sm btn-circle absolute right-2 top-2"
