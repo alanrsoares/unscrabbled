@@ -18,3 +18,43 @@ export const sanitizePattern = (pattern: string, patternLength: number) =>
 
 export const toRgexp = (pattern: string) =>
   new RegExp(`^${pattern.replaceAll("*", "\\w")}$`);
+
+export function memoize<A extends unknown[], R>(fn: (...args: A) => R) {
+  const memo = new Map<string, R>();
+
+  return (...args: A) => {
+    const key = JSON.stringify(args, null, "");
+
+    if (memo.has(key)) {
+      return memo.get(key) as R;
+    }
+
+    return fn(...args);
+  };
+}
+
+export type Booleanish = boolean | string | number;
+
+/**
+ * at least one of the given functions is truthy
+ *
+ * @param fns {Array<() => boolean | string | number>}
+ * @returns - a function that returns true if at least one of the given functions is truthy
+ */
+export const either = <A extends any[]>(
+  ...fns: Array<(...args: A) => Booleanish>
+) => {
+  return (...args: A) => fns.some((fn) => Boolean(fn(...args)));
+};
+
+/**
+ * neither of the given functions are truthy
+ *
+ * @param fns
+ * @returns a function that returns true if none of the given functions return a falsy value
+ */
+export const neither = <A extends any[]>(
+  ...fns: Array<(...args: A) => Booleanish>
+) => {
+  return () => !either(...fns);
+};
