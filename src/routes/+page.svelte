@@ -2,7 +2,7 @@
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { Eye, Minus, Plus, Search } from 'svelte-heros';
 
-	import { geWordsByLength } from '~/lib/db';
+	import { getWordsByLength } from '~/lib/db';
 	import { dedupeString, sanitizePattern, toChars, toRgexp } from '~/lib/misc';
 	import DefinitionModal from '~/ui/DefinitionModal.svelte';
 	import Spinner from '~/ui/Spinner.svelte';
@@ -40,7 +40,7 @@
 	$: wordsQuery = useQuery(
 		['words-by-length', patternLength, pattern, include, exclude],
 		async () => {
-			let result = await geWordsByLength(patternLength, patternRegex);
+			let result = await getWordsByLength(patternLength, patternRegex);
 
 			if (include) {
 				result = result.filter((x) => toChars(include).every((y) => x.includes(y)));

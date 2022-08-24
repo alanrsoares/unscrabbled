@@ -1,4 +1,5 @@
 import ky from "ky";
+import { withDebugger } from "./misc";
 
 const client = ky.extend({
   cache: "force-cache",
@@ -70,16 +71,21 @@ export async function getWordDefinition(word: string) {
   }
 }
 
-export async function geWordsByLength(length: number, pattern?: RegExp) {
-  try {
-    const all = await client
-      .get(`/db/words/by-length/${length}.json`)
-      .json<string[]>();
-    if (!pattern) {
-      return all;
+export const getWordsByLength = withDebugger(
+  {
+    groupLabel: "geWordsByLength",
+  },
+  async (length: number, pattern?: RegExp) => {
+    try {
+      const all = await client
+        .get(`/db/words/by-length/${length}.json`)
+        .json<string[]>();
+      if (!pattern) {
+        return all;
+      }
+      return all.filter((x) => pattern.test(x));
+    } catch (error) {
+      return [];
     }
-    return all.filter((x) => pattern.test(x));
-  } catch (error) {
-    return [];
   }
-}
+);

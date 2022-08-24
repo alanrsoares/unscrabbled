@@ -58,3 +58,19 @@ export const neither = <A extends any[]>(
 ) => {
   return () => !either(...fns);
 };
+
+export const withDebugger = <R, A extends any[]>(
+  opts: {
+    groupLabel: string;
+  },
+  fn: (...args: A) => R
+) => {
+  return (...args: A) => {
+    console.group(opts.groupLabel);
+    console.time();
+    const res = fn(...args);
+    console.timeEnd();
+    console.groupEnd();
+    return res;
+  };
+};
