@@ -32,7 +32,7 @@
     // reset selection in 0.3s
     setTimeout(() => {
       word = "";
-    }, 300);
+    }, 150);
   }}
 >
   <section class="grid gap-4">

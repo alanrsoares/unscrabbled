@@ -24,7 +24,16 @@
     </nav>
   </div>
 </header>
-<Modal bind:open={isModalOpen} title="About Unscrabbled" id="info-modal">
+<Modal
+  bind:open={isModalOpen}
+  on:close={() => {
+    setTimeout(() => {
+      isModalOpen = false;
+    }, 150);
+  }}
+  title="About Unscrabbled"
+  id="info-modal"
+>
   <div class="prose">
     <p>
       Unscrabbled is a dictionary search engine that will help you solve complex
