@@ -1,5 +1,6 @@
 import ky from "ky";
 import { withDebugger } from "./misc";
+import { Maybe } from "./monads";
 
 const client = ky.extend({
   cache: "force-cache",
@@ -93,10 +94,10 @@ export const getWordsByLength = withDebugger(
       const all = await client
         .get(`/db/words/by-length/${length}.json`)
         .json<string[]>();
-      if (!pattern) {
-        return all;
-      }
-      return all.filter((x) => pattern.test(x));
+
+      return Maybe.of(pattern).mapOr(all, (pattern) =>
+        all.filter((word) => pattern.test(word))
+      );
     } catch (error) {
       return [];
     }
