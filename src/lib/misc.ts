@@ -53,24 +53,24 @@ export const either = <A extends any[]>(
  * @param fns
  * @returns a function that returns true if none of the given functions return a falsy value
  */
-export const neither = <A extends any[]>(
+export const neither = <A extends unknown[]>(
   ...fns: Array<(...args: A) => Booleanish>
 ) => {
   return () => !either(...fns);
 };
 
-export const withDebugger = <R, A extends any[]>(
-  opts: {
-    groupLabel: string;
-  },
-  fn: (...args: A) => R
-) => {
-  return (...args: A) => {
-    console.group(opts.groupLabel);
-    console.time();
+export const withDebugger =
+  <R, A extends unknown[]>(
+    opts: {
+      groupLabel: string;
+    },
+    fn: (...args: A) => R
+  ) =>
+  (...args: A) => {
+    console.group(opts.groupLabel, args.length > 0 ? JSON.stringify(args) : "");
+    console.time("speed");
     const res = fn(...args);
     console.timeEnd();
     console.groupEnd();
     return res;
   };
-};

@@ -35,42 +35,55 @@ export class DefinitionNotFoundException extends Error {
 }
 
 /**
- * Get a word's definition from the dictionary
+ * Get the dictionary definition for a word.
  *
- * @param word
- * @returns {Definition}
+ * @param {string} word
+ * @returns {Promise<Definition>}
  */
-export async function getWordDefinition(word: string) {
-  try {
-    if (!word) {
-      throw new ArgumentMissingException("word");
+export const getWordDefinition = withDebugger(
+  {
+    groupLabel: "getWordDefinition",
+  },
+  async (word: string) => {
+    try {
+      if (!word) {
+        throw new ArgumentMissingException("word");
+      }
+
+      const [initial] = [...word];
+
+      const indexed = await client
+        .get(`/db/dictionary/${initial}.json`)
+        .json<Record<string, Definition>>();
+
+      if (word in indexed) {
+        return indexed[word];
+      }
+
+      throw new DefinitionNotFoundException(word);
+    } catch (error) {
+      if (
+        error instanceof ArgumentMissingException ||
+        error instanceof DefinitionNotFoundException
+      ) {
+        throw error;
+      }
+
+      throw new Error("Unknown Error: failed to fetch word definition", {
+        cause: error as Error,
+      });
     }
-
-    const [initial] = [...word];
-
-    const indexed = await client
-      .get(`/db/dictionary/${initial}.json`)
-      .json<Record<string, Definition>>();
-
-    if (word in indexed) {
-      return indexed[word];
-    }
-
-    throw new DefinitionNotFoundException(word);
-  } catch (error) {
-    if (
-      error instanceof ArgumentMissingException ||
-      error instanceof DefinitionNotFoundException
-    ) {
-      throw error;
-    }
-
-    throw new Error("failed to fetch word definition", {
-      cause: error as Error,
-    });
   }
-}
+);
 
+/**
+ * Get a list of words that have a common length.
+ *
+ * @param {number} length - The length of the words to return.
+ * @param {RegExp} [pattern] - A regular expression to filter the words by.
+ * @returns {Promise<string[]>}
+ *
+ */
 export const getWordsByLength = withDebugger(
   {
     groupLabel: "geWordsByLength",
