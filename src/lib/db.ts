@@ -103,3 +103,7 @@ export const getWordsByLength = withDebugger(
     }
   }
 );
+
+export const getMeta = async () => {
+  return client.get("/meta.json").json<{ version: string }>();
+};

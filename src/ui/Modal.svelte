@@ -5,6 +5,7 @@
 
   export let id: string;
   export let title: string;
+  export let subtitle = "";
   export let open = false;
 
   const dispatch = createEventDispatcher();
@@ -68,6 +69,11 @@
         <h3 class="text-lg font-bold">
           {title}
         </h3>
+        {#if subtitle}
+          <small class="text-sm text-gray-500">
+            {subtitle}
+          </small>
+        {/if}
       {/if}
     </slot>
     <slot name="body">

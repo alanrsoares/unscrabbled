@@ -1,6 +1,10 @@
 <script>
+  import { useQuery } from "@sveltestack/svelte-query";
   import { InformationCircle } from "svelte-heros";
+  import { getMeta } from "~/lib/db";
   import Modal from "./Modal.svelte";
+
+  let metaQuery = useQuery("meta", getMeta);
 
   let isModalOpen = false;
 </script>
@@ -32,6 +36,7 @@
     }, 150);
   }}
   title="About Unscrabbled"
+  subtitle={`v${$metaQuery.data?.version}`}
   id="info-modal"
 >
   <div class="prose">
