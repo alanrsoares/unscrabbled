@@ -70,7 +70,7 @@ export const withDebugger =
     console.group(opts.groupLabel, args.length > 0 ? JSON.stringify(args) : "");
     console.time("speed");
     const res = fn(...args);
-    console.timeEnd();
+    console.timeEnd("speed");
     console.groupEnd();
     return res;
   };
