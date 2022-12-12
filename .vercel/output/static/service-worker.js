@@ -1,15 +1,15 @@
 const r = [
-  "/_app/immutable/start-12c346e0.js",
+  "/_app/immutable/start-63b0cc8f.js",
   "/_app/immutable/components/pages/_layout.svelte-bff8ba21.js",
   "/_app/immutable/assets/_layout-53863ed6.css",
-  "/_app/immutable/components/error.svelte-74f3b11f.js",
+  "/_app/immutable/components/error.svelte-6738b6b1.js",
   "/_app/immutable/components/pages/_page.svelte-fea7eae8.js",
   "/_app/immutable/assets/_page-fcbfc4b7.css",
-  "/_app/immutable/chunks/singletons-38b54006.js",
+  "/_app/immutable/chunks/singletons-2e29bf7f.js",
   "/_app/immutable/chunks/index-9c0b09c1.js",
   "/_app/immutable/chunks/Modal-e6b18b16.js",
   "/_app/immutable/chunks/0-43e3ca61.js",
-  "/_app/immutable/chunks/1-bd673384.js",
+  "/_app/immutable/chunks/1-3f2d3226.js",
   "/_app/immutable/chunks/2-f08bf042.js"
 ], l = [
   "/db/dictionary/a.json",
@@ -75,7 +75,7 @@ const r = [
   "/icon-512.png",
   "/meta.json",
   "/webmanifest.json"
-], a = "1670876979689", t = self, b = `cache${a}`, c = r.concat(l), h = new Set(c);
+], a = "1670877250784", t = self, b = `cache${a}`, c = r.concat(l), h = new Set(c);
 t.addEventListener("install", (s) => {
   s.waitUntil(
     caches.open(b).then((n) => n.addAll(c)).then(() => {
