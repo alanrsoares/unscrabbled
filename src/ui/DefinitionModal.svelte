@@ -1,6 +1,6 @@
 <script lang="ts">
   import { useQuery } from "@sveltestack/svelte-query";
-  import { groupBy, prop } from "rambda";
+  import { groupBy, prop } from "rambda/immutable";
 
   import { getWordDefinition } from "~/lib/db";
   import { capitalize } from "~/lib/misc";

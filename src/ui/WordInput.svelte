@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { clamp, pipe, prop, range } from "rambda";
+  import { clamp, pipe, prop, range } from "rambda/immutable";
   import { createEventDispatcher } from "svelte/internal";
   import { Plus, Minus } from "svelte-heros";
 

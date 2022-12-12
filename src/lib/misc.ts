@@ -1,4 +1,4 @@
-import { pipe, join, split, toLower, uniq } from "rambda";
+import { pipe, join, split, toLower, uniq } from "rambda/immutable";
 
 export const preventDefault = <T extends MouseEvent>(e: T) =>
   e.preventDefault();
