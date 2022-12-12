@@ -3,7 +3,7 @@
 import fs from "fs/promises";
 import got from "got";
 import path from "path";
-import { range, uniq } from "rambda";
+import { range, uniq } from "rambda/immutable";
 import { spinner } from "zx/experimental";
 
 const DICTIONARY_API_ENDPOINT =
