@@ -20,9 +20,9 @@ const getMobileDetect = memoize((userAgent: string) => {
   };
 });
 
-export const useMobileDetect = () => {
+export function useMobileDetect() {
   const userAgent =
     typeof navigator === "undefined" ? "SSR" : navigator.userAgent;
 
   return getMobileDetect(userAgent);
-};
+}

@@ -41,7 +41,7 @@ export type Booleanish = boolean | string | number;
  * @param fns {Array<() => boolean | string | number>}
  * @returns - a function that returns true if at least one of the given functions is truthy
  */
-export const either = <A extends any[]>(
+export const either = <A extends unknown[]>(
   ...fns: Array<(...args: A) => Booleanish>
 ) => {
   return (...args: A) => fns.some((fn) => Boolean(fn(...args)));
