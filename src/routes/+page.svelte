@@ -118,7 +118,11 @@
             <input
               class="filter-input flex-1 focus:border-b-purple-500 text-purple-500"
               id="include"
-              bind:value={include}
+              value={exclude}
+              on:input={(e) => {
+                e.preventDefault();
+                exclude = e.currentTarget.value;
+              }}
             />
           </div>
         {/if}
@@ -128,14 +132,18 @@
             <input
               class="filter-input flex-1 focus:border-b-pink-500 text-pink-500"
               id="exclude"
-              bind:value={exclude}
+              value={include}
+              on:input={(e) => {
+                e.preventDefault();
+                include = e.currentTarget.value;
+              }}
             />
           </div>
         {/if}
       </div>
     {/if}
   {/if}
-  {#if $wordsQuery.isFetched}
+  {#if $wordsQuery.isFetched && pattern.length}
     <article
       class="card -mx-4 md:m-auto bg-gray-900 w-screen md:w-full flex-1 relative shadow-lg md:shadow-xl p-2"
     >
