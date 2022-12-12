@@ -43,8 +43,8 @@ function getDictionaryByLetter(letter = "") {
   return client.get(url).json();
 }
 
-const BY_LETTER_INDEX_PATH = path.resolve(`./static/db/words/index.json`);
-const BY_LENGTH_INDEX_PATH = path.resolve(`./static/db/words/by-length`);
+const BY_LETTER_INDEX_PATH = path.resolve("./static/db/words/index.json");
+const BY_LENGTH_INDEX_PATH = path.resolve("./static/db/words/by-length");
 
 async function readFileOrDefault(filePath = "", defaultContent = "") {
   try {
