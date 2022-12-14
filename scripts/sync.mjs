@@ -123,8 +123,4 @@ async function syncAll() {
   }
 }
 
-async function main() {
-  syncAll();
-}
-
-await main();
+await syncAll();
