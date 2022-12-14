@@ -62,7 +62,7 @@
       on:keydown={handleClose}
       aria-label="Close modal"
     >
-      &Cross;
+      ✕
     </button>
     <slot name="title">
       {#if title}
