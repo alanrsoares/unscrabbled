@@ -14,7 +14,7 @@
 
 	onMount(() => {
 		if (isMobile()) {
-			// prevent backbutton closing the mmobile window
+			// prevent back button closing the mobile window
 			window.history.forward();
 		}
 	});

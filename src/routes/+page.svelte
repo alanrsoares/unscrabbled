@@ -1,6 +1,6 @@
 <script lang="ts">
   import { useQuery } from "@sveltestack/svelte-query";
-  import { Eye, Minus, Plus, Search } from "svelte-heros";
+  import { Eye, Minus, Plus, MagnifyingGlass } from "svelte-heros";
 
   import { getWordsByLength } from "~/lib/db";
   import { dedupeString, sanitizePattern, toChars, toRgexp } from "~/lib/misc";
@@ -118,10 +118,10 @@
             <input
               class="filter-input flex-1 focus:border-b-purple-500 text-purple-500"
               id="include"
-              value={exclude}
+              value={include}
               on:input={(e) => {
                 e.preventDefault();
-                exclude = e.currentTarget.value;
+                include = e.currentTarget.value;
               }}
             />
           </div>
@@ -132,10 +132,10 @@
             <input
               class="filter-input flex-1 focus:border-b-pink-500 text-pink-500"
               id="exclude"
-              value={include}
+              value={exclude}
               on:input={(e) => {
                 e.preventDefault();
-                include = e.currentTarget.value;
+                exclude = e.currentTarget.value;
               }}
             />
           </div>
@@ -177,7 +177,7 @@
         {:else}
           <div class="grid absolute inset-0 place-items-center">
             <div class="grid place-items-center gap-2">
-              <Search size="48" />
+              <MagnifyingGlass size="48" />
               <span> No words matching the provided filters. </span>
             </div>
           </div>

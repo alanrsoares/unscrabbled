@@ -56,7 +56,6 @@
     on:clickout={close}
   >
     <button
-      for={id}
       class="btn btn-sm btn-circle absolute right-2 top-2 focus:ring"
       on:click={handleClose}
       on:keydown={handleClose}
