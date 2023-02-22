@@ -83,7 +83,7 @@
       > letters
     </label>
     <span slot="secondary-label" class="text-center p-1">
-      use <kbd>*</kbd> or <kbd>_</kbd> to match any
+      use <kbd>*</kbd>, <kbd> {"<space>"} </kbd> or <kbd>_</kbd> to match any
     </span>
   </WordInput>
 
@@ -203,7 +203,8 @@
   kbd {
     @apply bg-gray-600 text-white font-mono align-bottom font-semibold leading-tight;
     @apply transition-colors;
-    @apply rounded-md px-2 py-1 border-2 border-gray-500;
-    @apply hover:bg-purple-500;
+    @apply rounded-md px-2 py-1 border border-gray-500;
+    @apply hover:bg-gradient-to-br from-pink-500 to-purple-800;
+    @apply hover:shadow-md;
   }
 </style>

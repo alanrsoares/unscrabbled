@@ -3,6 +3,7 @@
   import { InformationCircle } from "svelte-heros";
   import { getMeta } from "~/lib/db";
   import Modal from "./Modal.svelte";
+  import Typewriter from "./Typewriter.svelte";
 
   let metaQuery = useQuery("meta", getMeta);
 
@@ -15,7 +16,18 @@
   <div class="p-4 border-b gradient-border">
     <nav class="clamp  flex items-center justify-between gap-4">
       <a href="/" class="w-full text-center md:text-left">
-        <span class="brand">Unscrabbled</span>
+        <span class="brand">
+          <Typewriter
+            strings={[
+              "Unscrwhat?",
+              "Unscrambld",
+              "Unscramble",
+              "Unscrambled",
+              "Unscrabbled",
+            ]}
+            persist={true}
+          />
+        </span>
       </a>
       <button
         class="settings-btn"
