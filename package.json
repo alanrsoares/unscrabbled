@@ -47,7 +47,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@sveltestack/svelte-query": "^1.6.0",
+    "@tanstack/svelte-query": "^4.29.11",
     "clsx": "^1.2.1",
     "ky": "^0.32.2",
     "lucide-svelte": "^0.229.0",

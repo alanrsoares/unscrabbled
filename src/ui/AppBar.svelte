@@ -1,11 +1,11 @@
 <script>
-  import { useQuery } from "@sveltestack/svelte-query";
+  import { createQuery } from "@tanstack/svelte-query";
   import { InfoIcon } from "lucide-svelte";
   import { getMeta } from "~/lib/db";
   import Modal from "./Modal.svelte";
   import Typewriter from "./Typewriter.svelte";
 
-  let metaQuery = useQuery("meta", getMeta);
+  let metaQuery = createQuery(["meta"], getMeta);
 
   let isModalOpen = false;
 </script>

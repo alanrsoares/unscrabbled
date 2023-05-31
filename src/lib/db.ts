@@ -54,7 +54,7 @@ export const getWordDefinition = withDebugger(
       const [initial] = [...word];
 
       const indexed = await client
-        .get(`/db/dictionary/${initial}.json`)
+        .get(`/db/dictionary/${initial.toLowerCase()}.json`)
         .json<Record<string, Definition>>();
 
       if (word in indexed) {

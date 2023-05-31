@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useQuery } from "@sveltestack/svelte-query";
+  import { createQuery } from "@tanstack/svelte-query";
   import { groupBy, prop } from "rambda/immutable";
 
   import { getWordDefinition } from "~/lib/db";
@@ -12,7 +12,7 @@
    */
   export let word = "";
 
-  $: definitionQuery = useQuery(
+  $: definitionQuery = createQuery(
     ["word-definitions", word],
     () => getWordDefinition(String(word)),
     {

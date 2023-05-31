@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useQuery } from "@sveltestack/svelte-query";
+  import { createQuery } from "@tanstack/svelte-query";
   import { EyeIcon, MinusIcon, PlusIcon, SearchIcon } from "lucide-svelte";
 
   import { getWordsByLength } from "~/lib/db";
@@ -37,7 +37,7 @@
 
   $: patternRegex = toRgexp(sanitizePattern(pattern, patternLength));
 
-  $: wordsQuery = useQuery(
+  $: wordsQuery = createQuery(
     ["words-by-length", patternLength, pattern, include, exclude],
     async () => {
       let result = await getWordsByLength(patternLength, patternRegex);
