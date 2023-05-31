@@ -1,7 +1,7 @@
 <script lang="ts">
   import { clamp, pipe, prop, range } from "rambda/immutable";
   import { createEventDispatcher } from "svelte/internal";
-  import { Plus, Minus } from "svelte-heros";
+  import { PlusIcon, MinusIcon } from "lucide-svelte";
 
   import { preventDefault, sanitizePattern } from "~/lib/misc";
 
@@ -94,7 +94,7 @@
         class="-translate-x-3 md:-translate-x-8"
         on:click={pipe(preventDefault, dec)}
       >
-        <Minus size="18" />
+        <MinusIcon class="h-4 w-4" />
       </button>
     {/if}
     {#each letters as letter, idx}
@@ -125,7 +125,7 @@
         class="translate-x-3 md:translate-x-8"
         on:click={pipe(preventDefault, inc)}
       >
-        <Plus size="18" />
+        <PlusIcon class="h-4 w-4" />
       </button>
     {/if}
   </div>

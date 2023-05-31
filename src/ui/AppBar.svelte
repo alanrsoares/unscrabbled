@@ -1,6 +1,6 @@
 <script>
   import { useQuery } from "@sveltestack/svelte-query";
-  import { InformationCircle } from "svelte-heros";
+  import { InfoIcon } from "lucide-svelte";
   import { getMeta } from "~/lib/db";
   import Modal from "./Modal.svelte";
   import Typewriter from "./Typewriter.svelte";
@@ -14,7 +14,7 @@
   class="sticky top-0 left-0 right-0 bg-black/20 backdrop-blur-sm z-10 border-white/30"
 >
   <div class="p-4 border-b gradient-border">
-    <nav class="clamp  flex items-center justify-between gap-4">
+    <nav class="clamp flex items-center justify-between gap-4">
       <a href="/" class="w-full text-center md:text-left">
         <span class="brand">
           <Typewriter
@@ -35,7 +35,7 @@
           isModalOpen = true;
         }}
       >
-        <InformationCircle />
+        <InfoIcon class="h-7 w-7" />
       </button>
     </nav>
   </div>
@@ -80,6 +80,6 @@
   }
 
   .settings-btn {
-    @apply btn rounded-full h-10 w-12 bg-gradient-to-br from-pink-500 to-purple-800 grid place-items-center;
+    @apply btn rounded-full h-10 aspect-square bg-gradient-to-br from-pink-500 to-purple-800 grid place-items-center;
   }
 </style>

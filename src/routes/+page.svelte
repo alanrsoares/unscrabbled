@@ -1,6 +1,6 @@
 <script lang="ts">
   import { useQuery } from "@sveltestack/svelte-query";
-  import { Eye, Minus, Plus, MagnifyingGlass } from "svelte-heros";
+  import { EyeIcon, MinusIcon, PlusIcon, SearchIcon } from "lucide-svelte";
 
   import { getWordsByLength } from "~/lib/db";
   import { dedupeString, sanitizePattern, toChars, toRgexp } from "~/lib/misc";
@@ -103,9 +103,9 @@
         }}
       >
         {#if showAdvancedFilters}
-          <Minus size="14" />
+          <MinusIcon size="14" />
         {:else}
-          <Plus size="14" />
+          <PlusIcon size="14" />
         {/if}
         filters
       </button>
@@ -170,14 +170,14 @@
                 <span class="text-base font-medium">
                   {word}
                 </span>
-                <span class="pill"> <Eye /> definition </span>
+                <span class="pill"> <EyeIcon /> definition </span>
               </li>
             {/each}
           </ul>
         {:else}
           <div class="grid absolute inset-0 place-items-center">
             <div class="grid place-items-center gap-2">
-              <MagnifyingGlass size="48" />
+              <SearchIcon size="36" />
               <span> No words matching the provided filters. </span>
             </div>
           </div>

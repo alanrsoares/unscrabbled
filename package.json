@@ -50,9 +50,9 @@
     "@sveltestack/svelte-query": "^1.6.0",
     "clsx": "^1.2.1",
     "ky": "^0.32.2",
-    "rambda": "^7.4.0",
-    "svelte-heros": "^2.6.0",
-    "tailwindcss-animatecss": "^3.0.2",
+    "lucide-svelte": "^0.229.0",
+    "rambda": "^7.5.0",
+    "tailwindcss-animatecss": "^3.0.4",
     "typewriter-effect": "^2.19.0"
   }
 }
