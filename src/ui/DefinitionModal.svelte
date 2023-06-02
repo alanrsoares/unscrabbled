@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createQuery } from "@tanstack/svelte-query";
-  import { groupBy, prop } from "rambda/immutable";
+  import { groupBy, prop } from "rambda";
 
   import { getWordDefinition } from "~/lib/db";
   import { capitalize } from "~/lib/misc";

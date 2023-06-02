@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { clamp, pipe, prop, range } from "rambda/immutable";
+  import { clamp, pipe, prop, range } from "rambda";
   import { createEventDispatcher } from "svelte/internal";
   import { PlusIcon, MinusIcon } from "lucide-svelte";
 
