@@ -87,11 +87,11 @@
     </span>
   </WordInput>
 
-  {#if $wordsQuery.isSuccess && pattern.length}
+  {#if pattern.length === patternLength}
     <div class="max-w-md mx-auto w-full flex items-center justify-between">
       <div class="text-lg font-mono">
         <span class="text-orange-400">
-          {$wordsQuery.data.length ? $wordsQuery.data.length : "No"}
+          {$wordsQuery.data?.length ? $wordsQuery.data.length : "No"}
         </span>
         words
       </div>
@@ -110,40 +110,39 @@
         filters
       </button>
     </div>
-    {#if showAdvancedFilters}
-      <div class="grid gap-8 animate-appear-2 max-w-md mx-auto w-full">
-        {#if include !== undefined}
-          <div class="grid">
-            <label class="opacity-70" for="include"> Must include </label>
-            <input
-              class="filter-input flex-1 focus:border-b-purple-500 text-purple-500"
-              id="include"
-              value={include}
-              on:input={(e) => {
-                e.preventDefault();
-                include = e.currentTarget.value;
-              }}
-            />
-          </div>
-        {/if}
-        {#if exclude !== undefined}
-          <div class="grid">
-            <label class="opacity-70" for="exclude"> Must exclude </label>
-            <input
-              class="filter-input flex-1 focus:border-b-pink-500 text-pink-500"
-              id="exclude"
-              value={exclude}
-              on:input={(e) => {
-                e.preventDefault();
-                exclude = e.currentTarget.value;
-              }}
-            />
-          </div>
-        {/if}
-      </div>
-    {/if}
-  {/if}
-  {#if $wordsQuery.isFetched && pattern.length}
+    <div
+      class="grid gap-8 animate-appear-2 max-w-md mx-auto w-full"
+      class:hidden={!showAdvancedFilters}
+    >
+      {#if include !== undefined}
+        <div class="grid">
+          <label class="opacity-70" for="include"> Must include </label>
+          <input
+            class="filter-input flex-1 focus:border-b-purple-500 text-purple-500"
+            id="include"
+            value={include}
+            on:input={(e) => {
+              e.preventDefault();
+              include = e.currentTarget.value;
+            }}
+          />
+        </div>
+      {/if}
+      {#if exclude !== undefined}
+        <div class="grid">
+          <label class="opacity-70" for="exclude"> Must exclude </label>
+          <input
+            class="filter-input flex-1 focus:border-b-pink-500 text-pink-500"
+            id="exclude"
+            value={exclude}
+            on:input={(e) => {
+              e.preventDefault();
+              exclude = e.currentTarget.value;
+            }}
+          />
+        </div>
+      {/if}
+    </div>
     <article
       class="card -mx-4 md:m-auto bg-gray-900 w-screen md:w-full flex-1 relative shadow-lg md:shadow-xl p-2"
     >
