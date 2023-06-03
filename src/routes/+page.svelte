@@ -160,16 +160,16 @@
         {:else if $wordsQuery.data?.length}
           <ul class="grid gap-1">
             {#each $wordsQuery.data as word}
-              <li
-                role="button"
-                class="rounded p-2 px-3 bg-white/20 group flex items-center justify-between uppercase"
-                on:click={handleSelectWord(word)}
-                on:keydown={handleSelectWord(word)}
-              >
-                <span class="text-base font-medium">
-                  {word}
-                </span>
-                <span class="pill"> <EyeIcon /> definition </span>
+              <li class="flex flex-1">
+                <button
+                  on:click={handleSelectWord(word)}
+                  class="rounded flex-1 p-2 px-3 bg-white/20 group flex items-center justify-between uppercase"
+                >
+                  <span class="text-base font-medium">
+                    {word}
+                  </span>
+                  <span class="pill"> <EyeIcon /> definition </span>
+                </button>
               </li>
             {/each}
           </ul>
