@@ -7,3 +7,13 @@ node_modules
 .env.*
 !.env.example
 /.vercel
+
+# android twa build files
+
+.gradle/
+android.keystore
+twa/app/build
+
+*.apk
+*.apk.idsig
+*.aab
