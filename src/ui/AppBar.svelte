@@ -49,7 +49,6 @@
   }}
   title="About Unscrabbled"
   subtitle={`v${$metaQuery.data?.version}`}
-  id="info-modal"
 >
   <div class="prose">
     <p>
@@ -72,7 +71,6 @@
   </div>
 </Modal>
 
-<!-- <Modal bind:open={isModalOpen} placement="center">info</Modal> -->
 <style lang="postcss">
   .brand {
     @apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold;
@@ -80,6 +78,7 @@
   }
 
   .settings-btn {
-    @apply btn rounded-full h-10 aspect-square bg-gradient-to-br from-pink-500 to-purple-800 grid place-items-center;
+    @apply btn btn-circle h-10 aspect-square grid place-items-center;
+    @apply bg-gradient-to-br from-pink-500 to-purple-800;
   }
 </style>

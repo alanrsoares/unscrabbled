@@ -3,7 +3,6 @@
 
   import { clickoutDetector } from "~/lib/directives";
 
-  export let id: string;
   export let title: string;
   export let subtitle = "";
   export let open = false;
@@ -43,17 +42,12 @@
   };
 </script>
 
-<input type="checkbox" {id} bind:checked={open} class="modal-toggle" />
-
-<div
-  role="dialog"
-  class="modal modal-bottom sm:modal-middle"
-  use:clickoutDetector
->
-  <div
-    class={"modal-box relative" + $$props.class}
+<dialog class="modal modal-bottom sm:modal-middle" use:clickoutDetector {open}>
+  <form
+    class={"modal-box relative".concat($$props.class)}
     use:clickoutDetector
     on:clickout={close}
+    method="dialog"
   >
     <button
       class="btn btn-sm btn-circle absolute right-2 top-2 focus:ring"
@@ -80,5 +74,5 @@
         <slot />
       </p>
     </slot>
-  </div>
-</div>
+  </form>
+</dialog>

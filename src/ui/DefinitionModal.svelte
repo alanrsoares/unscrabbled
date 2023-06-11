@@ -26,7 +26,6 @@
 
 <Modal
   title={word.length ? capitalize(word) : ""}
-  id="definition"
   open={word.length > 0}
   on:close={() => {
     // reset selection in 0.3s
