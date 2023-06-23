@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from "svelte/internal";
+  import { createEventDispatcher, onMount, onDestroy } from "svelte";
 
   import { clickoutDetector } from "~/lib/directives";
 
