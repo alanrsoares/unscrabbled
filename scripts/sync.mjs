@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import got from "got";
 import path from "path";
 import { range, uniq } from "rambda";
+import { chalk } from "zx";
 import { spinner } from "zx/experimental";
 
 const DICTIONARY_API_ENDPOINT =
@@ -17,6 +18,37 @@ const client = got.extend({
 });
 
 const MIN_LENGTH = 2;
+
+const emojis = {
+  a: "🅰",
+  b: "🅱",
+  c: "🅲",
+  d: "🅳",
+  e: "🅴",
+  f: "🅵",
+  g: "🅶",
+  h: "🅷",
+  i: "🅸",
+  j: "🅹",
+  k: "🅺",
+  l: "🅻",
+  m: "🅼",
+  n: "🅽",
+  o: "🅾",
+  p: "🅿",
+  q: "🆀",
+  r: "🆁",
+  s: "🆂",
+  t: "🆃",
+  u: "🆄",
+  v: "🆅",
+  w: "🆆",
+  x: "🆇",
+  y: "🆈",
+  z: "🆉",
+};
+
+const getEmoji = (letter = "") => emojis[letter] || letter;
 
 /**
  * Returns a dictionary of words starting with the given letter.
@@ -110,17 +142,37 @@ async function syncByLetter(letter = "") {
   const syncFilteredByLength = async (length = 0) =>
     syncByLength(length, filtered);
 
+  let timeStart = Date.now();
   await Promise.all([
     fs.writeFile(dictionaryByLetterPath, encoded),
     fs.writeFile(BY_LETTER_INDEX_PATH, nextWordsIndex),
     ...range(MIN_LENGTH, maxLength + 1).map(syncFilteredByLength),
   ]);
+  const elapsed = Date.now() - timeStart;
+
+  console.log(
+    `${getEmoji(letter)} | words: ${chalk.green(
+      filtered.length
+    )} (⏳${chalk.blue(elapsed.toLocaleString())}ms)`
+  );
+
+  return filtered.length;
 }
 
 async function syncAll() {
+  let totalSyncedWords = 0;
+
+  console.log(chalk.bold("syncing dictionary...\n"));
+
   for (const letter of LETTERS) {
-    await spinner(`Syncing letter: ${letter}`, () => syncByLetter(letter));
+    await spinner(`syncing letter: ${getEmoji(letter)}`, async () => {
+      totalSyncedWords += await syncByLetter(letter);
+    });
   }
+
+  console.log(
+    `\ntotal -- : ${chalk.green(chalk.bold(totalSyncedWords.toLocaleString()))}`
+  );
 }
 
 await syncAll();
