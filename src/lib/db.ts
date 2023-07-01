@@ -8,10 +8,6 @@ const client = ky.extend({
   cache: "force-cache",
 });
 
-export function all() {
-  return [];
-}
-
 export type Meaning = {
   id: string;
   def: string;
@@ -118,14 +114,14 @@ export const getWordsByLetter = async (letter: string) => {
 /**
  * Get a random word from the dictionary.
  */
-export async function getRandomWord(
+export const getRandomWord = async (
   length: number,
   seeds = {
     seed1: Math.random(),
     seed2: Math.random(),
     seed3: Math.random(),
   }
-) {
+) => {
   // random letter from
   const randomLetter = String.fromCharCode(Math.floor(seeds.seed1 * 26) + 97);
   const wordsByLetter = await getWordsByLetter(randomLetter);
@@ -143,7 +139,7 @@ export async function getRandomWord(
     word,
     meaning,
   };
-}
+};
 
 export const getMeta = async () => {
   return client.get("/meta.json").json<{ version: string }>();
