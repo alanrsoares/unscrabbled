@@ -1,4 +1,6 @@
 import ky from "ky";
+import invariant from "tiny-invariant";
+
 import { withDebugger } from "./misc";
 import { Maybe } from "./monads";
 
@@ -23,6 +25,7 @@ export type Definition = {
   meanings: Meaning[];
 };
 
+export type DictionaryEntries = Record<string, Definition>;
 export class ArgumentMissingException extends Error {
   constructor(argumentName: string) {
     super(`Argument missing: '${argumentName}'`);
@@ -37,9 +40,6 @@ export class DefinitionNotFoundException extends Error {
 
 /**
  * Get the dictionary definition for a word.
- *
- * @param {string} word
- * @returns {Promise<Definition>}
  */
 export const getWordDefinition = withDebugger(
   {
@@ -55,7 +55,7 @@ export const getWordDefinition = withDebugger(
 
       const indexed = await client
         .get(`/db/dictionary/${initial.toLowerCase()}.json`)
-        .json<Record<string, Definition>>();
+        .json<DictionaryEntries>();
 
       if (word in indexed) {
         return indexed[word];
@@ -79,11 +79,6 @@ export const getWordDefinition = withDebugger(
 
 /**
  * Get a list of words that have a common length.
- *
- * @param {number} length - The length of the words to return.
- * @param {RegExp} [pattern] - A regular expression to filter the words by.
- * @returns {Promise<string[]>}
- *
  */
 export const getWordsByLength = withDebugger(
   {
@@ -103,6 +98,52 @@ export const getWordsByLength = withDebugger(
     }
   }
 );
+
+/**
+ * Get a list of words that start with a given letter.
+ */
+export const getWordsByLetter = async (letter: string) => {
+  invariant(/^[a-z]{1}$/.test(letter), "Invalid letter");
+
+  const dictionaryEntries = await client
+    .get(`/db/dictionary/${letter}.json`)
+    .json<DictionaryEntries>();
+
+  return Object.entries(dictionaryEntries).map(([word, { meanings }]) => ({
+    word,
+    meanings,
+  }));
+};
+
+/**
+ * Get a random word from the dictionary.
+ */
+export async function getRandomWord(
+  length: number,
+  seeds = {
+    seed1: Math.random(),
+    seed2: Math.random(),
+    seed3: Math.random(),
+  }
+) {
+  // random letter from
+  const randomLetter = String.fromCharCode(Math.floor(seeds.seed1 * 26) + 97);
+  const wordsByLetter = await getWordsByLetter(randomLetter);
+
+  const wordsByLength = wordsByLetter.filter(
+    (word) => word.word.length === length && word.meanings.length
+  );
+
+  const { word, meanings } =
+    wordsByLength[Math.floor(seeds.seed2 * wordsByLength.length)];
+
+  const meaning = meanings[Math.floor(seeds.seed3 * meanings.length)];
+
+  return {
+    word,
+    meaning,
+  };
+}
 
 export const getMeta = async () => {
   return client.get("/meta.json").json<{ version: string }>();
