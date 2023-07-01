@@ -1,6 +1,6 @@
 <script lang="ts">
   import { clamp, pipe, prop, range } from "rambda";
-  import { createEventDispatcher } from "svelte/internal";
+  import { createEventDispatcher } from "svelte";
   import { PlusIcon, MinusIcon } from "lucide-svelte";
 
   import { preventDefault, sanitizePattern } from "~/lib/misc";
@@ -78,20 +78,20 @@
   $: letters = Array.from<string>({ length }).fill("");
 </script>
 
-<div class="grid gap-1.5 md:gap-2 m-auto w-full md:w-fit">
+<div class="grid gap-1.5 md:gap-2 m-auto w-full md:w-fit px-3 sm:px-0">
   <slot name="label">
     <label for={`${id}-0`} class="inline-block text-lg md:text-2xl text-center">
       {label}
     </label>
   </slot>
   <div
-    class="flex items-center justify-between gap-2 bg-white/20 rounded-xl p-2 md:p-4 py-6 left-0 right-0 -top-14"
+    class="flex items-center justify-between gap-2 bg-base-content/20 rounded-xl p-2 md:p-4 py-6 left-0 right-0 -top-14"
     class:px-14={isStatic}
   >
     {#if !isStatic}
       <button
         aria-label="decrease word length by 1 character"
-        class="-translate-x-3 md:-translate-x-8"
+        class="-translate-x-5 md:-translate-x-7"
         on:click={pipe(preventDefault, dec)}
       >
         <MinusIcon class="h-4 w-4" />
@@ -101,7 +101,7 @@
       <input
         id={`${id}-${idx}`}
         type="text"
-        class="h-8 w-8 hidden bg-gray-200/80 md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-black/80 text-center uppercase mx-auto"
+        class="h-8 w-8 hidden bg-base-content md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-base-300 text-center uppercase mx-auto"
         maxlength={1}
         value={letter}
         on:input={handleInput(idx)}
@@ -122,7 +122,7 @@
     {#if !isStatic}
       <button
         aria-label="increase word length by 1 character"
-        class="translate-x-3 md:translate-x-8"
+        class="translate-x-5 md:translate-x-7"
         on:click={pipe(preventDefault, inc)}
       >
         <PlusIcon class="h-4 w-4" />

@@ -144,7 +144,7 @@
       {/if}
     </div>
     <article
-      class="card -mx-4 md:m-auto bg-gray-900 w-screen md:w-full flex-1 relative shadow-lg md:shadow-xl p-2"
+      class="card -mx-4 md:m-auto bg-base-200 w-screen md:w-full flex-1 relative shadow-lg md:shadow-xl p-2"
     >
       <div
         class="card-body overflow-y-scroll snap-proximity max-h-[49vh] md:max-h-[60vh] p-4"

@@ -5,7 +5,7 @@
   import "~/app.css";
   import { APP_NAME } from "~/config";
   import { useMobileDetect } from "~/lib/hooks";
-  import { onMount } from "svelte/internal";
+  import { onMount } from "svelte";
 
   const { isMobile } = useMobileDetect();
 
@@ -37,6 +37,6 @@
 <style lang="postcss">
   .shell {
     @apply h-screen flex flex-col gap-4 sm:gap-8 md:gap-12 overflow-x-hidden;
-    @apply bg-gradient-to-b from-black/80 to-gray-900;
+    @apply bg-gradient-to-b from-black/80;
   }
 </style>

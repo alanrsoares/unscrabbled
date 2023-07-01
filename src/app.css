@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  @apply bg-gray-900 text-gray-200;
+  @apply bg-base-300 text-gray-200;
 }
 
 ::root {
@@ -39,7 +39,7 @@ html {
     width: 9px;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-600 rounded;
+    @apply bg-base-200 rounded;
   }
   ::-webkit-scrollbar-track {
     @apply rounded bg-transparent;
