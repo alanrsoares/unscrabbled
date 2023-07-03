@@ -4,6 +4,7 @@
   import { PlusIcon, MinusIcon } from "lucide-svelte";
 
   import { preventDefault, sanitizePattern } from "~/lib/misc";
+  import { Maybe } from "~/lib/monads";
 
   export let id: string;
 
@@ -38,8 +39,22 @@
 
   const VALID_INPUT_REGEX = /[a-z\*_]/i;
 
-  $: handleInput = (focusedIndex: number) =>
-    <svelte.JSX.FormEventHandler<HTMLInputElement>>((e) => {
+  const extractWord = () =>
+    sanitizePattern(
+      range(0, length)
+        .map(pipe(getInput, prop("value")))
+        .join(""),
+      length
+    );
+
+  const applyChange = (word: string) => {
+    dispatch("change", word);
+    value = word;
+  };
+
+  $: handleInput =
+    (focusedIndex: number): svelte.JSX.FormEventHandler<HTMLInputElement> =>
+    (e) => {
       const input = e.target as HTMLInputElement;
 
       const nextFocusedIndex = clamp(
@@ -47,24 +62,39 @@
         length - 1,
         Boolean(input.value.length) ? focusedIndex + 1 : focusedIndex - 1
       );
+      const word = extractWord();
+      applyChange(word);
 
-      const word = sanitizePattern(
-        range(0, length)
-          .map(pipe(getInput, prop("value")))
-          .join(""),
-        length
-      );
-
-      dispatch("change", word);
-      value = word;
       getInput(nextFocusedIndex)?.focus();
-    });
+    };
 
-  $: handleKeyDown = (e: KeyboardEvent) => {
+  $: handleKeyDown = (focusedIndex: number) => (e: KeyboardEvent) => {
     const { key } = e;
 
     if (key !== "Backspace" && !VALID_INPUT_REGEX.test(key)) {
       e.preventDefault();
+    }
+
+    switch (key) {
+      case "Backspace":
+        if (focusedIndex !== -1) {
+          // clear the focused input value
+          Maybe.of(getInput(focusedIndex)).map((input) => {
+            input.value = "";
+          });
+
+          if (focusedIndex > 0) {
+            getInput(focusedIndex - 1)?.focus();
+          }
+
+          const word = extractWord();
+          applyChange(word);
+
+          // prevent input change behaviour
+          e.preventDefault();
+        }
+
+        break;
     }
   };
 
@@ -97,16 +127,16 @@
         <MinusIcon class="h-4 w-4" />
       </button>
     {/if}
-    {#each letters as letter, idx}
+    {#each letters as letter, index}
       <input
-        id={`${id}-${idx}`}
+        id={`${id}-${index}`}
         type="text"
         class="h-8 w-8 hidden bg-base-content md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-base-300 text-center uppercase mx-auto"
         maxlength={1}
         value={letter}
-        on:input={handleInput(idx)}
-        on:keydown={handleKeyDown}
-        aria-label={`pattern input ${idx + 1}`}
+        on:input={handleInput(index)}
+        on:keydown={handleKeyDown(index)}
+        aria-label={`pattern input ${index + 1}`}
       />
     {/each}
     <input
@@ -115,7 +145,7 @@
       class="block md:hidden h-16 bg-gray-200/80 rounded-lg text-xl font-display text-black/80 text-center uppercase w-[80%] tracking-widest"
       placeholder={"_".repeat(length)}
       maxlength={length}
-      on:keydown={handleKeyDown}
+      on:keydown={handleKeyDown(-1)}
       bind:value
       on:input={(e) => handleSingleInput(e.currentTarget.value)}
     />
