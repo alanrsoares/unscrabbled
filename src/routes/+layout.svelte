@@ -36,7 +36,7 @@
 
 <style lang="postcss">
   .shell {
-    @apply h-screen flex flex-col gap-4 sm:gap-8 md:gap-12 overflow-x-hidden;
+    @apply lg:h-screen h-[100dvh] flex flex-col gap-4 sm:gap-8 md:gap-12 overflow-x-hidden;
     @apply bg-gradient-to-b from-black/80;
   }
 </style>
