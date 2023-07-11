@@ -1,7 +1,7 @@
 <script lang="ts">
   import { clamp, pipe, prop, range } from "rambda";
   import { createEventDispatcher } from "svelte";
-  import { PlusIcon, MinusIcon } from "lucide-svelte";
+  import { PlusIcon, MinusIcon } from "~/lib/icons";
 
   import { preventDefault, sanitizePattern } from "~/lib/misc";
   import { Maybe } from "~/lib/monads";

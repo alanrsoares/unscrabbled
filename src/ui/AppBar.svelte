@@ -1,6 +1,6 @@
 <script>
   import { createQuery } from "@tanstack/svelte-query";
-  import { InfoIcon } from "lucide-svelte";
+  import { InfoIcon } from "~/lib/icons";
   import { getMeta } from "~/lib/db";
   import Modal from "./Modal.svelte";
   import Typewriter from "./Typewriter.svelte";

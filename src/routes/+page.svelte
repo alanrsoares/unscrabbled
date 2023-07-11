@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createQuery } from "@tanstack/svelte-query";
-  import { EyeIcon, MinusIcon, PlusIcon, SearchIcon } from "lucide-svelte";
+  import { EyeIcon, MinusIcon, PlusIcon, SearchIcon } from "~/lib/icons";
 
   import { getWordsByLength } from "~/lib/db";
   import { dedupeString, sanitizePattern, toChars, toRgexp } from "~/lib/misc";
