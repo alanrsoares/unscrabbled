@@ -134,10 +134,15 @@ export const getRandomWord = async (
     wordsByLength[Math.floor(seeds.seed2 * wordsByLength.length)];
 
   const meaning = meanings[Math.floor(seeds.seed3 * meanings.length)];
+  // only meanings that don't have the word in them
+  const validMeanings = meanings.filter(
+    (meaning) => !meaning.def.includes(word)
+  );
 
   return {
     word,
     meaning,
+    validMeanings,
   };
 };
 

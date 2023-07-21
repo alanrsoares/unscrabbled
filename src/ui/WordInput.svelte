@@ -30,6 +30,16 @@
    */
   export let value = "";
 
+  /**
+   * Input meta
+   */
+  export let meta: {
+    letter: string;
+    status: "correct" | "missing" | "misplaced";
+  }[] = [];
+
+  export let readonly = false;
+
   const dispatch = createEventDispatcher();
   const getInput = (i: number) =>
     document.getElementById(`${id}-${i}`) as HTMLInputElement;
@@ -48,27 +58,18 @@
     );
 
   const applyChange = (word: string) => {
+    if (readonly) {
+      return;
+    }
+
     dispatch("change", word);
     value = word;
   };
 
-  $: handleInput =
-    (focusedIndex: number): svelte.JSX.FormEventHandler<HTMLInputElement> =>
-    (e) => {
-      const input = e.target as HTMLInputElement;
-
-      const nextFocusedIndex = clamp(
-        0,
-        length - 1,
-        Boolean(input.value.length) ? focusedIndex + 1 : focusedIndex - 1
-      );
-      const word = extractWord();
-      applyChange(word);
-
-      getInput(nextFocusedIndex)?.focus();
-    };
-
   $: handleKeyDown = (focusedIndex: number) => (e: KeyboardEvent) => {
+    if (readonly) {
+      return;
+    }
     const { key } = e;
 
     if (key !== "Backspace" && !VALID_INPUT_REGEX.test(key)) {
@@ -99,6 +100,9 @@
   };
 
   $: handleSingleInput = (value: string) => {
+    if (readonly) {
+      return;
+    }
     const word = sanitizePattern(value, length);
 
     dispatch("change", word);
@@ -133,10 +137,30 @@
         type="text"
         class="h-8 w-8 hidden bg-base-content md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-base-300 text-center uppercase mx-auto"
         maxlength={1}
-        value={letter}
-        on:input={handleInput(index)}
+        value={meta ? meta[index]?.letter ?? "" : letter ? letter : ""}
+        class:bg-success={meta[index]?.status === "correct"}
+        class:bg-error={meta[index]?.status === "missing"}
+        class:bg-warning={meta[index]?.status === "misplaced"}
+        on:input={({ target }) => {
+          const value = target && "value" in target ? String(target.value) : "";
+
+          if (!value) {
+            return;
+          }
+
+          const nextFocusedIndex = clamp(
+            0,
+            length - 1,
+            Boolean(value) ? index + 1 : index - 1
+          );
+          const word = extractWord();
+          applyChange(word);
+
+          getInput(nextFocusedIndex)?.focus();
+        }}
         on:keydown={handleKeyDown(index)}
         aria-label={`pattern input ${index + 1}`}
+        {readonly}
       />
     {/each}
     <input
@@ -148,6 +172,7 @@
       on:keydown={handleKeyDown(-1)}
       bind:value
       on:input={(e) => handleSingleInput(e.currentTarget.value)}
+      {readonly}
     />
     {#if !isStatic}
       <button
