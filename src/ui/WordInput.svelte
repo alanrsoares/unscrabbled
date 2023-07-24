@@ -47,6 +47,8 @@
   const inc = () => length++;
   const dec = () => length--;
 
+  const VALID_KEYS = ["Backspace", "Delete", "ArrowLeft", "ArrowRight"];
+
   const VALID_INPUT_REGEX = /[a-z\*_]/i;
 
   const extractWord = () =>
@@ -72,28 +74,74 @@
     }
     const { key } = e;
 
-    if (key !== "Backspace" && !VALID_INPUT_REGEX.test(key)) {
+    if (!VALID_KEYS.includes(key) && !VALID_INPUT_REGEX.test(key)) {
       e.preventDefault();
     }
 
     switch (key) {
-      case "Backspace":
-        if (focusedIndex !== -1) {
-          // clear the focused input value
-          Maybe.of(getInput(focusedIndex)).map((input) => {
-            input.value = "";
-          });
-
-          if (focusedIndex > 0) {
-            getInput(focusedIndex - 1)?.focus();
-          }
-
-          const word = extractWord();
-          applyChange(word);
-
-          // prevent input change behaviour
-          e.preventDefault();
+      case "ArrowLeft":
+        if (focusedIndex > 0) {
+          getInput(focusedIndex - 1)?.focus();
         }
+        break;
+      case "ArrowRight":
+        if (focusedIndex < length - 1) {
+          getInput(focusedIndex + 1)?.focus();
+        }
+        break;
+      case "Backspace":
+        if (focusedIndex === -1) {
+          return;
+        }
+
+        // clear the focused input value
+        Maybe.of(getInput(focusedIndex)).map((input) => {
+          input.value = "";
+        });
+
+        if (focusedIndex > 0) {
+          getInput(focusedIndex - 1)?.focus();
+        }
+
+        applyChange(extractWord());
+
+        // prevent input change behaviour
+        e.preventDefault();
+        break;
+      case "Delete":
+        if (focusedIndex === -1) {
+          return;
+        }
+        // clear the focused input value
+        Maybe.of(getInput(focusedIndex)).map((input) => {
+          input.value = "";
+        });
+
+        if (focusedIndex < length - 1) {
+          getInput(focusedIndex + 1)?.focus();
+        }
+
+        applyChange(extractWord());
+
+        // prevent input change behaviour
+        e.preventDefault();
+
+        break;
+      default:
+        if (focusedIndex === -1 || key.length > 1) {
+          return;
+        }
+        Maybe.of(getInput(focusedIndex)).map((input) => {
+          if (input.value) {
+            input.value = key;
+
+            if (focusedIndex < length - 1) {
+              getInput(focusedIndex + 1)?.focus();
+            }
+
+            applyChange(extractWord());
+          }
+        });
 
         break;
     }
