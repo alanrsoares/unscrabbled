@@ -1,6 +1,6 @@
 {
   "name": "unscrabbled",
-  "version": "1.4.10",
+  "version": "1.4.11",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
