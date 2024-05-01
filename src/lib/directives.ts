@@ -14,7 +14,7 @@ export function clickoutDetector(node: Node) {
       node.dispatchEvent(
         new CustomEvent("clickout", {
           detail: node,
-        })
+        }),
       );
     }
   };
