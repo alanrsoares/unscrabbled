@@ -4,8 +4,7 @@ import fs from "fs/promises";
 import got from "got";
 import path from "path";
 import { range, uniq } from "rambda";
-import { chalk } from "zx";
-import { spinner } from "zx/experimental";
+import { chalk, spinner } from "zx";
 
 const DICTIONARY_API_ENDPOINT =
   "https://raw.githubusercontent.com/wordset/wordset-dictionary/master/data";
@@ -19,6 +18,9 @@ const client = got.extend({
 
 const MIN_LENGTH = 2;
 
+/**
+ * @type {Record<string, string>}
+ */
 const emojis = {
   a: "🅰",
   b: "🅱",
@@ -104,7 +106,7 @@ async function syncByLength(length = 0, words = []) {
   const encoded = JSON.stringify(
     [...uniq([...currentWordsIndex, ...filtered])],
     null,
-    2
+    2,
   );
 
   await fs.writeFile(filePath, encoded);
@@ -121,7 +123,7 @@ async function syncByLetter(letter = "") {
 
   const currentWordsIndex = await readFileOrDefault(
     BY_LETTER_INDEX_PATH,
-    "{}"
+    "{}",
   ).then(JSON.parse);
 
   const nextWordsIndex = JSON.stringify(
@@ -130,11 +132,11 @@ async function syncByLetter(letter = "") {
       [letter]: filtered,
     },
     null,
-    2
+    2,
   );
 
   const dictionaryByLetterPath = path.resolve(
-    `./static/db/dictionary/${letter}.json`
+    `./static/db/dictionary/${letter}.json`,
   );
 
   const maxLength = Math.max(...filtered.map((x) => x.length));
@@ -152,8 +154,8 @@ async function syncByLetter(letter = "") {
 
   console.log(
     `${getEmoji(letter)} | words: ${chalk.green(
-      filtered.length
-    )} (⏳${chalk.blue(elapsed.toLocaleString())}ms)`
+      filtered.length,
+    )} (⏳${chalk.blue(elapsed.toLocaleString())}ms)`,
   );
 
   return filtered.length;
@@ -171,7 +173,7 @@ async function syncAll() {
   }
 
   console.log(
-    `\ntotal -- : ${chalk.green(chalk.bold(totalSyncedWords.toLocaleString()))}`
+    `\ntotal -- : ${chalk.green(chalk.bold(totalSyncedWords.toLocaleString()))}`,
   );
 }
 
