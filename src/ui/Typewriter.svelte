@@ -11,7 +11,6 @@
   let currentStringIndex = 0;
   let currentCharIndex = 0;
   let displayedText = "";
-  let isTyping = false;
   let played = false;
 
   const typeNextChar = () => {
@@ -57,7 +56,6 @@
 
   onMount(() => {
     if (autoStart && strings.length > 0) {
-      isTyping = true;
       typeNextChar();
     }
   });
