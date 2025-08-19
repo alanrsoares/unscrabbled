@@ -147,5 +147,9 @@ export const getRandomWord = async (
 };
 
 export const getMeta = async (): Promise<{ version: string }> => {
-  return fetch("/meta.json").then((res) => res.json());
+  return fetch("/meta.json")
+    .then((res) => res.json())
+    .catch(() => ({
+      version: "unknown",
+    }));
 };
