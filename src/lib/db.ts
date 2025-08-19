@@ -70,7 +70,7 @@ export const getWordDefinition = withDebugger(
         cause: error as Error,
       });
     }
-  }
+  },
 );
 
 /**
@@ -87,12 +87,12 @@ export const getWordsByLength = withDebugger(
         .json<string[]>();
 
       return Maybe.of(pattern).mapOr(all, (pattern) =>
-        all.filter((word) => pattern.test(word))
+        all.filter((word) => pattern.test(word)),
       );
     } catch (error) {
       return [];
     }
-  }
+  },
 );
 
 /**
@@ -120,14 +120,14 @@ export const getRandomWord = async (
     seed1: Math.random(),
     seed2: Math.random(),
     seed3: Math.random(),
-  }
+  },
 ) => {
   // random letter from
   const randomLetter = String.fromCharCode(Math.floor(seeds.seed1 * 26) + 97);
   const wordsByLetter = await getWordsByLetter(randomLetter);
 
   const wordsByLength = wordsByLetter.filter(
-    (word) => word.word.length === length && word.meanings.length
+    (word) => word.word.length === length && word.meanings.length,
   );
 
   const { word, meanings } =
@@ -136,7 +136,7 @@ export const getRandomWord = async (
   const meaning = meanings[Math.floor(seeds.seed3 * meanings.length)];
   // only meanings that don't have the word in them
   const validMeanings = meanings.filter(
-    (meaning) => !meaning.def.includes(word)
+    (meaning) => !meaning.def.includes(word),
   );
 
   return {
@@ -146,6 +146,6 @@ export const getRandomWord = async (
   };
 };
 
-export const getMeta = async () => {
-  return client.get("/meta.json").json<{ version: string }>();
+export const getMeta = async (): Promise<{ version: string }> => {
+  return fetch("/meta.json").then((res) => res.json());
 };

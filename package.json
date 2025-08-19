@@ -46,7 +46,7 @@
   "dependencies": {
     "@tanstack/svelte-query": "^4.40.0",
     "clsx": "^1.2.1",
-    "ky": "^0.32.2",
+    "ky": "^1.8.2",
     "lucide-svelte": "^0.259.0",
     "rambda": "^7.5.0",
     "tailwindcss-animatecss": "^3.0.5",
