@@ -17,3 +17,6 @@ twa/app/build
 *.apk
 *.apk.idsig
 *.aab
+
+# playwright
+test-results
