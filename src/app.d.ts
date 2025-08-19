@@ -10,8 +10,8 @@ declare namespace App {
   // interface Stuff {}
 }
 
-declare namespace svelte.JSX {
-  export interface HTMLAttributes<T> {
+declare namespace svelteHTML {
+  interface HTMLAttributes<T> {
     /**
      * must be used in conjunction with `clickoutDetector`
      *
@@ -23,7 +23,7 @@ declare namespace svelte.JSX {
      * ```
      *
      */
-    onclickout?: () => void;
+    "on:clickout"?: (event: CustomEvent) => void;
   }
 }
 
@@ -89,7 +89,7 @@ declare module "typewriter-effect/dist/core" {
          * onRemoveNode	Function	null	Callback function when a node is about to be removed. First param will be an object { node?: HTMLNode, charater?: string }
          */
         onRemoveNode?: (node: HTMLElement, char: string) => void;
-      }
+      },
     );
 
     /**
