@@ -1,6 +1,12 @@
 <script>
   import { createQuery } from "@tanstack/svelte-query";
-  import { InfoIcon } from "~/lib/icons";
+  import {
+    EyeIcon,
+    InfoIcon,
+    MinusIcon,
+    PlusIcon,
+    SearchIcon,
+  } from "~/lib/icons";
   import { getMeta } from "~/lib/db";
   import Modal from "./Modal.svelte";
   import Typewriter from "./Typewriter.svelte";
@@ -50,24 +56,53 @@
   title="About Unscrabbled"
   subtitle={`v${$metaQuery.data?.version}`}
 >
-  <div class="prose">
-    <p>
-      Unscrabbled is a dictionary search engine that will help you solve complex
-      word puzzles.
-
-      <br />
-
-      Here are some of the features:
+  <div class="space-y-6">
+    <p class="text-base text-gray-300 leading-relaxed">
+      <span class="text-white font-semibold">Unscrabbled</span> is a powerful dictionary
+      search engine designed to help you solve even the most complex word puzzles.
     </p>
 
-    <ol>
-      <li>
-        Find words with patterns: <br />
-      </li>
-      <li>Filter out words that includes a set of letters</li>
-      <li>Filter out words that DOES NOT include a set of letters</li>
-      <li>View the definition for a word</li>
-    </ol>
+    <div>
+      <h4
+        class="font-bold text-gray-400 mb-4 text-xs uppercase tracking-widest"
+      >
+        Key Features
+      </h4>
+      <ul class="space-y-4">
+        <li class="flex items-center gap-3">
+          <div class="p-2 bg-blue-500/20 rounded-lg text-blue-400 shrink-0">
+            <SearchIcon class="w-5 h-5" />
+          </div>
+          <span class="text-gray-200 leading-snug"
+            >Match words with complex patterns</span
+          >
+        </li>
+        <li class="flex items-center gap-3">
+          <div class="p-2 bg-green-500/20 rounded-lg text-green-400 shrink-0">
+            <PlusIcon class="w-5 h-5" />
+          </div>
+          <span class="text-gray-200 leading-snug"
+            >Filter by including letters</span
+          >
+        </li>
+        <li class="flex items-center gap-3">
+          <div class="p-2 bg-red-500/20 rounded-lg text-red-400 shrink-0">
+            <MinusIcon class="w-5 h-5" />
+          </div>
+          <span class="text-gray-200 leading-snug"
+            >Filter by excluding letters</span
+          >
+        </li>
+        <li class="flex items-center gap-3">
+          <div class="p-2 bg-purple-500/20 rounded-lg text-purple-400 shrink-0">
+            <EyeIcon class="w-5 h-5" />
+          </div>
+          <span class="text-gray-200 leading-snug"
+            >View detailed definitions</span
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </Modal>
 

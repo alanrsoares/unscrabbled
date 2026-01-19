@@ -44,7 +44,7 @@
 
 <dialog class="modal modal-bottom sm:modal-middle" use:clickoutDetector {open}>
   <form
-    class={"modal-box relative".concat($$props.class)}
+    class="modal-box relative {$$props.class || ''}"
     use:clickoutDetector
     on:clickout={close}
     method="dialog"
@@ -59,20 +59,20 @@
     </button>
     <slot name="title">
       {#if title}
-        <h3 class="text-lg font-bold">
+        <h3 class="text-2xl font-bold text-white">
           {title}
         </h3>
         {#if subtitle}
-          <small class="text-sm text-gray-500">
+          <div class="text-sm text-gray-400 mt-1">
             {subtitle}
-          </small>
+          </div>
         {/if}
       {/if}
     </slot>
     <slot name="body">
-      <p class="py-4">
+      <div class="py-6">
         <slot />
-      </p>
+      </div>
     </slot>
   </form>
 </dialog>
