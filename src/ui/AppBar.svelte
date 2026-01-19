@@ -1,4 +1,5 @@
 <script>
+  import { browser } from "$app/environment";
   import { createQuery } from "@tanstack/svelte-query";
   import {
     EyeIcon,
@@ -11,7 +12,9 @@
   import Modal from "./Modal.svelte";
   import Typewriter from "./Typewriter.svelte";
 
-  let metaQuery = createQuery(["meta"], getMeta);
+  let metaQuery = createQuery(["meta"], getMeta, {
+    enabled: browser,
+  });
 
   let isModalOpen = false;
 </script>

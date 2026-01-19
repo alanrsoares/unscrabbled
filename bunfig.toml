@@ -1,0 +1,6 @@
+# Bun test configuration
+# Set root to src/ so Bun only runs unit tests (Vitest-compatible)
+# Playwright tests in tests/ should be run with: npm run test
+[test]
+root = "src"
+timeout = 5000
