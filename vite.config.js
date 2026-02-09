@@ -7,4 +7,7 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["@sveltestack/svelte-query"],
   },
+  test: {
+    include: ["src/**/*.{test,spec}.{js,ts}"],
+  },
 });

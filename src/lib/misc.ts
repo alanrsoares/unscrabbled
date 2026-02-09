@@ -29,7 +29,10 @@ export function memoize<A extends unknown[], R>(fn: (...args: A) => R) {
       return memo.get(key) as R;
     }
 
-    return fn(...args);
+    const res = fn(...args);
+    memo.set(key, res);
+
+    return res;
   };
 }
 
@@ -56,7 +59,7 @@ export const either = <A extends unknown[]>(
 export const neither = <A extends unknown[]>(
   ...fns: Array<(...args: A) => Booleanish>
 ) => {
-  return () => !either(...fns);
+  return (...args: A) => !either(...fns)(...args);
 };
 
 export const withDebugger =
