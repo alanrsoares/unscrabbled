@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { clamp, pipe, prop, range } from "rambda";
+  import { pipe, range } from "rambda";
   import { PlusIcon, MinusIcon } from "~/lib/icons";
 
-  import { preventDefault, sanitizePattern } from "~/lib/misc";
+  import { preventDefault, sanitizePattern, clamp, prop } from "~/lib/misc";
   import { Maybe } from "~/lib/monads";
   import type { Snippet } from "svelte";
 
@@ -92,12 +92,17 @@
 
         // clear the focused input value
         Maybe.of(getInput(focusedIndex)).map((input) => {
+          const hadValue = Boolean(input.value);
           input.value = "";
-        });
 
-        if (focusedIndex > 0) {
-          getInput(focusedIndex - 1)?.focus();
-        }
+          if (!hadValue && focusedIndex > 0) {
+            const prevInput = getInput(focusedIndex - 1);
+            if (prevInput) {
+              prevInput.value = "";
+              prevInput.focus();
+            }
+          }
+        });
 
         applyChange(extractWord());
 
@@ -127,17 +132,12 @@
         if (focusedIndex === -1 || key.length > 1) {
           return;
         }
-        Maybe.of(getInput(focusedIndex)).map((input) => {
-          if (input.value) {
-            input.value = key;
 
-            if (focusedIndex < length - 1) {
-              getInput(focusedIndex + 1)?.focus();
-            }
-
-            applyChange(extractWord());
-          }
-        });
+        // Alphanumeric keys are handled by oninput to avoid double registration.
+        // We just prevent default if they are not valid to filter them out early.
+        if (!VALID_INPUT_REGEX.test(key)) {
+          e.preventDefault();
+        }
 
         break;
     }
@@ -187,22 +187,22 @@
         class:bg-success={meta[index]?.status === "correct"}
         class:bg-error={meta[index]?.status === "missing"}
         class:bg-warning={meta[index]?.status === "misplaced"}
+        onfocus={(e) => e.currentTarget.select()}
         oninput={({ target }) => {
-          const value = target && "value" in target ? String(target.value) : "";
+          const input = target as HTMLInputElement;
+          const val = sanitizePattern(input.value, 1);
+          input.value = val;
 
-          if (!value) {
-            return;
-          }
-
-          const nextFocusedIndex = clamp(
-            0,
-            length - 1,
-            Boolean(value) ? index + 1 : index - 1
-          );
           const word = extractWord();
           applyChange(word);
 
-          getInput(nextFocusedIndex)?.focus();
+          if (val) {
+            const nextFocusedIndex = clamp(
+              { min: 0, max: length - 1 },
+              index + 1
+            );
+            getInput(nextFocusedIndex)?.focus();
+          }
         }}
         onkeydown={handleKeyDown(index)}
         aria-label={`pattern input ${index + 1}`}
