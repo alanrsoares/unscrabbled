@@ -1,9 +1,9 @@
 <script lang="ts">
   import { createQuery } from "@tanstack/svelte-query";
-  import { groupBy, prop } from "rambda";
+  import { groupBy } from "rambda";
 
   import { getWordDefinition } from "~/lib/db";
-  import { capitalize } from "~/lib/misc";
+  import { capitalize, prop } from "~/lib/misc";
   import Modal from "~/ui/Modal.svelte";
   import Spinner from "~/ui/Spinner.svelte";
 
