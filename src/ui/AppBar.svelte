@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { browser } from "$app/environment";
   import { createQuery } from "@tanstack/svelte-query";
   import {
@@ -12,11 +12,13 @@
   import Modal from "./Modal.svelte";
   import Typewriter from "./Typewriter.svelte";
 
-  let metaQuery = createQuery(["meta"], getMeta, {
+  let metaQuery = createQuery(() => ({
+    queryKey: ["meta"],
+    queryFn: getMeta,
     enabled: browser,
-  });
+  }));
 
-  let isModalOpen = false;
+  let isModalOpen = $state(false);
 </script>
 
 <header
@@ -40,7 +42,7 @@
       </a>
       <button
         class="settings-btn"
-        on:click={() => {
+        onclick={() => {
           isModalOpen = true;
         }}
       >
@@ -51,13 +53,13 @@
 </header>
 <Modal
   bind:open={isModalOpen}
-  on:close={() => {
+  onclose={() => {
     setTimeout(() => {
       isModalOpen = false;
     }, 150);
   }}
   title="About Unscrabbled"
-  subtitle={`v${$metaQuery.data?.version}`}
+  subtitle={`v${metaQuery.data?.version}`}
 >
   <div class="space-y-6">
     <p class="text-base text-gray-300 leading-relaxed">

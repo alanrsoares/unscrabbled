@@ -9,37 +9,43 @@
   import WordInput from "~/ui/WordInput.svelte";
 
   // state
-  let pattern = "";
-  let include = "";
-  let exclude = "";
+  let pattern = $state("");
+  let include = $state("");
+  let exclude = $state("");
 
-  let patternLength = 5;
+  let patternLength = $state(5);
   let minLength = 2;
   let maxLength = 16;
-  let showAdvancedFilters = false;
+  let showAdvancedFilters = $state(false);
 
-  let selectedWord: string | undefined;
+  let selectedWord = $state("");
 
   // guard min/max length bounds
-  $: if (patternLength < minLength) {
-    patternLength = minLength;
-  } else if (patternLength > maxLength) {
-    patternLength = maxLength;
-  }
+  $effect(() => {
+    if (patternLength < minLength) {
+      patternLength = minLength;
+    } else if (patternLength > maxLength) {
+      patternLength = maxLength;
+    }
+  });
 
   // dedupe include/exclude
-  $: if (include.length) {
-    include = dedupeString(include);
-  }
-  $: if (exclude.length) {
-    exclude = dedupeString(exclude);
-  }
+  $effect(() => {
+    if (include.length) {
+      include = dedupeString(include);
+    }
+  });
+  $effect(() => {
+    if (exclude.length) {
+      exclude = dedupeString(exclude);
+    }
+  });
 
-  $: patternRegex = toRgexp(sanitizePattern(pattern, patternLength));
+  let patternRegex = $derived(toRgexp(sanitizePattern(pattern, patternLength)));
 
-  $: wordsQuery = createQuery(
-    ["words-by-length", patternLength, pattern, include, exclude],
-    async () => {
+  let wordsQuery = createQuery(() => ({
+    queryKey: ["words-by-length", patternLength, pattern, include, exclude],
+    queryFn: async () => {
       let result = await getWordsByLength(patternLength, patternRegex);
 
       if (include) {
@@ -56,10 +62,8 @@
 
       return result;
     },
-    {
-      enabled: pattern.length === patternLength,
-    }
-  );
+    enabled: pattern.length === patternLength,
+  }));
 
   const handleSelectWord =
     (word: string) => (e: KeyboardEvent | MouseEvent) => {
@@ -73,32 +77,35 @@
 
 <section class="flex flex-col gap-4 md:gap-8 flex-1 relative">
   <WordInput id="pattern" bind:length={patternLength} bind:value={pattern}>
-    <label
-      for="pattern-0"
-      slot="label"
-      class="inline-block text-lg md:text-2xl text-center"
-    >
-      Enter word pattern with <span class="border rounded px-2"
-        >{patternLength}</span
-      > letters
-    </label>
-    <span slot="secondary-label" class="text-center p-1">
-      use <kbd>*</kbd>, <kbd> {"<space>"} </kbd> or <kbd>_</kbd> to match any
-    </span>
+    {#snippet labelSlot()}
+      <label
+        for="pattern-0"
+        class="inline-block text-lg md:text-2xl text-center"
+      >
+        Enter word pattern with <span class="border rounded px-2"
+          >{patternLength}</span
+        > letters
+      </label>
+    {/snippet}
+    {#snippet secondaryLabelSlot()}
+      <span class="text-center p-1">
+        use <kbd>*</kbd>, <kbd> {"<space>"} </kbd> or <kbd>_</kbd> to match any
+      </span>
+    {/snippet}
   </WordInput>
 
   {#if pattern.length === patternLength}
     <div class="max-w-md mx-auto w-full flex items-center justify-between">
       <div class="text-lg font-mono">
         <span class="text-orange-400">
-          {$wordsQuery.data?.length ? $wordsQuery.data.length : "No"}
+          {wordsQuery.data?.length ? wordsQuery.data.length : "No"}
         </span>
         words
       </div>
       <button
         class="btn btn-primary btn-xs md:btn-sm h-min transition-colors gap-1"
         aria-label="hide advanced filters"
-        on:click={() => {
+        onclick={() => {
           showAdvancedFilters = !showAdvancedFilters;
         }}
       >
@@ -121,7 +128,7 @@
             class="filter-input flex-1 focus:border-b-purple-500 text-purple-500"
             id="include"
             value={include}
-            on:input={(e) => {
+            oninput={(e) => {
               e.preventDefault();
               include = e.currentTarget.value;
             }}
@@ -135,7 +142,7 @@
             class="filter-input flex-1 focus:border-b-pink-500 text-pink-500"
             id="exclude"
             value={exclude}
-            on:input={(e) => {
+            oninput={(e) => {
               e.preventDefault();
               exclude = e.currentTarget.value;
             }}
@@ -149,20 +156,20 @@
       <div
         class="card-body overflow-y-scroll snap-proximity max-h-[49vh] md:max-h-[60vh] p-4"
       >
-        {#if $wordsQuery.isError}
-          <div>failed {JSON.stringify($wordsQuery.error)}</div>
-        {:else if $wordsQuery.isLoading}
+        {#if wordsQuery.isError}
+          <div>failed {JSON.stringify(wordsQuery.error)}</div>
+        {:else if wordsQuery.isLoading}
           <div
             class="p-2 flex gap-2 items-center justify-center absolute top-2 right-0"
           >
             <Spinner label="loading dictionary..." />
           </div>
-        {:else if $wordsQuery.data?.length}
+        {:else if wordsQuery.data?.length}
           <ul class="grid gap-1">
-            {#each $wordsQuery.data as word}
+            {#each wordsQuery.data as word}
               <li class="flex flex-1">
                 <button
-                  on:click={handleSelectWord(word)}
+                  onclick={handleSelectWord(word)}
                   class="rounded flex-1 p-2 px-3 bg-white/20 group flex items-center justify-between uppercase"
                 >
                   <span class="text-base font-medium">

@@ -1,15 +1,16 @@
 import vercel from "@sveltejs/adapter-vercel";
-import preprocess from "svelte-preprocess";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  // Consult https://github.com/sveltejs/svelte-preprocess
+  // Consult https://svelte.dev/docs/kit/integrations#preprocessors
   // for more information about preprocessors
-  preprocess: preprocess({
-    postcss: true,
-  }),
+  preprocess: vitePreprocess(),
 
   kit: {
+    alias: {
+      "~": "src",
+    },
     // default options are shown
     adapter: vercel({
       // if true, will deploy the app using edge functions

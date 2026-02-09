@@ -1,18 +1,29 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from "svelte";
-
+  import { onMount, onDestroy, type Snippet } from "svelte";
   import { clickoutDetector } from "~/lib/directives";
 
-  export let title: string;
-  export let subtitle = "";
-  export let open = false;
+  interface Props {
+    title?: string;
+    subtitle?: string;
+    open?: boolean;
+    class?: string;
+    onclose?: (val: boolean) => void;
+    children?: Snippet;
+  }
 
-  const dispatch = createEventDispatcher();
+  let {
+    title = "",
+    subtitle = "",
+    open = $bindable(false),
+    class: className = "",
+    onclose,
+    children,
+  }: Props = $props();
 
   const close = () => {
     if (!open) return;
     open = false;
-    dispatch("close", false);
+    onclose?.(false);
   };
 
   const onKeydown = (e: KeyboardEvent) => {
@@ -38,41 +49,39 @@
       return;
     }
 
-    dispatch("close", false);
+    close();
   };
 </script>
 
 <dialog class="modal modal-bottom sm:modal-middle" use:clickoutDetector {open}>
   <form
-    class="modal-box relative {$$props.class || ''}"
+    class="modal-box relative {className}"
     use:clickoutDetector
-    on:clickout={close}
+    onclickout={close}
     method="dialog"
   >
     <button
       class="btn btn-sm btn-circle absolute right-2 top-2 focus:ring"
-      on:click={handleClose}
-      on:keydown={handleClose}
+      onclick={handleClose}
+      onkeydown={handleClose}
       aria-label="Close modal"
     >
       ✕
     </button>
-    <slot name="title">
-      {#if title}
-        <h3 class="text-2xl font-bold text-white">
-          {title}
-        </h3>
-        {#if subtitle}
-          <div class="text-sm text-gray-400 mt-1">
-            {subtitle}
-          </div>
-        {/if}
+    
+    {#if title}
+      <h3 class="text-2xl font-bold text-white">
+        {title}
+      </h3>
+      {#if subtitle}
+        <div class="text-sm text-gray-400 mt-1">
+          {subtitle}
+        </div>
       {/if}
-    </slot>
-    <slot name="body">
-      <div class="py-6">
-        <slot />
-      </div>
-    </slot>
+    {/if}
+    
+    <div class="py-6">
+      {@render children?.()}
+    </div>
   </form>
 </dialog>

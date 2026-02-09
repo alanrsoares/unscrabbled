@@ -3,45 +3,42 @@
   import { getRandomWord, getWordDefinition } from "~/lib/db";
   import WordInput from "~/ui/WordInput.svelte";
 
-  export let inputWord = "";
-  export let patternLength = 5;
-
-  export let maxAttempts = 5;
-  export let attempts = 0;
+  // Page props usually come from data, but these look like state.
+  // Converting to state.
+  let inputWord = $state("");
+  let patternLength = $state(5);
+  let maxAttempts = $state(5);
+  let attempts = $state(0);
 
   type Meta = {
     letter: string;
     status: "correct" | "missing" | "misplaced";
   }[];
 
-  $: query = createQuery(
-    ["random-word", patternLength],
-    () => getRandomWord(patternLength),
-    {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      staleTime: Infinity,
-    }
-  );
+  let query = createQuery(() => ({
+    queryKey: ["random-word", patternLength],
+    queryFn: () => getRandomWord(patternLength),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: Infinity,
+  }));
 
-  $: definitionQuery = createQuery(
-    ["word-definition", inputWord],
-    () => getWordDefinition(inputWord),
-    {
-      enabled: inputWord.length === patternLength,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      staleTime: Infinity,
-    }
-  );
+  let definitionQuery = createQuery(() => ({
+    queryKey: ["word-definition", inputWord],
+    queryFn: () => getWordDefinition(inputWord),
+    enabled: inputWord.length === patternLength,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: Infinity,
+  }));
 
-  let inputMeta: Meta = [];
-  let previousAttempts: Meta[] = [];
+  let inputMeta: Meta = $state([]);
+  let previousAttempts: Meta[] = $state([]);
 
-  $: validateInput = () => {
-    if (inputWord === $query.data?.word) {
+  const validateInput = () => {
+    if (inputWord === query.data?.word) {
       alert("You found the word!");
       inputWord = "";
       // update meta
@@ -55,10 +52,10 @@
       // reset previous attempts
       previousAttempts = [];
       // refetch random word
-      $query.refetch();
+      query.refetch();
     } else {
       // check if the input word has a definition
-      if (!$definitionQuery.isSuccess) {
+      if (!definitionQuery.isSuccess) {
         alert("This word doesn't exist!");
       } else {
         // increment attempts
@@ -72,12 +69,12 @@
           // reset previous attempts
           previousAttempts = [];
           // refetch random word
-          $query.refetch();
+          query.refetch();
         } else {
           // populate input meta with the correct status for each letter
           inputMeta = inputWord.split("").map((letter, index) => {
-            if ($query.data?.word.includes(letter)) {
-              if (letter === $query.data?.word[index]) {
+            if (query.data?.word.includes(letter)) {
+              if (letter === query.data?.word[index]) {
                 return { letter, status: "correct" };
               } else {
                 return { letter, status: "misplaced" };
@@ -95,10 +92,9 @@
       }
     }
 
-    // populate input meta with the correct status for each letter
     inputMeta = inputWord.split("").map((letter, index) => {
-      if ($query.data?.word.includes(letter)) {
-        if (letter === $query.data?.word[index]) {
+      if (query.data?.word.includes(letter)) {
+        if (letter === query.data?.word[index]) {
           return { letter, status: "correct" };
         } else {
           return { letter, status: "misplaced" };
@@ -109,12 +105,14 @@
     });
   };
 
-  $: if (
-    inputWord.length === patternLength &&
-    ($definitionQuery.isSuccess || $definitionQuery.isError)
-  ) {
-    validateInput();
-  }
+  $effect(() => {
+    if (
+      inputWord.length === patternLength &&
+      (definitionQuery.isSuccess || definitionQuery.isError)
+    ) {
+      validateInput();
+    }
+  });
 </script>
 
 <section class="flex flex-col gap-4 md:gap-8 flex-1 relative">
@@ -140,12 +138,14 @@
       isStatic
       secondaryLabel={`Attempt ${attempts + 1} of ${maxAttempts}`}
     >
-      <span slot="label" class="text-center mx-auto">
-        Discover the word in {5} attempts
-      </span>
+      {#snippet labelSlot()}
+        <span class="text-center mx-auto">
+          Discover the word in {5} attempts
+        </span>
+      {/snippet}
     </WordInput>
     <ul class="grid gap-2 p-2 menu">
-      {#each $query.data?.validMeanings ?? [] as meaning}
+      {#each query.data?.validMeanings ?? [] as meaning}
         <li class="text-center font-serif list-item">
           {meaning.def}
         </li>

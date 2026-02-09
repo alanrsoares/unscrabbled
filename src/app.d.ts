@@ -17,12 +17,13 @@ declare namespace svelteHTML {
      *
      * @example
      * ```svelte
-     * <div use:clickoutDetector on:clickout={() => { ... })}>
+     * <div use:clickoutDetector onclickout={() => { ... })}>
      *   content...
      * </div>
      * ```
      *
      */
     "on:clickout"?: (event: CustomEvent) => void;
+    onclickout?: (event: CustomEvent) => void;
   }
 }

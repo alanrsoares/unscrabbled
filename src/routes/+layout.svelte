@@ -7,6 +7,8 @@
   import { useMobileDetect } from "~/lib/hooks";
   import { onMount } from "svelte";
 
+  let { children } = $props();
+
   const { isMobile } = useMobileDetect();
 
   const queryClient = new QueryClient();
@@ -24,7 +26,7 @@
   <div class="shell">
     <AppBar />
     <div class="clamp p-4 flex flex-col justify-center flex-1">
-      <slot />
+      {@render children()}
     </div>
     <footer class="p-8">
       <div class="clamp mx-auto grid place-items-center">

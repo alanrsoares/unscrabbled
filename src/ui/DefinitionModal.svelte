@@ -7,27 +7,26 @@
   import Modal from "~/ui/Modal.svelte";
   import Spinner from "~/ui/Spinner.svelte";
 
-  /**
-   * selected word
-   */
-  export let word = "";
+  interface Props {
+    word?: string;
+  }
 
-  $: definitionQuery = createQuery(
-    ["word-definitions", word],
-    () => getWordDefinition(String(word)),
-    {
-      enabled: Boolean(word),
-    }
-  );
+  let { word = $bindable("") }: Props = $props();
 
-  $: meanings = $definitionQuery?.data?.meanings ?? [];
-  $: groupedBySpeechPart = groupBy(prop("speech_part"), meanings);
+  let definitionQuery = createQuery(() => ({
+    queryKey: ["word-definitions", word],
+    queryFn: () => getWordDefinition(String(word)),
+    enabled: Boolean(word),
+  }));
+
+  let meanings = $derived(definitionQuery.data?.meanings ?? []);
+  let groupedBySpeechPart = $derived(groupBy(prop("speech_part"), meanings));
 </script>
 
 <Modal
   title={word.length ? capitalize(word) : ""}
   open={word.length > 0}
-  on:close={() => {
+  onclose={() => {
     // reset selection in 0.3s
     setTimeout(() => {
       word = "";
@@ -35,13 +34,13 @@
   }}
 >
   <section class="grid gap-4">
-    {#if $definitionQuery.isError}
-      <div>failed {JSON.stringify($definitionQuery.error)}</div>
-    {:else if $definitionQuery.isLoading}
+    {#if definitionQuery.isError}
+      <div>failed {JSON.stringify(definitionQuery.error)}</div>
+    {:else if definitionQuery.isLoading}
       <div class="p-2 flex gap-2 items-center justify-center">
         <Spinner label="loading definition..." />
       </div>
-    {:else if $definitionQuery.isSuccess}
+    {:else if definitionQuery.isSuccess}
       <span class="font-semibold text-lg text-white/60">
         Meanings ({meanings.length})
       </span>
@@ -49,7 +48,7 @@
         aria-label={`${meanings.length} meanings for "${word}"`}
         class="grid gap-4 divide-y divide-gray-400"
       >
-        {#each Object.entries(groupedBySpeechPart) as [speech_part, meanings]}
+        {#each Object.entries(groupedBySpeechPart) as [speech_part, partMeanings]}
           <li class="list-item gap-2.5 pt-2">
             <span>
               <i class="font-serif italic text-gray-400/80"
@@ -57,7 +56,7 @@
               >
             </span>
             <ul class="list-decimal list-outside ml-3.5 grid gap-2">
-              {#each meanings as meaning}
+              {#each partMeanings as meaning}
                 <li class="gap-2 list-item">
                   {capitalize(meaning.def)}
                   {#if meaning.example}

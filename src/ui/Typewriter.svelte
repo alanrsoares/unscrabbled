@@ -1,17 +1,28 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  export let strings: string[] = [];
-  export let autoStart = true;
-  export let loop = true;
-  export let persist = false;
-  export let pauseFor = 1000;
-  export let speed = 100;
+  interface Props {
+    strings?: string[];
+    autoStart?: boolean;
+    loop?: boolean;
+    persist?: boolean;
+    pauseFor?: number;
+    speed?: number;
+  }
+
+  let {
+    strings = [],
+    autoStart = true,
+    loop = true,
+    persist = false,
+    pauseFor = 1000,
+    speed = 100
+  }: Props = $props();
 
   let currentStringIndex = 0;
   let currentCharIndex = 0;
-  let displayedText = "";
-  let played = false;
+  let displayedText = $state("");
+  let played = $state(false);
 
   const typeNextChar = () => {
     if (currentStringIndex >= strings.length) {

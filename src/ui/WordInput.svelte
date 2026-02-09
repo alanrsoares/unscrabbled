@@ -1,46 +1,42 @@
 <script lang="ts">
   import { clamp, pipe, prop, range } from "rambda";
-  import { createEventDispatcher } from "svelte";
   import { PlusIcon, MinusIcon } from "~/lib/icons";
 
   import { preventDefault, sanitizePattern } from "~/lib/misc";
   import { Maybe } from "~/lib/monads";
+  import type { Snippet } from "svelte";
 
-  export let id: string;
+  interface Props {
+    id: string;
+    label?: string;
+    secondaryLabel?: string;
+    isStatic?: boolean;
+    length?: number;
+    value?: string;
+    meta?: {
+      letter: string;
+      status: "correct" | "missing" | "misplaced";
+    }[];
+    readonly?: boolean;
+    onchange?: (val: string) => void;
+    labelSlot?: Snippet;
+    secondaryLabelSlot?: Snippet;
+  }
 
-  /**
-   * Input label
-   */
-  export let label = "";
+  let {
+    id,
+    label = "",
+    secondaryLabel = "",
+    isStatic = false,
+    length = $bindable(4),
+    value = $bindable(""),
+    meta = [],
+    readonly = false,
+    onchange,
+    labelSlot,
+    secondaryLabelSlot,
+  }: Props = $props();
 
-  export let secondaryLabel = "";
-
-  /**
-   * Whether length can be changed
-   */
-  export let isStatic = false;
-
-  /**
-   * Input length
-   */
-  export let length = 4;
-
-  /**
-   * Input value
-   */
-  export let value = "";
-
-  /**
-   * Input meta
-   */
-  export let meta: {
-    letter: string;
-    status: "correct" | "missing" | "misplaced";
-  }[] = [];
-
-  export let readonly = false;
-
-  const dispatch = createEventDispatcher();
   const getInput = (i: number) =>
     document.getElementById(`${id}-${i}`) as HTMLInputElement;
 
@@ -64,11 +60,11 @@
       return;
     }
 
-    dispatch("change", word);
+    onchange?.(word);
     value = word;
   };
 
-  $: handleKeyDown = (focusedIndex: number) => (e: KeyboardEvent) => {
+  const handleKeyDown = (focusedIndex: number) => (e: KeyboardEvent) => {
     if (readonly) {
       return;
     }
@@ -147,25 +143,27 @@
     }
   };
 
-  $: handleSingleInput = (value: string) => {
+  const handleSingleInput = (val: string) => {
     if (readonly) {
       return;
     }
-    const word = sanitizePattern(value, length);
+    const word = sanitizePattern(val, length);
 
-    dispatch("change", word);
+    onchange?.(word);
     value = word;
   };
 
-  $: letters = Array.from<string>({ length }).fill("");
+  let letters = $derived(Array.from<string>({ length }).fill(""));
 </script>
 
 <div class="grid gap-1.5 md:gap-2 m-auto w-full md:w-fit px-3 sm:px-0">
-  <slot name="label">
+  {#if labelSlot}
+    {@render labelSlot()}
+  {:else}
     <label for={`${id}-0`} class="inline-block text-lg md:text-2xl text-center">
       {label}
     </label>
-  </slot>
+  {/if}
   <div
     class="flex items-center justify-between gap-2 bg-base-content/20 rounded-xl p-2 md:p-4 py-6 left-0 right-0 -top-14"
     class:px-14={isStatic}
@@ -174,7 +172,7 @@
       <button
         aria-label="decrease word length by 1 character"
         class="-translate-x-5 md:-translate-x-7"
-        on:click={pipe(preventDefault, dec)}
+        onclick={pipe(preventDefault, dec)}
       >
         <MinusIcon class="h-4 w-4" />
       </button>
@@ -189,7 +187,7 @@
         class:bg-success={meta[index]?.status === "correct"}
         class:bg-error={meta[index]?.status === "missing"}
         class:bg-warning={meta[index]?.status === "misplaced"}
-        on:input={({ target }) => {
+        oninput={({ target }) => {
           const value = target && "value" in target ? String(target.value) : "";
 
           if (!value) {
@@ -206,7 +204,7 @@
 
           getInput(nextFocusedIndex)?.focus();
         }}
-        on:keydown={handleKeyDown(index)}
+        onkeydown={handleKeyDown(index)}
         aria-label={`pattern input ${index + 1}`}
         {readonly}
       />
@@ -217,24 +215,26 @@
       class="block md:hidden h-16 bg-gray-200/80 rounded-lg text-xl font-display text-black/80 text-center uppercase w-[80%] tracking-widest"
       placeholder={"_".repeat(length)}
       maxlength={length}
-      on:keydown={handleKeyDown(-1)}
+      onkeydown={handleKeyDown(-1)}
       bind:value
-      on:input={(e) => handleSingleInput(e.currentTarget.value)}
+      oninput={(e) => handleSingleInput(e.currentTarget.value)}
       {readonly}
     />
     {#if !isStatic}
       <button
         aria-label="increase word length by 1 character"
         class="translate-x-5 md:translate-x-7"
-        on:click={pipe(preventDefault, inc)}
+        onclick={pipe(preventDefault, inc)}
       >
         <PlusIcon class="h-4 w-4" />
       </button>
     {/if}
   </div>
-  <slot name="secondary-label">
+  {#if secondaryLabelSlot}
+    {@render secondaryLabelSlot()}
+  {:else}
     <span class="opacity-80 text-center text-sm">{secondaryLabel}</span>
-  </slot>
+  {/if}
 </div>
 
 <style lang="postcss">
