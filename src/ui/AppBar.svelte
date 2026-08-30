@@ -46,7 +46,7 @@
           isModalOpen = true;
         }}
       >
-        <InfoIcon class="h-7 w-7" />
+        <InfoIcon class="size-7" />
       </button>
     </nav>
   </div>
@@ -76,7 +76,7 @@
       <ul class="space-y-4">
         <li class="flex items-center gap-3">
           <div class="p-2 bg-blue-500/20 rounded-lg text-blue-400 shrink-0">
-            <SearchIcon class="w-5 h-5" />
+            <SearchIcon class="size-5" />
           </div>
           <span class="text-gray-200 leading-snug"
             >Match words with complex patterns</span
@@ -84,7 +84,7 @@
         </li>
         <li class="flex items-center gap-3">
           <div class="p-2 bg-green-500/20 rounded-lg text-green-400 shrink-0">
-            <PlusIcon class="w-5 h-5" />
+            <PlusIcon class="size-5" />
           </div>
           <span class="text-gray-200 leading-snug"
             >Filter by including letters</span
@@ -92,7 +92,7 @@
         </li>
         <li class="flex items-center gap-3">
           <div class="p-2 bg-red-500/20 rounded-lg text-red-400 shrink-0">
-            <MinusIcon class="w-5 h-5" />
+            <MinusIcon class="size-5" />
           </div>
           <span class="text-gray-200 leading-snug"
             >Filter by excluding letters</span
@@ -100,7 +100,7 @@
         </li>
         <li class="flex items-center gap-3">
           <div class="p-2 bg-purple-500/20 rounded-lg text-purple-400 shrink-0">
-            <EyeIcon class="w-5 h-5" />
+            <EyeIcon class="size-5" />
           </div>
           <span class="text-gray-200 leading-snug"
             >View detailed definitions</span

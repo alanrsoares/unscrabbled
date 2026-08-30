@@ -11,7 +11,7 @@
 <div role="status" aria-label={label}>
   <svg
     aria-hidden="true"
-    class={"mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-green-600 " +
+    class={"mr-2 size-8 text-gray-200 animate-spin dark:text-gray-600 fill-green-600 " +
       className}
     viewBox="0 0 100 101"
     fill="none"

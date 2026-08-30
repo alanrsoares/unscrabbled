@@ -188,14 +188,14 @@
           dec();
         }}
       >
-        <MinusIcon class="h-4 w-4" />
+        <MinusIcon class="size-4" />
       </button>
     {/if}
     {#each letters as letter, index (index)}
       <input
         id={`${id}-${index}`}
         type="text"
-        class="h-8 w-8 hidden bg-base-content md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-base-300 text-center uppercase mx-auto"
+        class="size-8 hidden bg-base-content md:block md:size-16 rounded text-xl md:text-4xl font-display text-base-300 text-center uppercase mx-auto"
         maxlength={1}
         value={meta?.length ? (meta[index]?.letter ?? "") : letter}
         class:bg-success={meta[index]?.status === "correct"}
@@ -245,7 +245,7 @@
           inc();
         }}
       >
-        <PlusIcon class="h-4 w-4" />
+        <PlusIcon class="size-4" />
       </button>
     {/if}
   </div>
