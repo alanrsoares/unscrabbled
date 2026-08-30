@@ -41,7 +41,7 @@
         </span>
       </a>
       <button
-        class="settings-btn"
+        class="btn btn-circle h-10 aspect-square grid place-items-center bg-gradient-to-br from-pink-500 to-purple-800"
         onclick={() => {
           isModalOpen = true;
         }}
@@ -115,10 +115,5 @@
   .brand {
     @apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold;
     @apply text-white uppercase;
-  }
-
-  .settings-btn {
-    @apply btn btn-circle h-10 aspect-square grid place-items-center;
-    @apply bg-gradient-to-br from-pink-500 to-purple-800;
   }
 </style>

@@ -12,12 +12,12 @@ export class Maybe<T> {
     this._isNone = value === null || value === undefined;
   }
 
-  static of<T>(value?: T) {
-    return new Maybe(value);
+  static of<T>(value?: T | null) {
+    return new Maybe<T>(value);
   }
 
-  static ofFalsy<T>(value?: T) {
-    return new Maybe(value ? value : undefined);
+  static ofFalsy<T>(value?: T | null) {
+    return new Maybe<T>(value ? value : undefined);
   }
 
   get isSome() {
