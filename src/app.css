@@ -48,14 +48,14 @@ html {
   }
 
   .gradient-border::after {
-    @apply absolute -inset-[5px] -z-[1] blur-2xl content-[''];
+    @apply absolute -inset-1.25 z-[-1] blur-2xl content-[''];
     content: "";
     background: linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2);
     border-radius: var(--gradient-border-radius, 0);
   }
 
   .gradient-border::before {
-    @apply absolute inset-0 -z-[2];
+    @apply absolute inset-0 z-[-2];
     content: "";
     background: linear-gradient(45deg, #ffd800, #ff5520, #750cf2, #0cbcf2);
     border-radius: var(--gradient-border-radius, 0);
