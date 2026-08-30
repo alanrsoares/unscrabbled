@@ -50,13 +50,13 @@
 
       if (include) {
         result = result.filter((x) =>
-          toChars(include).every((y) => x.includes(y))
+          toChars(include).every((y) => x.includes(y)),
         );
       }
 
       if (exclude) {
         result = result.filter(
-          (x) => !toChars(exclude).some((y) => x.includes(y))
+          (x) => !toChars(exclude).some((y) => x.includes(y)),
         );
       }
 
@@ -89,7 +89,7 @@
     {/snippet}
     {#snippet secondaryLabelSlot()}
       <span class="text-center p-1">
-        use <kbd>*</kbd>, <kbd> {"<space>"} </kbd> or <kbd>_</kbd> to match any
+        use <kbd>*</kbd>, <kbd>&lt;space&gt;</kbd> or <kbd>_</kbd> to match any
       </span>
     {/snippet}
   </WordInput>
@@ -128,9 +128,9 @@
             class="filter-input flex-1 focus:border-b-purple-500 text-purple-500"
             id="include"
             value={include}
-            oninput={(e) => {
+            oninput={(e: Event) => {
               e.preventDefault();
-              include = e.currentTarget.value;
+              include = (e.currentTarget as HTMLInputElement).value;
             }}
           />
         </div>
@@ -142,9 +142,9 @@
             class="filter-input flex-1 focus:border-b-pink-500 text-pink-500"
             id="exclude"
             value={exclude}
-            oninput={(e) => {
+            oninput={(e: Event) => {
               e.preventDefault();
-              exclude = e.currentTarget.value;
+              exclude = (e.currentTarget as HTMLInputElement).value;
             }}
           />
         </div>
@@ -166,7 +166,7 @@
           </div>
         {:else if wordsQuery.data?.length}
           <ul class="grid gap-1">
-            {#each wordsQuery.data as word}
+            {#each wordsQuery.data as word (word)}
               <li class="flex flex-1">
                 <button
                   onclick={handleSelectWord(word)}
@@ -195,6 +195,8 @@
 <DefinitionModal bind:word={selectedWord} />
 
 <style lang="postcss">
+  @reference "../app.css";
+
   .filter-input {
     @apply transition-colors;
     @apply h-12 bg-transparent border-b-2 outline-none;
@@ -210,7 +212,7 @@
     @apply bg-gray-600 text-white font-mono align-bottom font-semibold leading-tight;
     @apply transition-colors;
     @apply rounded-md px-2 py-1 border border-gray-500;
-    @apply hover:bg-gradient-to-br from-pink-500 to-purple-800;
+    @apply hover:bg-linear-to-br from-pink-500 to-purple-800;
     @apply hover:shadow-md;
   }
 </style>

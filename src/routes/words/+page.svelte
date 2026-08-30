@@ -118,7 +118,7 @@
 <section class="flex flex-col gap-4 md:gap-8 flex-1 relative">
   <div class="grid place-items-center">
     <ul>
-      {#each previousAttempts as attempt}
+      {#each previousAttempts as attempt, i (i)}
         <li>
           <WordInput
             id={`previous-attempt-${attempt}`}
@@ -145,7 +145,7 @@
       {/snippet}
     </WordInput>
     <ul class="grid gap-2 p-2 menu">
-      {#each query.data?.validMeanings ?? [] as meaning}
+      {#each query.data?.validMeanings ?? [] as meaning, i (meaning.id ?? i)}
         <li class="text-center font-serif list-item">
           {meaning.def}
         </li>

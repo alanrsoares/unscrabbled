@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { pipe, range } from "rambda";
+  import { range } from "rambda";
   import { PlusIcon, MinusIcon } from "~/lib/icons";
 
-  import { preventDefault, sanitizePattern, clamp, prop } from "~/lib/misc";
+  import { sanitizePattern, clamp } from "~/lib/misc";
   import { Maybe } from "~/lib/monads";
   import type { Snippet } from "svelte";
 
@@ -45,14 +45,14 @@
 
   const VALID_KEYS = ["Backspace", "Delete", "ArrowLeft", "ArrowRight"];
 
-  const VALID_INPUT_REGEX = /[a-z\*_]/i;
+  const VALID_INPUT_REGEX = /[a-z*_]/i;
 
   const extractWord = () =>
     sanitizePattern(
       range(0, length)
-        .map(pipe(getInput, prop("value")))
+        .map((i) => getInput(i)?.value ?? "")
         .join(""),
-      length
+      length,
     );
 
   const applyChange = (word: string) => {
@@ -64,7 +64,7 @@
     value = word;
   };
 
-  const handleKeyDown = (focusedIndex: number) => (e: KeyboardEvent) => {
+  const handleKeyDown = (e: KeyboardEvent, focusedIndex: number) => {
     if (readonly) {
       return;
     }
@@ -133,12 +133,21 @@
           return;
         }
 
-        // Alphanumeric keys are handled by oninput to avoid double registration.
-        // We just prevent default if they are not valid to filter them out early.
         if (!VALID_INPUT_REGEX.test(key)) {
           e.preventDefault();
+          return;
         }
 
+        Maybe.of(getInput(focusedIndex)).map((input) => {
+          input.value = key;
+          applyChange(extractWord());
+
+          if (focusedIndex < length - 1) {
+            getInput(focusedIndex + 1)?.focus();
+          }
+        });
+
+        e.preventDefault();
         break;
     }
   };
@@ -153,7 +162,9 @@
     value = word;
   };
 
-  let letters = $derived(Array.from<string>({ length }).fill(""));
+  let letters = $derived(
+    Array.from<string>({ length }).map((_, i) => value[i] ?? ""),
+  );
 </script>
 
 <div class="grid gap-1.5 md:gap-2 m-auto w-full md:w-fit px-3 sm:px-0">
@@ -172,24 +183,28 @@
       <button
         aria-label="decrease word length by 1 character"
         class="-translate-x-5 md:-translate-x-7"
-        onclick={pipe(preventDefault, dec)}
+        onclick={(e: MouseEvent) => {
+          e.preventDefault();
+          dec();
+        }}
       >
         <MinusIcon class="h-4 w-4" />
       </button>
     {/if}
-    {#each letters as letter, index}
+    {#each letters as letter, index (index)}
       <input
         id={`${id}-${index}`}
         type="text"
         class="h-8 w-8 hidden bg-base-content md:block md:h-16 md:w-16 rounded text-xl md:text-4xl font-display text-base-300 text-center uppercase mx-auto"
         maxlength={1}
-        value={meta ? meta[index]?.letter ?? "" : letter ? letter : ""}
+        value={meta?.length ? (meta[index]?.letter ?? "") : letter}
         class:bg-success={meta[index]?.status === "correct"}
         class:bg-error={meta[index]?.status === "missing"}
         class:bg-warning={meta[index]?.status === "misplaced"}
-        onfocus={(e) => e.currentTarget.select()}
-        oninput={({ target }) => {
-          const input = target as HTMLInputElement;
+        onfocus={(e: FocusEvent) =>
+          (e.currentTarget as HTMLInputElement).select()}
+        oninput={(e: Event) => {
+          const input = e.target as HTMLInputElement;
           const val = sanitizePattern(input.value, 1);
           input.value = val;
 
@@ -199,12 +214,12 @@
           if (val) {
             const nextFocusedIndex = clamp(
               { min: 0, max: length - 1 },
-              index + 1
+              index + 1,
             );
             getInput(nextFocusedIndex)?.focus();
           }
         }}
-        onkeydown={handleKeyDown(index)}
+        onkeydown={(e: KeyboardEvent) => handleKeyDown(e, index)}
         aria-label={`pattern input ${index + 1}`}
         {readonly}
       />
@@ -215,16 +230,20 @@
       class="block md:hidden h-16 bg-gray-200/80 rounded-lg text-xl font-display text-black/80 text-center uppercase w-[80%] tracking-widest"
       placeholder={"_".repeat(length)}
       maxlength={length}
-      onkeydown={handleKeyDown(-1)}
+      onkeydown={(e: KeyboardEvent) => handleKeyDown(e, -1)}
       bind:value
-      oninput={(e) => handleSingleInput(e.currentTarget.value)}
+      oninput={(e: Event) =>
+        handleSingleInput((e.currentTarget as HTMLInputElement).value)}
       {readonly}
     />
     {#if !isStatic}
       <button
         aria-label="increase word length by 1 character"
         class="translate-x-5 md:translate-x-7"
-        onclick={pipe(preventDefault, inc)}
+        onclick={(e: MouseEvent) => {
+          e.preventDefault();
+          inc();
+        }}
       >
         <PlusIcon class="h-4 w-4" />
       </button>
@@ -238,8 +257,10 @@
 </div>
 
 <style lang="postcss">
+  @reference "../app.css";
+
   button {
-    @apply block h-6 w-6 scale-[1.75] md:scale-[2] bg-gray-500/95 rounded-full;
+    @apply block size-6 scale-[1.75] md:scale-[2] bg-gray-500/95 rounded-full;
     @apply font-semibold text-xl select-none origin-center;
     @apply grid place-items-center;
   }

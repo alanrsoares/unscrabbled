@@ -37,8 +37,10 @@
 </QueryClientProvider>
 
 <style lang="postcss">
+  @reference "../app.css";
+
   .shell {
-    @apply lg:h-screen h-[100dvh] flex flex-col gap-4 sm:gap-8 md:gap-12 overflow-x-hidden;
-    @apply bg-gradient-to-b from-black/80;
+    @apply lg:h-screen h-dvh flex flex-col gap-4 sm:gap-8 md:gap-12 overflow-x-hidden;
+    @apply bg-linear-to-b from-black/80;
   }
 </style>

@@ -17,7 +17,7 @@ worker.addEventListener("install", (event) => {
       .then((cache) => cache.addAll(to_cache))
       .then(() => {
         worker.skipWaiting();
-      })
+      }),
   );
 });
 
@@ -29,7 +29,7 @@ worker.addEventListener("activate", (event) => {
         if (key !== FILES) await caches.delete(key);
       }
       worker.clients.claim();
-    })
+    }),
   );
 });
 
@@ -65,7 +65,7 @@ worker.addEventListener("fetch", (event) => {
         const cachedAsset =
           isStaticAsset && (await caches.match(event.request));
         return cachedAsset || fetchAndCache(event.request);
-      })()
+      })(),
     );
   }
 });

@@ -68,7 +68,7 @@
     >
       ✕
     </button>
-    
+
     {#if title}
       <h3 class="text-2xl font-bold text-white">
         {title}
@@ -79,7 +79,7 @@
         </div>
       {/if}
     {/if}
-    
+
     <div class="py-6">
       {@render children?.()}
     </div>

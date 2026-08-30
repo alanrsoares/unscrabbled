@@ -41,7 +41,7 @@
         </span>
       </a>
       <button
-        class="btn btn-circle h-10 aspect-square grid place-items-center bg-gradient-to-br from-pink-500 to-purple-800"
+        class="btn btn-circle h-10 aspect-square grid place-items-center bg-linear-to-br from-pink-500 to-purple-800"
         onclick={() => {
           isModalOpen = true;
         }}
@@ -112,6 +112,8 @@
 </Modal>
 
 <style lang="postcss">
+  @reference "../app.css";
+
   .brand {
     @apply self-center whitespace-nowrap text-xl font-display leading-snug font-semibold;
     @apply text-white uppercase;

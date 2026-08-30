@@ -11,7 +11,7 @@ declare namespace App {
 }
 
 declare namespace svelteHTML {
-  interface HTMLAttributes<T> {
+  interface HTMLAttributes<_T> {
     /**
      * must be used in conjunction with `clickoutDetector`
      *

@@ -16,7 +16,7 @@ describe("misc utils", () => {
     test("true | '' => true", () => {
       const eitherFn = either(
         () => "",
-        () => true
+        () => true,
       );
 
       expect(eitherFn()).toBe(true);
@@ -25,7 +25,7 @@ describe("misc utils", () => {
     test("should do the thing, but not", () => {
       const eitherFn = either(
         () => "",
-        () => false
+        () => false,
       );
 
       expect(eitherFn()).toBe(false);
@@ -34,7 +34,7 @@ describe("misc utils", () => {
     test("should do the thing with parameters", () => {
       const eitherFn = either(
         (n: number) => n > 10,
-        (n: number) => n < 5
+        (n: number) => n < 5,
       );
 
       expect(eitherFn(4)).toBe(true);
@@ -47,7 +47,7 @@ describe("misc utils", () => {
     test("false & false => true", () => {
       const neitherFn = neither(
         () => false,
-        () => false
+        () => false,
       );
       expect(neitherFn()).toBe(true);
     });
@@ -55,7 +55,7 @@ describe("misc utils", () => {
     test("true & false => false", () => {
       const neitherFn = neither(
         () => true,
-        () => false
+        () => false,
       );
       expect(neitherFn()).toBe(false);
     });
@@ -123,4 +123,3 @@ describe("misc utils", () => {
     });
   });
 });
-

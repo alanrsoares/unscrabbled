@@ -89,7 +89,7 @@ export const getWordsByLength = withDebugger(
       return Maybe.of(pattern).mapOr(all, (pattern) =>
         all.filter((word) => pattern.test(word)),
       );
-    } catch (error) {
+    } catch {
       return [];
     }
   },

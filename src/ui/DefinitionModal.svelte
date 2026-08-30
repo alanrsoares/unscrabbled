@@ -20,7 +20,7 @@
   }));
 
   let meanings = $derived(definitionQuery.data?.meanings ?? []);
-  let groupedBySpeechPart = $derived(groupBy(prop("speech_part"), meanings));
+  let groupedBySpeechPart = $derived(groupBy(prop("speech_part"))(meanings));
 </script>
 
 <Modal
@@ -48,7 +48,7 @@
         aria-label={`${meanings.length} meanings for "${word}"`}
         class="grid gap-4 divide-y divide-gray-400"
       >
-        {#each Object.entries(groupedBySpeechPart) as [speech_part, partMeanings]}
+        {#each Object.entries(groupedBySpeechPart) as [speech_part, partMeanings] (speech_part)}
           <li class="list-item gap-2.5 pt-2">
             <span>
               <i class="font-serif italic text-gray-400/80"
@@ -56,7 +56,7 @@
               >
             </span>
             <ul class="list-decimal list-outside ml-3.5 grid gap-2">
-              {#each partMeanings as meaning}
+              {#each partMeanings as meaning, i (meaning.id ?? i)}
                 <li class="gap-2 list-item">
                   {capitalize(meaning.def)}
                   {#if meaning.example}

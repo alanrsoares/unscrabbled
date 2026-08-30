@@ -1,12 +1,40 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "daisyui";
+
+@theme {
+  --font-display: "Saira Stencil One", cursive;
+  --animate-appear-1: fade-in-down 1s ease;
+  --animate-appear-2: fade-in 0.3s ease;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-in-down {
+    0% {
+      opacity: 0;
+      transform: translateY(-25vh);
+    }
+    66% {
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
 
 html {
   @apply bg-base-300 text-gray-200;
 }
 
-::root {
+:root {
   --gradient-border-radius: 1rem;
 }
 

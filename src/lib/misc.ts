@@ -9,7 +9,11 @@ export const clamp = ({ max = Infinity, min = -Infinity }, value: number) => {
   return value < min ? min : value > max ? max : value;
 };
 
-export const prop = (key: string) => (obj: any) => obj[key];
+export const prop =
+  <K extends PropertyKey>(key: K) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (obj: any) =>
+    obj[key];
 
 export const toChars = (x: string) => x.toLowerCase().split("");
 
@@ -71,7 +75,7 @@ export const withDebugger =
     opts: {
       groupLabel: string;
     },
-    fn: (...args: A) => R
+    fn: (...args: A) => R,
   ) =>
   (...args: A) => {
     console.group(opts.groupLabel, args.length > 0 ? JSON.stringify(args) : "");

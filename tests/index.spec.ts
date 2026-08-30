@@ -7,6 +7,6 @@ test("index page renders with default word length", async ({ page }) => {
 
   // do the same but using playwright's expect
   expect(await page.textContent("label")).toBe(
-    `Enter word pattern with ${WORD_LENGTH} letters`
+    `Enter word pattern with ${WORD_LENGTH} letters`,
   );
 });

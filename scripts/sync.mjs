@@ -83,7 +83,7 @@ const BY_LENGTH_INDEX_PATH = path.resolve("./static/db/words/by-length");
 async function readFileOrDefault(filePath = "", defaultContent = "") {
   try {
     return await fs.readFile(filePath, "utf-8");
-  } catch (error) {
+  } catch {
     return defaultContent;
   }
 }
